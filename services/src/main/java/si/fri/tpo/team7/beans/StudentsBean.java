@@ -34,8 +34,7 @@ public class StudentsBean {
     }
 
     public List<Student> getStudents() {
-        TypedQuery<Student> q = em.createNamedQuery("Student.getAll", Student.class);
-        return q.getResultList();
+        return em.createNamedQuery("Student.getAll", Student.class).getResultList();
     }
 
     @Transactional

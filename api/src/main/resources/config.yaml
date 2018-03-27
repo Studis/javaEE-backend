@@ -1,0 +1,11 @@
+kumuluzee:
+  name: studis
+  version: 1.0.0
+  env:
+    name: dev
+  datasources:
+    - jndi-name: jdbc/StudisJdbcDS
+      connection-url: jdbc:postgresql://localhost:5432/studis
+      username: postgres
+      password: postgres
+      max-pool-size: 20

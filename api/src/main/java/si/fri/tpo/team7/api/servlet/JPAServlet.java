@@ -24,7 +24,6 @@ public class JPAServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Student s = new Student();
-        s.setId(1);
         s.setName("Bob");
         s.setSurname("Klobasa");
 
@@ -33,7 +32,7 @@ public class JPAServlet extends HttpServlet {
             studentsBean.addStudent(s);
             List<Student> students = studentsBean.getStudents();
             for (Student student: students) {
-                student.toString();
+                writer.println(student.toString());
             }
         }
     }

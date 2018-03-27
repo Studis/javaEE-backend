@@ -2,7 +2,7 @@ package si.fri.tpo.team7.entities;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name="Student")
 @NamedQueries(value =
         {
                 @NamedQuery(name = "Student.getAll", query = "SELECT s FROM Student s")
