@@ -1,5 +1,9 @@
 package si.fri.tpo.team7.api.servlet;
 
+import si.fri.tpo.team7.beans.StudentsBean;
+import si.fri.tpo.team7.entities.Student;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,18 +11,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
+import java.util.List;
 
 
 @WebServlet("/servlet")
 public class JPAServlet extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(JPAServlet.class.getName());
+
+    @Inject
+    private StudentsBean studentsBean;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Student s = new Student();
+        s.setId(1);
+        s.setName("Bob");
+        s.setSurname("Klobasa");
+
         try (PrintWriter writer = resp.getWriter()) {
             writer.append("Test");
+            studentsBean.addStudent(s);
+            List<Student> students = studentsBean.getStudents();
+            for (Student student: students) {
+                student.toString();
+            }
         }
     }
 }
