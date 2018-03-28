@@ -11,8 +11,6 @@
 
     <artifactId>services</artifactId>
 
-
-
     <dependencies>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
@@ -27,7 +25,5 @@
             <artifactId>entities</artifactId>
         </dependency>
     </dependencies>
-
-
 
 </project>

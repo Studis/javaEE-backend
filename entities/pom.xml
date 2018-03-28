@@ -13,8 +13,6 @@
     <artifactId>entities</artifactId>
 
     <dependencies>
-
-        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -24,9 +22,6 @@
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jpa-eclipselink</artifactId>
         </dependency>
-
     </dependencies>
-
-
 
 </project>

@@ -33,7 +33,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- CHILDREN -->
             <dependency>
                 <artifactId>api</artifactId>
                 <groupId>si.fri.tpo.team7</groupId>

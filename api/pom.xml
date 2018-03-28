@@ -11,14 +11,7 @@
 
     <artifactId>api</artifactId>
 
-
-
-
     <dependencies>
-        <dependency>
-            <groupId>si.fri.kp</groupId>
-            <artifactId>storitve</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
@@ -46,9 +39,5 @@
             <artifactId>services</artifactId>
         </dependency>
     </dependencies>
-
-
-
-
 
 </project>
