@@ -21,6 +21,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.javadoc.skip>true</maven.javadoc.skip>
+        <kumuluzee-security.version>1.0.1</kumuluzee-security.version>
     </properties>
 
     <dependencyManagement>
