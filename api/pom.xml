@@ -30,11 +30,6 @@
             <artifactId>kumuluzee-cdi-weld</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.security</groupId>
-            <artifactId>kumuluzee-security-keycloak</artifactId>
-            <version>${kumuluzee-security.version}</version>
-        </dependency>
-        <dependency>
             <groupId>si.fri.tpo.team7</groupId>
             <artifactId>services</artifactId>
         </dependency>

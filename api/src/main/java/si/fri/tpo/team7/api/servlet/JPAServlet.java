@@ -31,6 +31,8 @@ public class JPAServlet extends HttpServlet {
             writer.append("Test");
             studentsBean.addStudent(s);
             List<Student> students = studentsBean.getStudents();
+            Student student1 = studentsBean.getStudent(1);
+            writer.println("STUDENT 1: " + student1);
             for (Student student: students) {
                 writer.println(student.toString());
             }
