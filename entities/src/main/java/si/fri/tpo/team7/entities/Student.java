@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Scanner;
 
 @Entity
 @NamedQueries(value =

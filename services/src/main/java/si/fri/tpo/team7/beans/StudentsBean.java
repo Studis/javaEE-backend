@@ -11,6 +11,7 @@ import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -33,6 +34,31 @@ public class StudentsBean {
             throw new NotFoundException("Student " + id + " not found.");
         }
         return student;
+    }
+
+    @Transactional
+    public void importStudents(Scanner scanner){
+        Student s;
+        while((s = studentFromScanner(scanner)) != null){
+            addStudent(s);
+        }
+    }
+
+    @Transactional
+    public Student studentFromScanner(Scanner scanner)
+    {
+        try {
+            Student student = new Student();
+            student.setName(scanner.next());
+            student.setSurname(scanner.next());
+            // TODO: read program
+            scanner.next();
+            student.seteMail(scanner.next());
+            return student;
+        }
+        catch(Exception e){
+            return null;
+        }
     }
 
     @Transactional
