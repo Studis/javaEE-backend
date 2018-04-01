@@ -49,6 +49,11 @@
                 <groupId>si.fri.tpo.team7</groupId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.security</groupId>
+                <artifactId>kumuluzee-security-keycloak</artifactId>
+                <version>${kumuluzee-security.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
