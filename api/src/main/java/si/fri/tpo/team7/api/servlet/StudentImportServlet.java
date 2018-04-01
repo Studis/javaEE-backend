@@ -14,49 +14,59 @@ import java.io.*;
 import java.util.Scanner;
 
 @WebServlet(name = "FileUploadServlet", urlPatterns = {"/import-students"})
-@MultipartConfig
+@MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
+        maxFileSize = 10485760L, // 10 MB
+        maxRequestSize = 20971520L // 20 MB
+)
 public class StudentImportServlet extends HttpServlet {
 
     @Inject
     private StudentsBean studentsBean;
 
-    protected void processRequest(HttpServletRequest request,
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.append("<!DOCTYPE html>\r\n")
+                .append("<html>\r\n")
+                .append("    <head>\r\n")
+                .append("        <title>File Upload Form</title>\r\n")
+                .append("    </head>\r\n")
+                .append("    <body>\r\n");
+        writer.append("<h1>Upload file</h1>\r\n");
+        writer.append("<form method=\"POST\" action=\"import-students\" ")
+                .append("enctype=\"multipart/form-data\">\r\n");
+        writer.append("<input type=\"file\" name=\"fileName1\"/><br/><br/>\r\n");
+        writer.append("<input type=\"submit\" value=\"Submit\"/>\r\n");
+        writer.append("</form>\r\n");
+        writer.append("    </body>\r\n").append("</html>\r\n");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request,
                                   HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // Create path components to save the file
-        final String path = request.getParameter("destination");
-        final Part filePart = request.getPart("file");
-        final String fileName = getFileName(filePart);
-
         final PrintWriter writer = response.getWriter();
-
-        try {
-            Scanner sc = new Scanner(filePart.getInputStream());
-            studentsBean.importStudents(sc);
-
-            writer.println("New file " + fileName + " created at " + path);
-        } catch (FileNotFoundException fne) {
-            writer.println("You either did not specify a file to upload or are "
-                    + "trying to upload a file to a protected or nonexistent "
-                    + "location.");
-            writer.println("<br/> ERROR: " + fne.getMessage());
-        } finally {
-            if (writer != null) {
-                writer.close();
+        for(Part part:request.getParts()){
+            try {
+                Scanner sc = new Scanner(part.getInputStream());
+                studentsBean.importStudents(sc);
+            } catch (FileNotFoundException fne) {
+                writer.println("You either did not specify a file to upload or are "
+                        + "trying to upload a file to a protected or nonexistent "
+                        + "location.");
+                writer.println("<br/> ERROR: " + fne.getMessage());
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                }
             }
+            break;
         }
-    }
 
-    private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(
-                        content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
     }
 }
