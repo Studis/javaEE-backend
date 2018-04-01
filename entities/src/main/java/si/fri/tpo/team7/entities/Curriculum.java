@@ -13,5 +13,9 @@ public class Curriculum {
     @JoinColumn(name="year")
     private StudyYear year;
 
+    @ManyToOne
+    @JoinColumn(name="program")
+    private StudyProgram program;
 
+    
 }

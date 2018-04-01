@@ -12,17 +12,17 @@ import java.util.List;
 public class Student extends User {
 
     @Column(name = "study_course", length = 7)
-    private List<String> studyCourse;
+    protected List<String> studyCourse;
 
     @Column(name = "e_mail", length = 60)
-    private String eMail;
+    protected String eMail;
 
     //AUTOGENERATE
     @Column(name = "enrollment_number", length = 8, unique = true)
-    private String enrollmentNumber;
+    protected String enrollmentNumber;
 
     @Column(length = 30)
-    private String username;
+    protected String username;
 
     public List<String> getStudyCourse() {
         return studyCourse;
@@ -83,14 +83,14 @@ public class Student extends User {
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        int result = 0;//getId();
+        //result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        //result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
         result = 31 * result + (getStudyCourse() != null ? getStudyCourse().hashCode() : 0);
         result = 31 * result + (geteMail() != null ? geteMail().hashCode() : 0);
         result = 31 * result + (getEnrollmentNumber() != null ? getEnrollmentNumber().hashCode() : 0);
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
-        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        //result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
     }
 }

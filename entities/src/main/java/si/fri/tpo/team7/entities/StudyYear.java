@@ -12,6 +12,9 @@ public class StudyYear {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="year")
     private Set<CourseExecution> courseExecutions;
 
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="curriculum")
+    private Set<Curriculum> curriculums;
+
     public int getYear() {
         return year;
     }

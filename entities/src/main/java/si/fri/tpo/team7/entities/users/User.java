@@ -3,20 +3,21 @@ package si.fri.tpo.team7.entities.users;
 import javax.persistence.*;
 
 @Entity
+@MappedSuperclass
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 4)
-    private int id;
+    protected int id;
 
     @Column(length = 30)
-    private String name;
+    protected String name;
 
     @Column(length = 30)
-    private String surname;
+    protected String surname;
 
     @Column(length = 30)
-    private String password;
+    protected String password;
 
     public int getId() {
         return id;
