@@ -3,7 +3,7 @@
     <persistence-unit name="studis-jpa" transaction-type="JTA">
         <jta-data-source>jdbc/StudisJdbcDS</jta-data-source>
 
-        <class>si.fri.tpo.team7.entities.Student</class>
+        <class>si.fri.tpo.team7.entities.users.Student</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

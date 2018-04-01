@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.api.servlet;
 
 import si.fri.tpo.team7.beans.StudentsBean;
-import si.fri.tpo.team7.entities.Student;
+import si.fri.tpo.team7.entities.users.Student;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

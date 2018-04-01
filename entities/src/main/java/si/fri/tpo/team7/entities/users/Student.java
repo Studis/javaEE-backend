@@ -1,4 +1,4 @@
-package si.fri.tpo.team7.entities;
+package si.fri.tpo.team7.entities.users;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,18 +9,7 @@ import java.util.List;
                 @NamedQuery(name = "Student.getAll", query = "SELECT s FROM Student s"),
                 @NamedQuery(name = "Student.removeStudent", query = "DELETE FROM Student s WHERE s.id = :id")
         })
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
-    private int id;
-
-    @Column(length = 30)
-    private String name;
-
-    @Column(length = 30)
-    private String surname;
+public class Student extends User {
 
     @Column(name = "study_course", length = 7)
     private List<String> studyCourse;
@@ -29,36 +18,11 @@ public class Student {
     private String eMail;
 
     //AUTOGENERATE
-    @Column(name = "enrollment_number", length = 8)
+    @Column(name = "enrollment_number", length = 8, unique = true)
     private String enrollmentNumber;
+
     @Column(length = 30)
     private String username;
-    @Column(length = 30)
-    private String password;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public List<String> getStudyCourse() {
         return studyCourse;
@@ -94,14 +58,6 @@ public class Student {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
