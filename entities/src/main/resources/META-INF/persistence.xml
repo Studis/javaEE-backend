@@ -4,6 +4,14 @@
         <jta-data-source>jdbc/StudisJdbcDS</jta-data-source>
 
         <class>si.fri.tpo.team7.entities.users.Student</class>
+        <class>si.fri.tpo.team7.entities.users.Clerk</class>
+        <class>si.fri.tpo.team7.entities.users.Lecturer</class>
+
+        <class>si.fri.tpo.team7.entities.Course</class>
+        <class>si.fri.tpo.team7.entities.CourseExecution</class>
+        <class>si.fri.tpo.team7.entities.Curriculum</class>
+        <class>si.fri.tpo.team7.entities.StudyProgram</class>
+        <class>si.fri.tpo.team7.entities.StudyYear</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

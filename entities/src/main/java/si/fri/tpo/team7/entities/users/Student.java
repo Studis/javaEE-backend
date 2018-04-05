@@ -67,10 +67,7 @@ public class Student extends User {
 
         Student student = (Student) o;
 
-        if (getId() != student.getId()) return false;
-        if (getName() != null ? !getName().equals(student.getName()) : student.getName() != null) return false;
-        if (getSurname() != null ? !getSurname().equals(student.getSurname()) : student.getSurname() != null)
-            return false;
+        if (!equals(o)) return false;
         if (getStudyCourse() != null ? !getStudyCourse().equals(student.getStudyCourse()) : student.getStudyCourse() != null)
             return false;
         if (geteMail() != null ? !geteMail().equals(student.geteMail()) : student.geteMail() != null) return false;
@@ -78,19 +75,16 @@ public class Student extends User {
             return false;
         if (getUsername() != null ? !getUsername().equals(student.getUsername()) : student.getUsername() != null)
             return false;
-        return getPassword() != null ? getPassword().equals(student.getPassword()) : student.getPassword() == null;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = 0;//getId();
-        //result = 31 * result + (getName() != null ? getName().hashCode() : 0);
-        //result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        int result = super.hashCode();
         result = 31 * result + (getStudyCourse() != null ? getStudyCourse().hashCode() : 0);
         result = 31 * result + (geteMail() != null ? geteMail().hashCode() : 0);
         result = 31 * result + (getEnrollmentNumber() != null ? getEnrollmentNumber().hashCode() : 0);
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
-        //result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
     }
 }
