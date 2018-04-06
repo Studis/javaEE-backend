@@ -1,14 +1,21 @@
-package si.fri.tpo.team7.entities;
+package si.fri.tpo.team7.entities.curriculum;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class StudyProgram {
+public class Program {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 4)
     private int id;
+
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
+    private Set<Semester> semesters;
+
+    @Column(name="ects")
+    private int ects;
 
     @Column(name = "title")
     private String title;

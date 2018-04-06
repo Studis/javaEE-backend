@@ -1,19 +1,18 @@
-package si.fri.tpo.team7.entities;
+package si.fri.tpo.team7.entities.curriculum;
+
+import si.fri.tpo.team7.entities.curriculum.Semester;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class StudyYear {
+public class Year {
     @Id
     @Column(name = "year", length = 4)
     private int year;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="year")
-    private Set<CourseExecution> courseExecutions;
-
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="year")
-    private Set<Curriculum> curriculums;
+    private Set<Semester> semesters;
 
     public int getYear() {
         return year;
@@ -23,7 +22,7 @@ public class StudyYear {
         this.year = year;
     }
 
-    public Set<CourseExecution> getCourseExecutions() { return courseExecutions; }
+    public Set<Semester> getSemesters() { return semesters; }
 
     @Override
     public String toString(){

@@ -1,5 +1,6 @@
-package si.fri.tpo.team7.entities;
+package si.fri.tpo.team7.entities.curriculum;
 
+import si.fri.tpo.team7.entities.enrollment.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
@@ -7,15 +8,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class CourseExecution {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 4)
     private int id;
 
+    @Column(name="name")
+    private String name;
+
+    @Column(name="ects")
+    private int ects;
+
     @ManyToOne
-    @JoinColumn(name="course", nullable=false)
-    private Course course;
+    @JoinColumn(name="module", nullable=false)
+    private Module module;
 
     @ManyToOne
     @JoinColumn(name="lecturer1", nullable=false)
@@ -29,24 +36,14 @@ public class CourseExecution {
     @JoinColumn(name="lecturer3", nullable=true)
     private Lecturer lecturer3;
 
-    @ManyToOne
-    @JoinColumn(name="year")
-    private StudyYear year;
-
-    public StudyYear getYear() {
-        return year;
-    }
-
-    public void setYear(StudyYear year) {
-        this.year = year;
-    }
-    public Course getCourse() { return course; }
-
     public Set<Lecturer> getLecturers(){
         Set<Lecturer> set = new HashSet<>();
         set.add(lecturer1);
-        set.add(lecturer2);
-        set.add(lecturer3);
+        if(lecturer2 != null) set.add(lecturer2);
+        if(lecturer3 != null) set.add(lecturer3);
         return set;
     }
+
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="course")
+    private Set<EnrollmentCourse> enrollments;
 }
