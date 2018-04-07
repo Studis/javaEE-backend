@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import lombok.Builder;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
@@ -18,7 +19,7 @@ public class Course extends BaseEntity {
     private int ects;
 
     @ManyToOne
-    @JoinColumn(name="module", nullable=false)
+    @JoinColumn(name="module_id", nullable=false)
     private Module module;
 
     @ManyToOne
@@ -39,6 +40,54 @@ public class Course extends BaseEntity {
         if(lecturer2 != null) set.add(lecturer2);
         if(lecturer3 != null) set.add(lecturer3);
         return set;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
+    }
+
+    public Module getModule() {
+        return module;
+    }
+
+    public void setModule(Module module) {
+        this.module = module;
+    }
+
+    public Lecturer getLecturer1() {
+        return lecturer1;
+    }
+
+    public void setLecturer1(Lecturer lecturer1) {
+        this.lecturer1 = lecturer1;
+    }
+
+    public Lecturer getLecturer2() {
+        return lecturer2;
+    }
+
+    public void setLecturer2(Lecturer lecturer2) {
+        this.lecturer2 = lecturer2;
+    }
+
+    public Lecturer getLecturer3() {
+        return lecturer3;
+    }
+
+    public void setLecturer3(Lecturer lecturer3) {
+        this.lecturer3 = lecturer3;
     }
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="course")

@@ -16,6 +16,12 @@ public abstract class User extends BaseEntity {
     @Column(length = 30)
     protected String password;
 
+    @Column(name = "e_mail", length = 60)
+    protected String eMail;
+
+    @Column(length = 30)
+    protected String username;
+
     public int getId() {
         return id;
     }
@@ -46,6 +52,22 @@ public abstract class User extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
     }
 
     @Override

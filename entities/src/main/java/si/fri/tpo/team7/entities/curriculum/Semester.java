@@ -17,7 +17,7 @@ public class Semester extends BaseEntity {
     private int number;
 
     @ManyToOne
-    @JoinColumn(name="year")
+    @JoinColumn(name="year_id")
     private Year year;
 
     @ManyToOne
@@ -26,4 +26,41 @@ public class Semester extends BaseEntity {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="semester")
     private Set<Module> modules;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public Set<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(Set<Module> modules) {
+        this.modules = modules;
+    }
+
+    @Override
+    public String toString(){
+        return (number%2==0?"Zimski ":"Letni ")+year.toString();
+    }
 }

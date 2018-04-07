@@ -1,6 +1,9 @@
 package si.fri.tpo.team7.api.servlet;
 
+import si.fri.tpo.team7.beans.curriculum.CoursesBean;
+import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.inject.Inject;

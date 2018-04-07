@@ -7,6 +7,7 @@ import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
@@ -28,7 +29,8 @@ public class Bean<T extends BaseEntity> {
 
     @Transactional
     public List<T> get() {
-        return em.createNamedQuery(_class.getName()+".getAll", _class).getResultList();
+        Query q = em.createNativeQuery("SELECT o FROM "+_class.getName()+" o");
+        return (List<T>)q.getResultList();
     }
 
     @Transactional

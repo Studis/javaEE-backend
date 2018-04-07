@@ -14,15 +14,9 @@ public class Student extends User {
     @Column(name = "study_course", length = 7)
     protected List<String> studyCourse;
 
-    @Column(name = "e_mail", length = 60)
-    protected String eMail;
-
     //AUTOGENERATE
     @Column(name = "enrollment_number", length = 8, unique = true)
     protected String enrollmentNumber;
-
-    @Column(length = 30)
-    protected String username;
 
     public List<String> getStudyCourse() {
         return studyCourse;
@@ -36,28 +30,12 @@ public class Student extends User {
         this.studyCourse.add(studyCourse);
     }
 
-    public String geteMail() {
-        return eMail;
-    }
-
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
-    }
-
     public String getEnrollmentNumber() {
         return enrollmentNumber;
     }
 
     public void setEnrollmentNumber(String enrollmentNumber) {
         this.enrollmentNumber = enrollmentNumber;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override

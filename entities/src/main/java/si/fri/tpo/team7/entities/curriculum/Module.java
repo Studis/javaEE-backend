@@ -8,11 +8,11 @@ import java.util.Set;
 @Entity
 public class Module extends BaseEntity {
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="module")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="module", fetch = FetchType.EAGER)
     private Set<Course> courses;
 
     @ManyToOne
-    @JoinColumn(name="semester")
+    @JoinColumn(name="semester_id")
     private Semester semester;
 
     @Column(name="obligatory")
@@ -22,4 +22,29 @@ public class Module extends BaseEntity {
     private String name;
 
     public Set<Course> getCourses() { return courses; }
+
+    public Semester getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Semester semester) {
+        this.semester = semester;
+    }
+
+    public boolean isObligatory() {
+        return obligatory;
+    }
+
+    public void setObligatory(boolean obligatory) {
+        this.obligatory = obligatory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

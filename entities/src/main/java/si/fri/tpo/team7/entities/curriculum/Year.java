@@ -3,6 +3,9 @@ package si.fri.tpo.team7.entities.curriculum;
 import si.fri.tpo.team7.entities.curriculum.Semester;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -11,8 +14,11 @@ public class Year {
     @Column(name = "year", length = 4)
     private int year;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="year")
-    private Set<Semester> semesters;
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="year", fetch = FetchType.EAGER)
+    //@OneToMany(fetch = FetchType.EAGER)
+    //@JoinColumn(name="year_id")
+    @MapKey
+    private Map<Integer, Semester> semesters;
 
     public int getYear() {
         return year;
@@ -22,7 +28,7 @@ public class Year {
         this.year = year;
     }
 
-    public Set<Semester> getSemesters() { return semesters; }
+    public Map<Integer, Semester> getSemesters() { return semesters; }
 
     @Override
     public String toString(){
