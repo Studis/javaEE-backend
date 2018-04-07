@@ -1,10 +1,12 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import si.fri.tpo.team7.entities.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Semester {
+public class Semester extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

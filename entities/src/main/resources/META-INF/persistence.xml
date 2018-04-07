@@ -9,9 +9,9 @@
         <class>si.fri.tpo.team7.entities.curriculum.Module</class>
         <class>si.fri.tpo.team7.entities.curriculum.Semester</class>
 
-        <class>si.fri.tpo.team7.entities.enrollment.EnrollmentCourse</class>
-        <class>si.fri.tpo.team7.entities.enrollment.EnrollmentToken</class>
-        <class>si.fri.tpo.team7.entities.enrollment.Enrollment</class>
+        <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
+        <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>
+        <class>si.fri.tpo.team7.entities.enrollments.Enrollment</class>
 
         <class>si.fri.tpo.team7.entities.exams.Exam</class>
         <class>si.fri.tpo.team7.entities.exams.ExamEnrollment</class>

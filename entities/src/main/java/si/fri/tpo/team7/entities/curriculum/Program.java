@@ -1,15 +1,12 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import si.fri.tpo.team7.entities.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Program {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
-    private int id;
+public class Program extends BaseEntity {
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
     private Set<Semester> semesters;

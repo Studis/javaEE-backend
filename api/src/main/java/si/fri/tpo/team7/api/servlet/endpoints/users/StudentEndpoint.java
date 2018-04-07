@@ -1,6 +1,6 @@
-package si.fri.tpo.team7.api.servlet.endpoints;
+package si.fri.tpo.team7.api.servlet.endpoints.users;
 
-import si.fri.tpo.team7.beans.StudentsBean;
+import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;

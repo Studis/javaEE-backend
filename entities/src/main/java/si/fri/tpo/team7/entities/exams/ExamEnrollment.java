@@ -1,23 +1,18 @@
 package si.fri.tpo.team7.entities.exams;
 
-import si.fri.tpo.team7.entities.curriculum.Course;
-import si.fri.tpo.team7.entities.enrollment.EnrollmentCourse;
+import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 
 import javax.persistence.*;
 
 @Entity
-public class ExamEnrollment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
-    private int id;
-
+public class ExamEnrollment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="exam")
     private Exam exam;
 
     @ManyToOne
-    @JoinColumn(name="enrollment")
+    @JoinColumn(name="enrollments")
     private EnrollmentCourse enrollment;
 
     @Column(name="mark")

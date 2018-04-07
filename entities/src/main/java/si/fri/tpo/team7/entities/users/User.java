@@ -1,15 +1,12 @@
 package si.fri.tpo.team7.entities.users;
 
+import si.fri.tpo.team7.entities.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
 @MappedSuperclass
-public abstract class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
-    protected int id;
-
+public abstract class User extends BaseEntity {
     @Column(length = 30)
     protected String name;
 

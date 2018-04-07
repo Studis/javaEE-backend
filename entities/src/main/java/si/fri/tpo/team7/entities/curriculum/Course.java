@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.entities.curriculum;
 
-import si.fri.tpo.team7.entities.enrollment.EnrollmentCourse;
+import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
@@ -8,11 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Course {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
-    private int id;
+public class Course extends BaseEntity {
 
     @Column(name="name")
     private String name;
