@@ -3,12 +3,29 @@
     <persistence-unit name="studis-jpa" transaction-type="JTA">
         <jta-data-source>jdbc/StudisJdbcDS</jta-data-source>
 
-        <class>si.fri.tpo.team7.entities.Student</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Course</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Program</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Year</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Module</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Semester</class>
+
+        <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
+        <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>
+        <class>si.fri.tpo.team7.entities.enrollments.Enrollment</class>
+
+        <class>si.fri.tpo.team7.entities.exams.Exam</class>
+        <class>si.fri.tpo.team7.entities.exams.ExamEnrollment</class>
+
+        <class>si.fri.tpo.team7.entities.users.User</class>
+        <class>si.fri.tpo.team7.entities.users.Student</class>
+        <class>si.fri.tpo.team7.entities.users.Clerk</class>
+        <class>si.fri.tpo.team7.entities.users.Lecturer</class>
+        <class>si.fri.tpo.team7.entities.users.Administrator</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
-            <property name="javax.persistence.sql-load-script-source" value="sql-scripts/init-db.sql"/>
+            <!--<property name="javax.persistence.sql-load-script-source" value="sql-scripts/init-db.sql"/>-->
             <property name="javax.persistence.schema-generation.drop-source" value="metadata"/>
         </properties>
     </persistence-unit>

@@ -1,6 +1,6 @@
-package si.fri.tpo.team7.beans;
+package si.fri.tpo.team7.beans.users;
 
-import si.fri.tpo.team7.entities.Student;
+import si.fri.tpo.team7.entities.users.Student;
 
 
 import javax.enterprise.context.ApplicationScoped;
