@@ -11,6 +11,9 @@ public class Program extends BaseEntity {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
     private Set<Semester> semesters;
 
+    @Column(name="code", unique = true)
+    private int code;
+    
     @Column(name="ects")
     private int ects;
 
@@ -31,5 +34,13 @@ public class Program extends BaseEntity {
 
     public void setEcts(int ects) {
         this.ects = ects;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

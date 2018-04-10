@@ -44,6 +44,8 @@ public class DatabaseSeeder extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+
         int startYear = 2015;
         int endYear = 2017;
         AddPrograms();
@@ -51,25 +53,30 @@ public class DatabaseSeeder extends HttpServlet{
         AddLecturers();
         AddModulesAndCourses();
 
-        PrintWriter writer = resp.getWriter();
         writer.println("Done");
     }
 
-    private void AddPrograms(){
+    private void AddPrograms(PrintWriter writer){
+        writer.print("Adding programs ... ");
+
         uniProgram = new Program();
-        uniProgram.setId(1000475);
+        uniProgram.setCode(1000475);
         uniProgram.setTitle("Računalništvo in informatika UNI");
         uniProgram.setEcts(180);
         programsBean.add(uniProgram);
 
         vsProgram = new Program();
-        vsProgram.setId(1000477);
+        vsProgram.setCode(1000477);
         vsProgram.setTitle("Računalništvo in informatika VS");
         vsProgram.setEcts(180);
         programsBean.add(vsProgram);
+
+        writer.println("Done");
     }
 
-    private void AddYearsAndSemesters(int startYear, int endYear){
+    private void AddYearsAndSemesters(PrintWriter writer, int startYear, int endYear){
+        writer.print("Adding years and semesters ... ");
+
         for(int yearNumber = startYear; yearNumber <= endYear; yearNumber++){
             Year year = new Year();
             year.setYear(yearNumber);
@@ -88,9 +95,12 @@ public class DatabaseSeeder extends HttpServlet{
             year.setSemesters(semesterMap);
             yearsBean.updateYear(year);
         }
+        writer.println("Done");
     }
 
-    private void AddLecturers(){
+    private void AddLecturers(PrintWriter writer){
+        writer.print("Adding lecturers ... ");
+
         ViljanMahnic = AddLecturer("Viljan", "Mahnič");
         IgorKononenko = AddLecturer("Igor", "Kononenko");
         BorutRobic = AddLecturer("Borut", "Robič");
@@ -117,6 +127,8 @@ public class DatabaseSeeder extends HttpServlet{
         JakaLindic = AddLecturer("Jaka", "Lindič");
         MatejaDrnovsek = AddLecturer("Mateja", "Drnovšek");
         PaulBorutKersevan = AddLecturer("Paul Borut", "Kerševan");
+
+        writer.println("Done");
     }
 
     private Lecturer AddLecturer(String name, String surname){
@@ -128,7 +140,9 @@ public class DatabaseSeeder extends HttpServlet{
         return l;
     }
 
-    private void AddModulesAndCourses(){
+    private void AddModulesAndCourses(PrintWriter writer){
+        writer.print("Adding modules and courses ... ");
+
         Year y2015 = yearsBean.getYear(2015);
         Map<Integer, Semester> semesters = y2015.getSemesters();
         Module m;
@@ -167,6 +181,8 @@ public class DatabaseSeeder extends HttpServlet{
         c = new Course(); c.setName("Ekonomika in podjetništvo");
         c.setLecturer1(JakaLindic); c.setLecturer1(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setModule(m); coursesBean.add(c);
+
+        writer.println("Done");
     }
 
     private Module AddModule(String name, Semester semester, Boolean obligatory){

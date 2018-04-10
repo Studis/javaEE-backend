@@ -19,7 +19,7 @@ public class Bean<T extends BaseEntity> {
     private final Class<T> _class;
 
     @PersistenceContext(unitName = "studis-jpa")
-    private EntityManager em;
+    protected EntityManager em;
 
     public Bean(Class<T> _class)
     {
