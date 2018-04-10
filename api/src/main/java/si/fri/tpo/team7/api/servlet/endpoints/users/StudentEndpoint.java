@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.users;
 
+import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.users.Student;
 
@@ -27,6 +28,7 @@ public class StudentEndpoint {
     }
 
     @GET
+    @Secured
     @Path("{id}")
     public Response getStudent(@PathParam("id") int id){
         return Response.ok(studentsBean.getStudent(id)).build();
