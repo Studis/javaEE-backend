@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue(value = "Student")
 @NamedQueries(value =
         {
                 @NamedQuery(name = "Student.getAll", query = "SELECT s FROM Student s"),

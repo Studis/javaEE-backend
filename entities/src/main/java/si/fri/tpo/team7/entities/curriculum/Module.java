@@ -3,16 +3,17 @@ package si.fri.tpo.team7.entities.curriculum;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Module extends BaseEntity {
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="module", fetch = FetchType.EAGER)
-    private Set<Course> courses;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
+    private List<Course> courses;
 
     @ManyToOne
-    @JoinColumn(name="semester_id")
+    @JoinColumn(name="semester", referencedColumnName = "id", nullable=false)
     private Semester semester;
 
     @Column(name="obligatory")
@@ -21,7 +22,9 @@ public class Module extends BaseEntity {
     @Column(name="name")
     private String name;
 
-    public Set<Course> getCourses() { return courses; }
+    public List<Course> getCourses() { return courses; }
+
+    public void setCourses(List<Course> courses){this.courses = courses;}
 
     public Semester getSemester() {
         return semester;
@@ -45,6 +48,11 @@ public class Module extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 
 }

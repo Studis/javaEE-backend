@@ -14,9 +14,13 @@ public class Year {
     @Column(name = "year", length = 4)
     private int year;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="year", fetch = FetchType.EAGER)
+    //@OneToMany(cascade=CascadeType.ALL, mappedBy="year", fetch = FetchType.EAGER)
     //@OneToMany(fetch = FetchType.EAGER)
     //@JoinColumn(name="year_id")
+    //@MapKey
+    //private Map<Integer, Semester> semesters;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
     @MapKey
     private Map<Integer, Semester> semesters;
 

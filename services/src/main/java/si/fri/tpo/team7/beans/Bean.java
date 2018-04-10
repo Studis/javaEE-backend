@@ -29,7 +29,7 @@ public class Bean<T extends BaseEntity> {
 
     @Transactional
     public List<T> get() {
-        Query q = em.createNativeQuery("SELECT o FROM "+_class.getName()+" o");
+        Query q = em.createNativeQuery("SELECT o FROM "+_class.getSimpleName()+" o");
         return (List<T>)q.getResultList();
     }
 

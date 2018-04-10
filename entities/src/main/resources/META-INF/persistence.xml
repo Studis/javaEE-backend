@@ -16,6 +16,7 @@
         <class>si.fri.tpo.team7.entities.exams.Exam</class>
         <class>si.fri.tpo.team7.entities.exams.ExamEnrollment</class>
 
+        <class>si.fri.tpo.team7.entities.users.User</class>
         <class>si.fri.tpo.team7.entities.users.Student</class>
         <class>si.fri.tpo.team7.entities.users.Clerk</class>
         <class>si.fri.tpo.team7.entities.users.Lecturer</class>

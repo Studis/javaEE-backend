@@ -36,7 +36,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
-            TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NežkaMramor, MatijaMarolt,
+            TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan;
 
@@ -44,12 +44,13 @@ public class DatabaseSeeder extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int startYear = 2015;
         int endYear = 2017;
-        AddPrograms();
-        AddLecturers();
-        AddYearsAndSemesters(startYear, endYear);
-        AddModulesAndCourses();
+        //AddPrograms();
+        //AddLecturers();
+        //AddYearsAndSemesters(startYear, endYear);
+        //AddModulesAndCourses();
 
         Module m = modulesBean.get(4);
+        List<Course> courses = m.getCourses();
         Semester s = semestersBean.get(2);
 
         PrintWriter writer = resp.getWriter();
@@ -80,7 +81,6 @@ public class DatabaseSeeder extends HttpServlet{
                 semester.setNumber(semesterNumber);
                 semester.setProgram(uniProgram);
                 semestersBean.add(semester);
-
             }
         }
     }
@@ -98,7 +98,7 @@ public class DatabaseSeeder extends HttpServlet{
         PolonaOblak = AddLecturer("Polona", "Oblak");
         ZoranBosnic = AddLecturer("Zoran", "Bosnić");
         DejanLavbic = AddLecturer("Dejan", "Lavbič");
-        NežkaMramor  = AddLecturer("Nežka", "Mramor Kosta");
+        NezkaMramor  = AddLecturer("Nežka", "Mramor Kosta");
         MatijaMarolt = AddLecturer("Matija", "Marolt");
         MarkoRobnik  = AddLecturer("Marko", "Robnik Šikonja");
         FrancSolina = AddLecturer("Franc", "Solina");

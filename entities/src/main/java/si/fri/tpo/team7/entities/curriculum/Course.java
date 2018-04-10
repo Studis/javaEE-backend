@@ -19,7 +19,7 @@ public class Course extends BaseEntity {
     private int ects;
 
     @ManyToOne
-    @JoinColumn(name="module_id", nullable=false)
+    @JoinColumn(name="module", referencedColumnName = "id", nullable=false)
     private Module module;
 
     @ManyToOne

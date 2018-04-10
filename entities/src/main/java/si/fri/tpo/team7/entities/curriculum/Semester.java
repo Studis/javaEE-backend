@@ -3,6 +3,7 @@ package si.fri.tpo.team7.entities.curriculum;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,15 +18,15 @@ public class Semester extends BaseEntity {
     private int number;
 
     @ManyToOne
-    @JoinColumn(name="year_id")
+    @JoinColumn(name="year", referencedColumnName = "year", nullable=false)
     private Year year;
 
     @ManyToOne
     @JoinColumn(name="program")
     private Program program;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="semester")
-    private Set<Module> modules;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
+    private List<Module> modules;
 
     public int getNumber() {
         return number;
@@ -51,16 +52,16 @@ public class Semester extends BaseEntity {
         this.program = program;
     }
 
-    public Set<Module> getModules() {
+    public List<Module> getModules() {
         return modules;
     }
 
-    public void setModules(Set<Module> modules) {
+    public void setModules(List<Module> modules) {
         this.modules = modules;
     }
 
     @Override
     public String toString(){
-        return (number%2==0?"Zimski ":"Letni ")+year.toString();
+        return ((number+1)/2)+". "+(number%2==0?"Zimski ":"Letni ")+year.toString();
     }
 }

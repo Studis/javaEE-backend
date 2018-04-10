@@ -5,8 +5,14 @@ import si.fri.tpo.team7.entities.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@MappedSuperclass
-public abstract class User extends BaseEntity {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name="user_type")
+public abstract class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", length = 4)
+    protected int id;
+
     @Column(length = 30)
     protected String name;
 
