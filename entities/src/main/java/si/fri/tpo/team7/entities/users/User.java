@@ -4,6 +4,7 @@ package si.fri.tpo.team7.entities.users;
 import si.fri.tpo.team7.entities.enums.Role;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -28,6 +29,9 @@ public abstract class User {
 
     @Column(length = 30)
     protected String username;
+
+    @Column(unique = true, name = "password_reset_token")
+    protected String passwordResetToken;
 
     public int getId() {
         return id;
@@ -78,6 +82,14 @@ public abstract class User {
     }
 
     public abstract Role getRole();
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken() {
+        this.passwordResetToken = UUID.randomUUID().toString();
+    }
 
     @Override
     public boolean equals(Object o) {
