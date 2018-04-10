@@ -23,6 +23,13 @@ public class Student extends User {
     @Column(name = "enrollment_number", length = 8, unique = true)
     protected String enrollmentNumber;
 
+    @Column(length = 13, unique = true)
+    protected String emso;
+
+    protected String municipality;
+
+    protected String country;
+
     public List<String> getStudyCourse() {
         return studyCourse;
     }
