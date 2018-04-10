@@ -10,9 +10,17 @@ import java.util.Set;
 public class EnrollmentToken extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name="student")
+    @JoinColumn(name="student", referencedColumnName = "id", nullable=false)
     private Student student;
 
     @OneToMany(cascade=CascadeType.ALL, mappedBy="token")
     private Set<Enrollment> enrollments;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 }

@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.beans.users;
 
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Student;
 
 
@@ -51,7 +53,20 @@ public class StudentsBean {
             Student student = new Student();
             student.setName(scanner.next());
             student.setSurname(scanner.next());
-            // TODO: read program
+
+            /*EnrollmentToken token1 = new EnrollmentToken();
+            token1.setStudent(student);
+
+            EnrollmentToken token2 = new EnrollmentToken();
+            token2.setStudent(student);*/
+
+            /*ArrayList<EnrollmentToken> tokens = new ArrayList<>();
+            tokens.add(new EnrollmentToken());
+            tokens.add(new EnrollmentToken());
+            student.setEnrollmentTokens(tokens);*/
+            student.getEnrollmentTokens().add(new EnrollmentToken());
+            student.getEnrollmentTokens().add(new EnrollmentToken());
+
             scanner.next();
             student.seteMail(scanner.next());
             return student;

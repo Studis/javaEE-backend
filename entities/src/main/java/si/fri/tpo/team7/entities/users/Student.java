@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.entities.users;
 
+import si.fri.tpo.team7.entities.curriculum.Module;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Role;
 
 import javax.persistence.*;
@@ -23,6 +25,17 @@ public class Student extends User {
 
     public List<String> getStudyCourse() {
         return studyCourse;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
+    private List<EnrollmentToken> enrollmentTokens;
+
+    public List<EnrollmentToken> getEnrollmentTokens() {
+        return enrollmentTokens;
+    }
+
+    public void setEnrollmentTokens(List<EnrollmentToken> enrollmentTokens) {
+        this.enrollmentTokens = enrollmentTokens;
     }
 
     public void setStudyCourse(List<String> studyCourse) {
