@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.users;
 
+import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.users.User;
 
 import javax.persistence.*;
@@ -12,4 +13,8 @@ import javax.persistence.*;
         })
 public class Lecturer extends User {
 
+        @Override
+        public Role getRole() {
+                return Role.LECTURER;
+        }
 }

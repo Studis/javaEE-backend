@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.api.servlet.annotations;
 
+import si.fri.tpo.team7.entities.enums.Role;
+
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -13,4 +15,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE, METHOD})
 public @interface Secured {
+    Role[] value() default {};
 }

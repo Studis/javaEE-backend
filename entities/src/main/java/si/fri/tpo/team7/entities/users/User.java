@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.entities.users;
 
-import si.fri.tpo.team7.entities.BaseEntity;
+
+import si.fri.tpo.team7.entities.enums.Role;
 
 import javax.persistence.*;
 
@@ -76,6 +77,8 @@ public abstract class User {
         this.eMail = eMail;
     }
 
+    public abstract Role getRole();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,5 +100,17 @@ public abstract class User {
         result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", eMail='" + eMail + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 }

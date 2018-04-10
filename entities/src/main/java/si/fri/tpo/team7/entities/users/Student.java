@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.entities.users;
 
+import si.fri.tpo.team7.entities.enums.Role;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -37,6 +39,11 @@ public class Student extends User {
 
     public void setEnrollmentNumber(String enrollmentNumber) {
         this.enrollmentNumber = enrollmentNumber;
+    }
+
+    @Override
+    public Role getRole() {
+        return Role.STUDENT;
     }
 
     @Override
