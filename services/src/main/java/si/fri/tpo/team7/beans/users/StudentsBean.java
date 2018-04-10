@@ -49,7 +49,6 @@ public class StudentsBean {
     }
 
     @Transactional
-<<<<<<< Updated upstream
     public void importStudents(Scanner scanner){
         Student s;
         while((s = studentFromScanner(scanner)) != null){
@@ -93,8 +92,6 @@ public class StudentsBean {
     }
 
     @Transactional
-=======
->>>>>>> Stashed changes
     public Student addStudent(Student s) {
         if(s == null){
             return null;
