@@ -1,11 +1,15 @@
 package si.fri.tpo.team7.beans.users;
 
+import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Student;
 
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -22,6 +26,12 @@ public class StudentsBean {
 
     @PersistenceContext(unitName = "studis-jpa")
     private EntityManager em;
+
+    @Inject
+    EnrollmentTokensBean enrollmentTokensBean;
+
+    @Inject
+    ProgramsBean programsBean;
 
     @Transactional
     public List<Student> getStudents() {
@@ -54,24 +64,29 @@ public class StudentsBean {
             student.setName(scanner.next());
             student.setSurname(scanner.next());
 
-            /*EnrollmentToken token1 = new EnrollmentToken();
+            EnrollmentToken token1 = new EnrollmentToken();
             token1.setStudent(student);
 
             EnrollmentToken token2 = new EnrollmentToken();
-            token2.setStudent(student);*/
+            token2.setStudent(student);
 
-            /*ArrayList<EnrollmentToken> tokens = new ArrayList<>();
-            tokens.add(new EnrollmentToken());
-            tokens.add(new EnrollmentToken());
-            student.setEnrollmentTokens(tokens);*/
-            student.getEnrollmentTokens().add(new EnrollmentToken());
-            student.getEnrollmentTokens().add(new EnrollmentToken());
+            em.persist(token1);
+            em.persist(token2);
+
+            Program program = programsBean.get(scanner.nextInt());
+
+            Enrollment enrollment = new Enrollment();
+            enrollment.setToken(token1);
+            enrollment.setProgram(program);
+
+            em.persist(enrollment);
 
             scanner.next();
             student.seteMail(scanner.next());
             return student;
         }
         catch(Exception e){
+            e.printStackTrace();
             return null;
         }
     }

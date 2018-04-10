@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import static javax.swing.UIManager.put;
+
 @WebServlet("/seed")
 public class DatabaseSeeder extends HttpServlet{
     @Inject
@@ -44,14 +46,10 @@ public class DatabaseSeeder extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int startYear = 2015;
         int endYear = 2017;
-        //AddPrograms();
-        //AddLecturers();
-        //AddYearsAndSemesters(startYear, endYear);
-        //AddModulesAndCourses();
-
-        Module m = modulesBean.get(4);
-        List<Course> courses = m.getCourses();
-        Semester s = semestersBean.get(2);
+        AddPrograms();
+        AddYearsAndSemesters(startYear, endYear);
+        AddLecturers();
+        AddModulesAndCourses();
 
         PrintWriter writer = resp.getWriter();
         writer.println("Done");
@@ -59,11 +57,13 @@ public class DatabaseSeeder extends HttpServlet{
 
     private void AddPrograms(){
         uniProgram = new Program();
+        uniProgram.setId(1000475);
         uniProgram.setTitle("Računalništvo in informatika UNI");
         uniProgram.setEcts(180);
         programsBean.add(uniProgram);
 
         vsProgram = new Program();
+        vsProgram.setId(1000477);
         vsProgram.setTitle("Računalništvo in informatika VS");
         vsProgram.setEcts(180);
         programsBean.add(vsProgram);
@@ -74,6 +74,7 @@ public class DatabaseSeeder extends HttpServlet{
             Year year = new Year();
             year.setYear(yearNumber);
             yearsBean.addYear(year);
+            Map<Integer, Semester> semesterMap = year.getSemesters();
 
             for (int semesterNumber = 1; semesterNumber <= 6; semesterNumber++) {
                 Semester semester = new Semester();
@@ -81,7 +82,11 @@ public class DatabaseSeeder extends HttpServlet{
                 semester.setNumber(semesterNumber);
                 semester.setProgram(uniProgram);
                 semestersBean.add(semester);
+                semesterMap.put(semester.getId(), semester);
             }
+
+            year.setSemesters(semesterMap);
+            yearsBean.updateYear(year);
         }
     }
 

@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.beans.curriculum;
 
 import si.fri.tpo.team7.entities.curriculum.Year;
+import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
@@ -32,6 +33,7 @@ public class YearsBean {
         if(year == null) {
             throw new NotFoundException("Year " + id + " not found.");
         }
+        em.refresh(year);
         return year;
     }
 
@@ -54,4 +56,16 @@ public class YearsBean {
         em.remove(year);
     }
 
+    @Transactional
+    public Year refresh(Year year){
+        em.merge(year);
+        em.refresh(year);
+        return year;
+    }
+
+    @Transactional
+    public Year updateYear(Year year) {
+        em.merge(year);
+        return year;
+    }
 }

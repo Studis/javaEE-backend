@@ -20,6 +20,10 @@ public class Year {
     //@MapKey
     //private Map<Integer, Semester> semesters;
 
+    public void setSemesters(Map<Integer, Semester> semesters) {
+        this.semesters = semesters;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
     @MapKey
     private Map<Integer, Semester> semesters;

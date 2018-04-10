@@ -71,4 +71,9 @@ public class Bean<T extends BaseEntity> {
         em.merge(s);
         return s;
     }
+
+    @Transactional
+    public void flush(){
+        em.clear();
+    }
 }

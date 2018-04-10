@@ -11,8 +11,6 @@ public class Program extends BaseEntity {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
     private Set<Semester> semesters;
 
-
-
     @Column(name="ects")
     private int ects;
 
