@@ -56,7 +56,7 @@ public class ManagementBean {
         //generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("zs7373@student.uni-lj.si"));
         generateMailMessage.setFrom(new InternetAddress("team7.studis@gmail.com"));
         generateMailMessage.setSubject("Pozabljeno geslo - STUDIS");
-        String emailBody = "Pozdravljeni, " + "<br><br> zahtevali ste novo geslo. To lahko storite tukaj: <br>" + u.getPasswordResetToken();
+        String emailBody = "Pozdravljeni, " + "<br><br> zahtevali ste novo geslo. To lahko storite tukaj: <br>" + "http://localhost:8081/token/password/set/" + u.getPasswordResetToken();
         generateMailMessage.setContent(emailBody, "text/html");
         System.out.println("Mail Session has been created successfully..");
 
