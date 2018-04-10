@@ -1,6 +1,13 @@
 package si.fri.tpo.team7.api.servlet;
 
+import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.entities.curriculum.Program;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.entities.users.Student;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -10,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Scanner;
 
@@ -22,6 +30,15 @@ public class StudentImportServlet extends HttpServlet {
 
     @Inject
     private StudentsBean studentsBean;
+
+    @Inject
+    EnrollmentTokensBean enrollmentTokensBean;
+
+    @Inject
+    ProgramsBean programsBean;
+
+    @Inject
+    EnrollmentsBean enrollmentsBean;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +71,7 @@ public class StudentImportServlet extends HttpServlet {
         for(Part part:request.getParts()){
             try {
                 Scanner sc = new Scanner(part.getInputStream());
-                studentsBean.importStudents(sc);
+                importStudents(sc);
             } catch (FileNotFoundException fne) {
                 writer.println("You either did not specify a file to upload or are "
                         + "trying to upload a file to a protected or nonexistent "
@@ -68,5 +85,44 @@ public class StudentImportServlet extends HttpServlet {
             break;
         }
 
+    }
+
+    public void importStudents(Scanner scanner){
+        while(studentFromScanner(scanner) != null);
+    }
+
+    public Student studentFromScanner(Scanner scanner)
+    {
+        try {
+            Student student = new Student();
+            student.setName(scanner.next());
+            student.setSurname(scanner.next());
+            int programCode = scanner.nextInt();
+            student.seteMail(scanner.next());
+
+            studentsBean.addStudent(student);
+
+            EnrollmentToken token1 = new EnrollmentToken();
+            token1.setStudent(student);
+
+            EnrollmentToken token2 = new EnrollmentToken();
+            token2.setStudent(student);
+
+            enrollmentTokensBean.add(token1);
+            enrollmentTokensBean.add(token2);
+
+            Program program = programsBean.getByCode(programCode);
+
+            Enrollment enrollment = new Enrollment();
+            enrollment.setToken(token1);
+            enrollment.setProgram(program);
+
+            enrollmentsBean.add(enrollment);
+            return student;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

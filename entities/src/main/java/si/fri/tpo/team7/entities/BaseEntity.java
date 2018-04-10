@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 4)
+    @Column(name = "id", length = 7)
     protected int id;
 
     public int getId() {

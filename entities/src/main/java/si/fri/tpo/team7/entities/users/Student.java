@@ -93,4 +93,9 @@ public class Student extends User {
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Student " + name + " "+surname;
+    }
 }
