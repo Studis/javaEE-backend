@@ -3,7 +3,6 @@ package si.fri.tpo.team7.api.servlet.filters;
 import org.apache.commons.codec.binary.Base64;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
-import si.fri.tpo.team7.beans.AuthBean;
 import si.fri.tpo.team7.entities.users.User;
 
 import javax.annotation.Priority;
@@ -23,12 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
-/*
 
-byte[] decoded = Base64.decodeBase64(token);
-        String[] usernameAndPW = new String(decoded, "UTF-8").split(":");
-        authBean.validateCredentials(usernameAndPW[0], usernameAndPW[1]);
- */
+//https://stackoverflow.com/questions/26777083/best-practice-for-rest-token-based-authentication-with-jax-rs-and-jersey
+
 
 @Secured
 @Provider
@@ -37,7 +33,8 @@ byte[] decoded = Base64.decodeBase64(token);
 public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
-    private AuthBean authBean;
+    @AuthenticatedUser
+    Event<String> userAuthenticatedEvent;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -59,10 +56,26 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
         byte[] decoded = Base64.decodeBase64(authenticationToken);
         String[] usernameAndPW = new String(decoded, "UTF-8").split(":");
-        if(!authBean.validateCredentials(usernameAndPW[0], usernameAndPW[1])){
+        if(!validateCredentials(usernameAndPW[0], usernameAndPW[1])){
             throw new Exception("Invalid credentials");
-        };
+        }else {
+            userAuthenticatedEvent.fire(usernameAndPW[0]);
+        }
+    }
 
+    @PersistenceContext(unitName = "studis-jpa")
+    private EntityManager em;
+
+    public boolean validateCredentials(String username, String password) {
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :username");
+        query.setParameter("username", username);
+        User u = (User) query.getSingleResult();
+
+        if(u.getPassword().equals(password)){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void abortWithUnauthorized(ContainerRequestContext requestContext) {
