@@ -30,10 +30,6 @@ public class Student extends User {
 
     protected String country;
 
-    public List<String> getStudyCourse() {
-        return studyCourse;
-    }
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<EnrollmentToken> enrollmentTokens;
 
@@ -74,8 +70,6 @@ public class Student extends User {
         Student student = (Student) o;
 
         if (!equals(o)) return false;
-        if (getStudyCourse() != null ? !getStudyCourse().equals(student.getStudyCourse()) : student.getStudyCourse() != null)
-            return false;
         if (geteMail() != null ? !geteMail().equals(student.geteMail()) : student.geteMail() != null) return false;
         if (getEnrollmentNumber() != null ? !getEnrollmentNumber().equals(student.getEnrollmentNumber()) : student.getEnrollmentNumber() != null)
             return false;
@@ -87,7 +81,6 @@ public class Student extends User {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getStudyCourse() != null ? getStudyCourse().hashCode() : 0);
         result = 31 * result + (geteMail() != null ? geteMail().hashCode() : 0);
         result = 31 * result + (getEnrollmentNumber() != null ? getEnrollmentNumber().hashCode() : 0);
         result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
