@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.users;
 
+import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.entities.enums.Role;
@@ -23,6 +24,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 
 @Path("/students")
+@CrossOrigin
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
