@@ -18,6 +18,10 @@ public class Enrollment extends BaseEntity {
     @JoinColumn(name="program")
     private Program program;
 
+    @ManyToOne
+    @JoinColumn(name="type")
+    private EnrollmentType type;
+
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
     private Set<EnrollmentCourse> courses;
@@ -36,5 +40,13 @@ public class Enrollment extends BaseEntity {
 
     public void setProgram(Program program) {
         this.program = program;
+    }
+
+    public EnrollmentType getType() {
+        return type;
+    }
+
+    public void setType(EnrollmentType type) {
+        this.type = type;
     }
 }

@@ -3,6 +3,7 @@ package si.fri.tpo.team7.beans;
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Course;
+import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.EntityManager;
@@ -73,8 +74,10 @@ public class Bean<T extends BaseEntity> {
         return s;
     }
 
-    @Transactional
-    public void flush(){
-        em.clear();
+    public T getByCode(int code){
+        Object obj = em.createQuery("SELECT p FROM "+_class.getSimpleName()+" p WHERE p.code = :code")
+                .setParameter("code", code)
+                .getSingleResult();
+        return (T)obj;
     }
 }

@@ -11,6 +11,7 @@
 
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>
+        <class>si.fri.tpo.team7.entities.enrollments.EnrollmentType</class>
         <class>si.fri.tpo.team7.entities.enrollments.Enrollment</class>
 
         <class>si.fri.tpo.team7.entities.exams.Exam</class>

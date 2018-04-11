@@ -3,6 +3,7 @@ package si.fri.tpo.team7.api.servlet;
 import si.fri.tpo.team7.beans.curriculum.*;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
@@ -11,6 +12,7 @@ import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
@@ -52,6 +54,8 @@ public class DatabaseSeeder extends HttpServlet{
     @Inject
     private EnrollmentsBean enrollmentsBean;
     @Inject
+    private EnrollmentTypesBean enrollmentTypesBean;
+    @Inject
     private EnrollmentCoursesBean enrollmentCoursesBean;
 
     Program uniProgram, vsProgram;
@@ -76,6 +80,7 @@ public class DatabaseSeeder extends HttpServlet{
 
         int startYear = 2015;
         int endYear = 2017;
+        AddEnrolmentTypes(writer);
         AddPrograms(writer);
         AddYearsAndSemesters(writer, startYear, endYear);
         AddLecturers(writer);
@@ -171,6 +176,22 @@ public class DatabaseSeeder extends HttpServlet{
         return l;
     }
 
+    private void AddEnrolmentTypes(PrintWriter writer){
+        writer.print("Adding enrollment types... ");
+
+        EnrollmentType e;
+        e = new EnrollmentType(); e.setCode(1); e.setName("Prvi vpis v letnik/dodatno leto"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(2); e.setName("Ponavljanje letnika"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(3); e.setName("Nadaljevanje letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(4); e.setName("Podaljšanje statusa študenta"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(5); e.setName("Vpis po merilih za prehode v višji letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(6); e.setName("Vpis v semester skupnega št. programa"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(7); e.setName("Vpis po merilih za prehode v isti letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(98); e.setName("Vpis za zaključek"); enrollmentTypesBean.add(e);
+
+        writer.println("Done");
+    }
+
     private void AddModulesAndCourses(PrintWriter writer){
         writer.print("Adding modules and courses ... ");
 
@@ -239,6 +260,12 @@ public class DatabaseSeeder extends HttpServlet{
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token);
             enrollment.setProgram(uniProgram);
+
+            switch(i%3){
+                case 0: enrollment.setType(enrollmentTypesBean.getByCode(1)); break;
+                case 1: case 2: enrollment.setType(enrollmentTypesBean.getByCode(3)); break;
+            }
+
             enrollmentsBean.add(enrollment);
 
             switch(i%3){
@@ -257,9 +284,7 @@ public class DatabaseSeeder extends HttpServlet{
                     Enroll(enrollment, i2);
                     break;
             }
-
         }
-
         writer.println("Done");
     }
 
