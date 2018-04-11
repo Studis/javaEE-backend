@@ -56,7 +56,7 @@ public class DatabaseSeeder extends HttpServlet{
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan;
 
-    private Course DiskretneStrukture;
+    private Course DiskretneStrukture, Programiranje1, LinearnaAlgebra;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -166,6 +166,7 @@ public class DatabaseSeeder extends HttpServlet{
         Course c;
         m = AddModule("1. semester obvezni", semesters.get(1), true);
         c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m); coursesBean.add(c);
+        Programiranje1 = c;
         c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m); coursesBean.add(c);
         DiskretneStrukture = c;
         c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m); coursesBean.add(c);
@@ -177,6 +178,7 @@ public class DatabaseSeeder extends HttpServlet{
         c = new Course(); c.setName("Arhitektura računalniških sistemov"); c.setLecturer1(BrankoSter); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Računalniške komunikacije"); c.setLecturer1(ZoranBosnic); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Linearna algebra"); c.setLecturer1(BojanOrel); c.setModule(m); coursesBean.add(c);
+        LinearnaAlgebra = c;
         c = new Course(); c.setName("Osnove informacijskih sistemov"); c.setLecturer1(DejanLavbic); c.setModule(m); coursesBean.add(c);
 
         m = AddModule("3. semester obvezni", semesters.get(3), true);
@@ -224,6 +226,40 @@ public class DatabaseSeeder extends HttpServlet{
         enrollmentCourse.setEnrollment(enrollment);
         enrollmentCourse.setCourse(DiskretneStrukture);
         enrollmentCoursesBean.add(enrollmentCourse);
+
+        EnrollmentCourse enrollmentCourse2 = new EnrollmentCourse();
+        enrollmentCourse2.setEnrollment(enrollment);
+        enrollmentCourse2.setCourse(LinearnaAlgebra);
+        enrollmentCoursesBean.add(enrollmentCourse2);
+
+        EnrollmentCourse enrollmentCourse3 = new EnrollmentCourse();
+        enrollmentCourse3.setEnrollment(enrollment);
+        enrollmentCourse3.setCourse(Programiranje1);
+        enrollmentCoursesBean.add(enrollmentCourse3);
+
+        Student student2 = new Student();
+        student2.setName("Jože");
+        student2.setSurname("Hribar");
+        studentsBean.addStudent(student2);
+
+        EnrollmentToken token2 = new EnrollmentToken();
+        token2.setStudent(student2);
+        enrollmentTokensBean.add(token2);
+
+        Enrollment enrollment2 = new Enrollment();
+        enrollment2.setToken(token2);
+        enrollment2.setProgram(uniProgram);
+        enrollmentsBean.add(enrollment2);
+
+        EnrollmentCourse enrollmentCourse4 = new EnrollmentCourse();
+        enrollmentCourse4.setEnrollment(enrollment2);
+        enrollmentCourse4.setCourse(DiskretneStrukture);
+        enrollmentCoursesBean.add(enrollmentCourse4);
+
+        EnrollmentCourse enrollmentCourse5 = new EnrollmentCourse();
+        enrollmentCourse5.setEnrollment(enrollment2);
+        enrollmentCourse5.setCourse(LinearnaAlgebra);
+        enrollmentCoursesBean.add(enrollmentCourse5);
 
         writer.println("Done");
     }
