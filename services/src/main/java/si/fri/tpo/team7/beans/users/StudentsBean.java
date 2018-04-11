@@ -45,6 +45,7 @@ public class StudentsBean {
         if(student == null) {
             throw new NotFoundException("Student " + id + " not found.");
         }
+        em.refresh(student);
         return student;
     }
 
