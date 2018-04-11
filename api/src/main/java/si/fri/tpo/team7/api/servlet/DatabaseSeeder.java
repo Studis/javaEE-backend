@@ -199,7 +199,7 @@ public class DatabaseSeeder extends HttpServlet{
         m = AddModule("6. semester obvezni", semesters.get(6), true);
         c = new Course(); c.setName("Diplomski seminar"); c.setLecturer1(FrancSolina); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Ekonomika in podjetništvo");
-        c.setLecturer1(JakaLindic); c.setLecturer1(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
+        c.setLecturer3(JakaLindic); c.setLecturer2(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setModule(m); coursesBean.add(c);
 
         writer.println("Done");

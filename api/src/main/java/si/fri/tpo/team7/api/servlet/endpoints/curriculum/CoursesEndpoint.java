@@ -1,6 +1,11 @@
 package si.fri.tpo.team7.api.servlet.endpoints.curriculum;
 
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
@@ -9,6 +14,7 @@ import si.fri.tpo.team7.entities.curriculum.ICourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,10 +29,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 @Path("/courses")
 @CrossOrigin
@@ -90,23 +99,54 @@ public class CoursesEndpoint {
     @Path("{id}/enrollments/pdf")
     @Produces("application/pdf")
     public Response getCourseEnrollmentsPdf(@PathParam("id") int id){
-        File file = new File(FILE_PATH);
+        Course course = coursesBean.get(id);
+        Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
+
+        try{
+            PDDocument doc = new PDDocument();
+            PDPage page = new PDPage();
+            doc.addPage(page);
+
+            PDFont font = PDType0Font.load(doc, new File("arial.ttf"));
+
+            try (PDPageContentStream contents = new PDPageContentStream(doc, page))
+            {
+                contents.beginText();
+                contents.setFont(font, 14);
+                contents.newLineAtOffset(100, 700);
+                contents.showText(course.getName());
+                contents.setFont(font, 12);
+
+                boolean first = true;
+                String out = "";
+                for(Lecturer l:course.getLecturers()){
+                    if(!first) out += ",";
+                    first = false;
+                    out += " "+l.getName()+" "+l.getSurname();
+                }
+                contents.newLineAtOffset(10, -20);
+                contents.showText(out);
+
+                contents.newLineAtOffset(-10, -20);
+                int cnt = 1;
+                for (EnrollmentCourse i:courses) {
+                    Student s = i.getEnrollment().getToken().getStudent();
+                    contents.newLineAtOffset(0, -20);
+                    contents.showText(cnt+". "+s.getEnrollmentNumber()+" "+s.getSurname()+" "+s.getName());
+                    cnt++;
+                }
+                contents.endText();
+            }
+            doc.save(Instant.now().getEpochSecond()+".pdf");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        File file = new File(Instant.now().getEpochSecond()+".pdf");
 
         Response.ResponseBuilder response = Response.ok((Object) file);
         response.header("Content-Disposition",
-                "attachment; filename=new-android-book.pdf");
+                "attachment; filename=export.pdf");
         return response.build();
-
-        Course course = coursesBean.get(id);
-        Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
-        String csv = "";
-        int cnt = 1;
-        for (EnrollmentCourse i:courses) {
-            Student s = i.getEnrollment().getToken().getStudent();
-            csv += cnt+","+s.getEnrollmentNumber()+","+s.getSurname()+","+s.getName()+","+"\n";//TODO: vrsta vpisa
-            cnt++;
-        }
-
-        return Response.ok(csv).build();
     }
 }

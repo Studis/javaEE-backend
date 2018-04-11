@@ -46,6 +46,11 @@
             <groupId>si.fri.tpo.team7</groupId>
             <artifactId>services</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
