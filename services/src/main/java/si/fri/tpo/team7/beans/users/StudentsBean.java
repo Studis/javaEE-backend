@@ -12,6 +12,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
@@ -47,6 +49,12 @@ public class StudentsBean {
         }
         em.refresh(student);
         return student;
+    }
+
+    public class MyResponseRequestWrapper extends HttpServletResponseWrapper {
+        public MyResponseRequestWrapper(HttpServletResponse response) {
+            super(response);
+        }
     }
 
     @Transactional
