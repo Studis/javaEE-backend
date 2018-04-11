@@ -84,7 +84,9 @@ public class DatabaseSeeder extends HttpServlet{
         AddPrograms(writer);
         AddYearsAndSemesters(writer, startYear, endYear);
         AddLecturers(writer);
-        AddModulesAndCourses(writer);
+        AddModulesAndCourses(writer, 2015);
+        AddModulesAndCourses(writer, 2016);
+        AddModulesAndCourses(writer, 2017);
         AddStudents(writer);
         AddAdmin(writer);
 
@@ -192,54 +194,55 @@ public class DatabaseSeeder extends HttpServlet{
         writer.println("Done");
     }
 
-    private void AddModulesAndCourses(PrintWriter writer){
+    private void AddModulesAndCourses(PrintWriter writer, int year){
         writer.print("Adding modules and courses ... ");
 
-        Year y2015 = yearsBean.getYear(2015);
-        Map<Integer, Semester> semesters = y2015.getSemesters();
+        Year y = yearsBean.getYear(year);
+        Map<Integer, Semester> semesters = y.getSemesters();
+        ArrayList<Integer> keys = new ArrayList<>(semesters.keySet());
         Module m;
         Course c;
-        m1 = AddModule("1. semester obvezni", semesters.get(1), true);
+        m1 = AddModule("1. semester obvezni", semesters.get(keys.get(0)), true);
         c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m1); c.setCode(63277); coursesBean.add(c);
         c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m1); c.setCode(63203); coursesBean.add(c);
         c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m1); c.setCode(63205); coursesBean.add(c);
         c = new Course(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m1); c.setCode(63204); coursesBean.add(c);
         c = new Course(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m1); c.setCode(63202); coursesBean.add(c);
 
-        m2 = AddModule("2. semester obvezni", semesters.get(2), true);
+        m2 = AddModule("2. semester obvezni", semesters.get(keys.get(1)), true);
         c = new Course(); c.setName("Programiranje 2"); c.setLecturer1(BostjanSlivnik); c.setModule(m2); c.setCode(63278); coursesBean.add(c);
         c = new Course(); c.setName("Arhitektura računalniških sistemov"); c.setLecturer1(BrankoSter); c.setModule(m2); c.setCode(63212); coursesBean.add(c);
         c = new Course(); c.setName("Računalniške komunikacije"); c.setLecturer1(ZoranBosnic); c.setModule(m2); c.setCode(63209); coursesBean.add(c);
         c = new Course(); c.setName("Linearna algebra"); c.setLecturer1(BojanOrel); c.setModule(m2); c.setCode(63207); coursesBean.add(c);
         c = new Course(); c.setName("Osnove informacijskih sistemov"); c.setLecturer1(DejanLavbic); c.setModule(m2); c.setCode(63215); coursesBean.add(c);
 
-        m3 = AddModule("3. semester obvezni", semesters.get(3), true);
+        m3 = AddModule("3. semester obvezni", semesters.get(keys.get(2)), true);
         c = new Course(); c.setName("Organizacija računalniških sistemov"); c.setLecturer1(PatricioBulic); c.setModule(m3); c.setCode(63218); coursesBean.add(c);
         c = new Course(); c.setName("Izračunljivost in računska zahtevnost"); c.setLecturer1(BorutRobic); c.setModule(m3); c.setCode(63283); coursesBean.add(c);
         c = new Course(); c.setName("Algoritmi in podatkovne strukture 1"); c.setLecturer1(IgorKononenko); c.setModule(m3); c.setCode(63279); coursesBean.add(c);
         c = new Course(); c.setName("Verjetnost in statistika"); c.setLecturer1(AleksandarJurisic); c.setModule(m3); c.setCode(63213); coursesBean.add(c);
         c = new Course(); c.setName("Osnove podatkovnih baz"); c.setLecturer1(MarkoBajec); c.setModule(m3); c.setCode(63208); coursesBean.add(c);
 
-        m4 = AddModule("4. semester obvezni", semesters.get(4), true);
+        m4 = AddModule("4. semester obvezni", semesters.get(keys.get(3)), true);
         c = new Course(); c.setName("Teorija informacijskih sistemov"); c.setLecturer1(UrosLotric); c.setModule(m4); c.setCode(63216); coursesBean.add(c);
         c = new Course(); c.setName("Operacijski sistemi"); c.setLecturer1(BorutRobic); c.setModule(m4); c.setCode(63217); coursesBean.add(c);
         c = new Course(); c.setName("Algoritmi in podatkovne strukture 2"); c.setLecturer1(BorutRobic); c.setModule(m4); c.setCode(63280); coursesBean.add(c);
 
-        m5 = AddModule("5. semester obvezni", semesters.get(5), true);
+        m5 = AddModule("5. semester obvezni", semesters.get(keys.get(4)), true);
         c = new Course(); c.setName("Osnove umetne inteligence"); c.setLecturer1(ZoranBosnic); c.setModule(m5); c.setCode(63214); coursesBean.add(c);
 
-        m6 = AddModule("6. semester obvezni", semesters.get(6), true);
+        m6 = AddModule("6. semester obvezni", semesters.get(keys.get(5)), true);
         c = new Course(); c.setName("Diplomski seminar"); c.setLecturer1(FrancSolina); c.setModule(m6); c.setCode(63281); coursesBean.add(c);
         c = new Course(); c.setName("Ekonomika in podjetništvo");
         c.setLecturer3(JakaLindic); c.setLecturer2(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setCode(63248);
         c.setModule(m6); coursesBean.add(c);
 
-        i1 = AddModule("Umetna inteligenca 1", semesters.get(5), false);
+        i1 = AddModule("Umetna inteligenca 1", semesters.get(keys.get(4)), false);
         c = new Course(); c.setName("Inteligentni sistemi"); c.setLecturer1(IgorKononenko); c.setLecturer2(MarkoRobnik); c.setModule(i1); c.setCode(63266); coursesBean.add(c);
         c = new Course(); c.setName("Umetno zaznavanje"); c.setLecturer1(MatejKristan); c.setCode(63267); c.setModule(i1); coursesBean.add(c);
 
-        i2 = AddModule("Umetna inteligenca 2", semesters.get(6), false);
+        i2 = AddModule("Umetna inteligenca 2", semesters.get(keys.get(5)), false);
         c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setLecturer1(DanijelSkocaj); c.setModule(i2); c.setCode(63268); coursesBean.add(c);
 
         writer.println("Done");

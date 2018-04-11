@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.curriculum.Semester;
 
@@ -40,6 +41,7 @@ public class Year {
 
     public Map<Integer, Semester> getSemesters() { return semesters; }
 
+    @JsonGetter
     @Override
     public String toString(){
         return year+"/"+(year+1);

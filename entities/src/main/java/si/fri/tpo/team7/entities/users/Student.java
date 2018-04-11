@@ -5,15 +5,13 @@ import org.eclipse.persistence.oxm.json.JsonObjectBuilderResult;
 import org.eclipse.persistence.sessions.serializers.JSONSerializer;
 import si.fri.tpo.team7.entities.POJOs.Residence;
 import si.fri.tpo.team7.entities.curriculum.Module;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Role;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @DiscriminatorValue(value = "Student")
@@ -180,6 +178,16 @@ public class Student extends User {
                 Objects.equals(getTemporary(), student.getTemporary()) &&
                 Objects.equals(getEnrollmentNumber(), student.getEnrollmentNumber()) &&
                 Objects.equals(getEnrollmentTokens(), student.getEnrollmentTokens());
+    }
+
+    @JsonIgnore
+    public List<Enrollment> getEnrollments(){
+        List<EnrollmentToken> enrollmentTokens = getEnrollmentTokens();
+        ArrayList<Enrollment> enrollments = new ArrayList<>();
+        for (EnrollmentToken token:enrollmentTokens) {
+            enrollments.addAll(token.getEnrollments());
+        }
+        return enrollments;
     }
 
     @Override

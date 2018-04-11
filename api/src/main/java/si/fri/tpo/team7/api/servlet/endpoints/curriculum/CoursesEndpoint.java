@@ -6,12 +6,14 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.curriculum.ICourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.users.Lecturer;
@@ -30,12 +32,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import si.fri.tpo.team7.entities.users.User;
 
 @Path("/courses")
 @CrossOrigin
@@ -50,9 +54,26 @@ public class CoursesEndpoint {
     @Inject
     private EnrollmentCoursesBean enrollmentCoursesBean;
 
+    @Inject
+    @AuthenticatedUser
+    User authenticatedUser;
+
     @GET
+    @Secured({Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getCourses(){
-        return Response.ok(coursesBean.get()).build();
+        List<Course> courses = coursesBean.get();
+        List<Course> resultCourses = new ArrayList<>();
+        if(authenticatedUser.getRole() == Role.LECTURER) {
+            for (Course c : courses) {
+                if (c.getLecturer1().getId() == authenticatedUser.getId()
+                        || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
+                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
+                    resultCourses.add(c);
+                }
+            }
+        }
+        else resultCourses = courses;
+        return Response.ok(resultCourses).build();
     }
 
     @GET
@@ -87,7 +108,9 @@ public class CoursesEndpoint {
         int cnt = 1;
         for (EnrollmentCourse i:courses) {
             Student s = i.getEnrollment().getToken().getStudent();
-            csv += cnt+","+s.getEnrollmentNumber()+","+s.getSurname()+","+s.getName()+","+"\n";//TODO: vrsta vpisa
+            EnrollmentType et = i.getEnrollment().getType();
+            csv += cnt+","+s.getEnrollmentNumber()+","+s.getSurname()+","+s.getName()+",";
+            csv += et.getId()+"-"+et.getName()+"\n";
             cnt++;
         }
 
@@ -122,7 +145,8 @@ public class CoursesEndpoint {
                 for(Lecturer l:course.getLecturers()){
                     if(!first) out += ",";
                     first = false;
-                    out += " "+l.getName()+" "+l.getSurname();
+                    out += " "+l.getName()+" "+l.getSurname()+" ";
+
                 }
                 contents.newLineAtOffset(10, -20);
                 contents.showText(out);
@@ -132,7 +156,8 @@ public class CoursesEndpoint {
                 for (EnrollmentCourse i:courses) {
                     Student s = i.getEnrollment().getToken().getStudent();
                     contents.newLineAtOffset(0, -20);
-                    contents.showText(cnt+". "+s.getEnrollmentNumber()+" "+s.getSurname()+" "+s.getName());
+                    EnrollmentType et = i.getEnrollment().getType();
+                    contents.showText(cnt+". "+s.getEnrollmentNumber()+" "+s.getSurname()+" "+s.getName()+" "+et.getId()+"-"+et.getName());
                     cnt++;
                 }
                 contents.endText();

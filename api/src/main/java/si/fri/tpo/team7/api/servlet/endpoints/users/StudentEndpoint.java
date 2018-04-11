@@ -45,10 +45,16 @@ public class StudentEndpoint {
         return Response.ok(studentsBean.getStudent(id)).build();
     }
 
+    @GET
+    @Secured({Role.STUDENT})
+    @Path("{id}/enrollments")
+    public Response getStudentEnrollments(@PathParam("id") int id){
+        return Response.ok(studentsBean.getStudent(id).getEnrollments()).build();
+    }
+
     @POST
     public  Response addStudent(Student student){
         Student s = studentsBean.addStudent(student);
-
         return Response.status(Response.Status.CREATED).entity(s).build();
     }
 

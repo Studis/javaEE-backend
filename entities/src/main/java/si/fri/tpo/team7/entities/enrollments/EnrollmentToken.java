@@ -25,4 +25,12 @@ public class EnrollmentToken extends BaseEntity {
     public void setStudent(Student student) {
         this.student = student;
     }
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
 }
