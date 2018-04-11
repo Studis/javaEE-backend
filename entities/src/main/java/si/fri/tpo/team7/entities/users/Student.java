@@ -213,4 +213,13 @@ public class Student extends User {
                 ", passwordResetToken='" + passwordResetToken + '\'' +
                 '}';
     }
+
+    public String toJson() {
+        return "{" +
+                "\"name\": \"" + name + "\"," +
+                "\"surname\": \"" + surname + "\"," +
+                "\"email\": \"" + eMail + "\"," +
+                "\"username\": \"" + username + "\""
+                + "}";
+    }
 }
