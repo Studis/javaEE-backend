@@ -48,10 +48,10 @@ public class DatabaseSeeder extends HttpServlet{
 
         int startYear = 2015;
         int endYear = 2017;
-        AddPrograms();
-        AddYearsAndSemesters(startYear, endYear);
-        AddLecturers();
-        AddModulesAndCourses();
+        AddPrograms(writer);
+        AddYearsAndSemesters(writer, startYear, endYear);
+        AddLecturers(writer);
+        AddModulesAndCourses(writer);
 
         writer.println("Done");
     }

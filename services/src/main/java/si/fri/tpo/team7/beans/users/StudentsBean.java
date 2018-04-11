@@ -49,14 +49,6 @@ public class StudentsBean {
     }
 
     @Transactional
-    public void importStudents(Scanner scanner){
-        Student s;
-        while((s = studentFromScanner(scanner)) != null){
-            addStudent(s);
-        }
-    }
-
-    @Transactional
     public Student studentFromScanner(Scanner scanner)
     {
         try {
