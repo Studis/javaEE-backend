@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 
@@ -64,5 +65,48 @@ public class CoursesEndpoint {
     public Response getCourseEnrollments(@PathParam("id") int id){
         Course course = coursesBean.get(id);
         return Response.ok(course.getEnrollmentCourses()).build();
+    }
+
+    @GET
+    //@Secured({Role.LECTURER, Role.ADMIN, Role.CLERK})
+    @Path("{id}/enrollments/csv")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getCourseEnrollmentsCsv(@PathParam("id") int id){
+        Course course = coursesBean.get(id);
+        Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
+        String csv = "";
+        int cnt = 1;
+        for (EnrollmentCourse i:courses) {
+            Student s = i.getEnrollment().getToken().getStudent();
+            csv += cnt+","+s.getEnrollmentNumber()+","+s.getSurname()+","+s.getName()+","+"\n";//TODO: vrsta vpisa
+            cnt++;
+        }
+
+        return Response.ok(csv).build();
+    }
+
+    @GET
+    //@Secured({Role.LECTURER, Role.ADMIN, Role.CLERK})
+    @Path("{id}/enrollments/pdf")
+    @Produces("application/pdf")
+    public Response getCourseEnrollmentsPdf(@PathParam("id") int id){
+        File file = new File(FILE_PATH);
+
+        Response.ResponseBuilder response = Response.ok((Object) file);
+        response.header("Content-Disposition",
+                "attachment; filename=new-android-book.pdf");
+        return response.build();
+
+        Course course = coursesBean.get(id);
+        Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
+        String csv = "";
+        int cnt = 1;
+        for (EnrollmentCourse i:courses) {
+            Student s = i.getEnrollment().getToken().getStudent();
+            csv += cnt+","+s.getEnrollmentNumber()+","+s.getSurname()+","+s.getName()+","+"\n";//TODO: vrsta vpisa
+            cnt++;
+        }
+
+        return Response.ok(csv).build();
     }
 }
