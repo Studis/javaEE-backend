@@ -4,12 +4,14 @@ import si.fri.tpo.team7.beans.curriculum.*;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
+import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
 
@@ -33,6 +35,8 @@ public class DatabaseSeeder extends HttpServlet{
     private StudentsBean studentsBean;
     @Inject
     private LecturersBean lecturersBean;
+    @Inject
+    private AdministratorBean administratorBean;
     @Inject
     private CoursesBean coursesBean;
     @Inject
@@ -272,5 +276,14 @@ public class DatabaseSeeder extends HttpServlet{
         module.setSemester(semester);
         modulesBean.add(module);
         return module;
+    }
+
+    private void AddAdmin(PrintWriter writer){
+        writer.print("Adding admin ... ");
+
+        Administrator a = new Administrator();
+        a.setUsername("admin");
+        a.setPassword("admin");
+        administratorBean.addAdmin(a);
     }
 }
