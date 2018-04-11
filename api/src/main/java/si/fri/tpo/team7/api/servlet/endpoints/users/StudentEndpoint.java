@@ -35,7 +35,7 @@ public class StudentEndpoint {
     }
 
     @GET
-    @Secured({Role.ADMIN})
+    @Secured({Role.STUDENT})
     @Path("{id}")
     public Response getStudent(@PathParam("id") int id){
         return Response.ok(studentsBean.getStudent(id)).build();

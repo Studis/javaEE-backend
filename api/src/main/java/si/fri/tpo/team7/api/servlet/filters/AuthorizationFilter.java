@@ -87,8 +87,8 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     private void checkPermissions(List<Role> allowedRoles) throws Exception {
         // Check if the user contains one of the allowed roles
         // Throw an Exception if the user has not permission to execute the method
-        User u = em.find(User.class, authenticatedUser.getId());
-        if(!allowedRoles.contains(u.getRole())){
+        //User u = em.find(User.class, authenticatedUser.getId());
+        if(!allowedRoles.contains(authenticatedUser.getRole())){
             throw new Exception("Unauthorized");
         }
     }
