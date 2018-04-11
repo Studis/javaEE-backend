@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Scanner;
 
-@WebServlet(name = "FileUploadServlet", urlPatterns = {"/import-students"})
+@WebServlet(name = "FileUploadServlet", urlPatterns = {"/v1/import-students"})
 @MultipartConfig(fileSizeThreshold = 6291456, // 6 MB
         maxFileSize = 10485760L, // 10 MB
         maxRequestSize = 20971520L // 20 MB
