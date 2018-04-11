@@ -262,11 +262,24 @@ public class DatabaseSeeder extends HttpServlet{
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token);
-            enrollment.setProgram(uniProgram);
+
 
             switch(i%3){
-                case 0: enrollment.setType(enrollmentTypesBean.getByCode(1)); break;
-                case 1: case 2: enrollment.setType(enrollmentTypesBean.getByCode(3)); break;
+                case 0:
+                    enrollment.setSemester1(m1.getSemester());
+                    enrollment.setSemester2(m2.getSemester());
+                    enrollment.setType(enrollmentTypesBean.getByCode(1));
+                    break;
+                case 1:
+                    enrollment.setSemester1(m3.getSemester());
+                    enrollment.setSemester2(m4.getSemester());
+                    enrollment.setType(enrollmentTypesBean.getByCode(3));
+                    break;
+                case 2:
+                    enrollment.setSemester1(m5.getSemester());
+                    enrollment.setSemester2(m6.getSemester());
+                    enrollment.setType(enrollmentTypesBean.getByCode(3));
+                    break;
             }
 
             enrollmentsBean.add(enrollment);

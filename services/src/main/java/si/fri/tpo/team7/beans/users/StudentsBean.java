@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.beans.users;
 
 import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.beans.curriculum.SemestersBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
@@ -31,6 +32,9 @@ public class StudentsBean {
 
     @Inject
     EnrollmentTokensBean enrollmentTokensBean;
+
+    @Inject
+    SemestersBean semestersBean;
 
     @Inject
     ProgramsBean programsBean;
@@ -78,7 +82,8 @@ public class StudentsBean {
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);
-            enrollment.setProgram(program);
+            enrollment.setSemester1(semestersBean.current());
+            enrollment.setSemester2(semestersBean.next());
 
             em.persist(enrollment);
 

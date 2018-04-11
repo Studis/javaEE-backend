@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.api.servlet;
 
 import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.beans.curriculum.SemestersBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
@@ -36,6 +37,9 @@ public class StudentImportServlet extends HttpServlet {
 
     @Inject
     ProgramsBean programsBean;
+
+    @Inject
+    SemestersBean semestersBean;
 
     @Inject
     EnrollmentsBean enrollmentsBean;
@@ -126,7 +130,8 @@ public class StudentImportServlet extends HttpServlet {
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);
-            enrollment.setProgram(program);
+            enrollment.setSemester1(semestersBean.current());
+            enrollment.setSemester2(semestersBean.next());
 
             enrollmentsBean.add(enrollment);
             return student;
