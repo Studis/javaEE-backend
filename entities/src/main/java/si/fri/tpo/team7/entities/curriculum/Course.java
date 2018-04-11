@@ -22,6 +22,9 @@ public class Course extends BaseEntity implements ICourse{
     @Column(name="ects")
     private int ects;
 
+    @Column(name="code")
+    private int code;
+
     @ManyToOne
     @JoinColumn(name="module", referencedColumnName = "id", nullable=false)
     private Module module;
@@ -104,5 +107,13 @@ public class Course extends BaseEntity implements ICourse{
 
     public void setEnrollmentCourses(Set<EnrollmentCourse> enrollmentCourses) {
         this.enrollmentCourses = enrollmentCourses;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }
