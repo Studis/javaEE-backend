@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.curriculum.Semester;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Year {
         this.semesters = semesters;
     }
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
     @MapKey
     private Map<Integer, Semester> semesters;

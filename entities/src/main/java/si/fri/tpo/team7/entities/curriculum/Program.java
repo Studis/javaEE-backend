@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Set;
 @Entity
 public class Program extends BaseEntity {
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
     private Set<Semester> semesters;
 

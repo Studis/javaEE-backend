@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Program;
 
@@ -13,12 +14,11 @@ public class Enrollment extends BaseEntity {
     @JoinColumn(name="token")
     private EnrollmentToken token;
 
-
-
     @ManyToOne
     @JoinColumn(name="program")
     private Program program;
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
     private Set<EnrollmentCourse> courses;
 

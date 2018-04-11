@@ -1,12 +1,20 @@
 package si.fri.tpo.team7.api.servlet;
 
 import si.fri.tpo.team7.beans.curriculum.*;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.curriculum.*;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Lecturer;
+import si.fri.tpo.team7.entities.users.Student;
 
 import javax.inject.Inject;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.OneToMany;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,12 +43,20 @@ public class DatabaseSeeder extends HttpServlet{
     private SemestersBean semestersBean;
     @Inject
     private ModulesBean modulesBean;
+    @Inject
+    private EnrollmentTokensBean enrollmentTokensBean;
+    @Inject
+    private EnrollmentsBean enrollmentsBean;
+    @Inject
+    private EnrollmentCoursesBean enrollmentCoursesBean;
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan;
+
+    private Course DiskretneStrukture;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,6 +68,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddYearsAndSemesters(writer, startYear, endYear);
         AddLecturers(writer);
         AddModulesAndCourses(writer);
+        AddStudents(writer);
 
         writer.println("Done");
     }
@@ -150,6 +167,7 @@ public class DatabaseSeeder extends HttpServlet{
         m = AddModule("1. semester obvezni", semesters.get(1), true);
         c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m); coursesBean.add(c);
+        DiskretneStrukture = c;
         c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m); coursesBean.add(c);
         c = new Course(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m); coursesBean.add(c);
@@ -181,6 +199,31 @@ public class DatabaseSeeder extends HttpServlet{
         c = new Course(); c.setName("Ekonomika in podjetništvo");
         c.setLecturer1(JakaLindic); c.setLecturer1(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setModule(m); coursesBean.add(c);
+
+        writer.println("Done");
+    }
+
+    private void AddStudents(PrintWriter writer){
+        writer.print("Adding students ... ");
+
+        Student student = new Student();
+        student.setName("Miha");
+        student.setSurname("Novak");
+        studentsBean.addStudent(student);
+
+        EnrollmentToken token = new EnrollmentToken();
+        token.setStudent(student);
+        enrollmentTokensBean.add(token);
+
+        Enrollment enrollment = new Enrollment();
+        enrollment.setToken(token);
+        enrollment.setProgram(uniProgram);
+        enrollmentsBean.add(enrollment);
+
+        EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
+        enrollmentCourse.setEnrollment(enrollment);
+        enrollmentCourse.setCourse(DiskretneStrukture);
+        enrollmentCoursesBean.add(enrollmentCourse);
 
         writer.println("Done");
     }

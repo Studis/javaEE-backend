@@ -9,10 +9,26 @@ import javax.persistence.*;
 public class EnrollmentCourse extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name="enrollments")
+    @JoinColumn(name="enrollment", referencedColumnName = "id", nullable=false)
     private Enrollment enrollment;
 
     @ManyToOne
-    @JoinColumn(name="course")
+    @JoinColumn(name="course", referencedColumnName = "id", nullable=false)
     private Course course;
+
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(Enrollment enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

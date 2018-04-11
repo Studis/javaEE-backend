@@ -1,14 +1,17 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Module extends BaseEntity {
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
     private List<Course> courses;
 

@@ -20,4 +20,5 @@ public class CoursesBean extends Bean<Course> {
     public CoursesBean() {
         super(Course.class);
     }
+
 }

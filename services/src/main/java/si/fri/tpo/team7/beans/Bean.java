@@ -29,7 +29,7 @@ public class Bean<T extends BaseEntity> {
 
     @Transactional
     public List<T> get() {
-        Query q = em.createNativeQuery("SELECT o FROM "+_class.getSimpleName()+" o");
+        Query q = em.createQuery("SELECT o FROM "+_class.getSimpleName()+" o");
         return (List<T>)q.getResultList();
     }
 
@@ -39,6 +39,7 @@ public class Bean<T extends BaseEntity> {
         if(_class == null) {
             throw new NotFoundException(_class.getName()+" " + id + " not found.");
         }
+        em.refresh(obj);
         return obj;
     }
 

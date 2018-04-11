@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.persistence.oxm.json.JsonObjectBuilderResult;
 import org.eclipse.persistence.sessions.serializers.JSONSerializer;
 import si.fri.tpo.team7.entities.curriculum.Module;
@@ -32,6 +33,7 @@ public class Student extends User {
 
     protected String country;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<EnrollmentToken> enrollmentTokens;
 

@@ -10,6 +10,7 @@ import java.util.Set;
 @ApplicationPath("/v1")
 @CrossOrigin
 public class StudisApplication extends Application {
+
     @Override
     public Set<Class<?>> getClasses()
     {

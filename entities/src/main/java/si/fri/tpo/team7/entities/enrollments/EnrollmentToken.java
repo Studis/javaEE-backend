@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.users.Student;
 
@@ -13,6 +14,7 @@ public class EnrollmentToken extends BaseEntity {
     @JoinColumn(name="student", referencedColumnName = "id", nullable=false)
     private Student student;
 
+    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="token")
     private Set<Enrollment> enrollments;
 

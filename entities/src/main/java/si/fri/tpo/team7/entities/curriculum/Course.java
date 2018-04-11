@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.Builder;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -7,10 +9,12 @@ import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Course extends BaseEntity {
+
+public class Course extends BaseEntity implements ICourse{
 
     @Column(name="name")
     private String name;
@@ -33,6 +37,10 @@ public class Course extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="lecturer3", nullable=true)
     private Lecturer lecturer3;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    private Set<EnrollmentCourse> enrollmentCourses;
 
     public Set<Lecturer> getLecturers(){
         Set<Lecturer> set = new HashSet<>();
@@ -90,6 +98,11 @@ public class Course extends BaseEntity {
         this.lecturer3 = lecturer3;
     }
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="course")
-    private Set<EnrollmentCourse> enrollments;
+    public Set<EnrollmentCourse> getEnrollmentCourses() {
+        return enrollmentCourses;
+    }
+
+    public void setEnrollmentCourses(Set<EnrollmentCourse> enrollmentCourses) {
+        this.enrollmentCourses = enrollmentCourses;
+    }
 }
