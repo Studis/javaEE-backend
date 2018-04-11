@@ -23,6 +23,7 @@
         <class>si.fri.tpo.team7.entities.users.Administrator</class>
 
         <class>si.fri.tpo.team7.entities.FailedLogin</class>
+        <class>si.fri.tpo.team7.entities.POJOs.Residence</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
