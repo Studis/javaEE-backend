@@ -1,9 +1,11 @@
 package si.fri.tpo.team7.api.servlet.endpoints.users;
 
+import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.entities.users.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -68,5 +70,16 @@ public class StudentEndpoint {
         studentsBean.removeStudent(id);
 
         return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    @Inject
+    @AuthenticatedUser
+    User authenticatedUser;
+
+    @GET
+    @Secured({Role.STUDENT})
+    @Path("me")
+    public Response getMe(){
+        return Response.ok("{\"id\":\""+authenticatedUser.getId()+"\", \"role\": \""+authenticatedUser.getRole()+"\"}").build();
     }
 }
