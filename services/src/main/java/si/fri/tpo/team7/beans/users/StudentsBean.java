@@ -141,10 +141,6 @@ public class StudentsBean {
     @Transactional
     public  Student enrollStudent(int id, String course){
         Student student = em.find(Student.class, id);
-        if(student.getStudyCourse() == null) {
-            student.setStudyCourse(new ArrayList());
-        }
-        student.addStudyCourse(course);
         return student;
     }
 

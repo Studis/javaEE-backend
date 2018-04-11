@@ -30,6 +30,9 @@ import java.time.Instant;
 
 //https://stackoverflow.com/questions/26777083/best-practice-for-rest-token-based-authentication-with-jax-rs-and-jersey
 
+class IpLockException extends Exception{
+
+}
 
 @Secured
 @Provider
@@ -56,7 +59,11 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             String authenticationToken = authorizationHeader.substring(6);
             try {
                 handleTokenBasedAuthentication(authenticationToken);
-            } catch (Exception e) {
+
+            }catch (IpLockException e){
+                abortWithIpLock(requestContext);
+            }
+            catch (Exception e) {
                 abortWithUnauthorized(requestContext);
             }
         }
@@ -67,7 +74,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void handleTokenBasedAuthentication(String authenticationToken) throws Exception {
         String ip = servletRequest.getRemoteAddr();
         if(!failedLoginsBean.allowedToLogin(ip))
-            throw new Exception("Too many trials");
+            throw new IpLockException();
 
         byte[] decoded = Base64.decodeBase64(authenticationToken);
         String[] usernameAndPW = new String(decoded, "UTF-8").split(":");
@@ -101,6 +108,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // The WWW-Authenticate header is sent along with the response
         requestContext.abortWith(
                 Response.status(Response.Status.UNAUTHORIZED)
+                        .build());
+    }
+
+    private void abortWithIpLock(ContainerRequestContext requestContext) {
+        // Abort the filter chain with a 401 status code response
+        // The WWW-Authenticate header is sent along with the response
+        requestContext.abortWith(
+                Response.status(Response.Status.NOT_ACCEPTABLE)
                         .build());
     }
 }
