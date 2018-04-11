@@ -56,7 +56,7 @@ public class CoursesEndpoint {
     }
 
     @GET
-    @Secured({Role.LECTURER, Role.ADMIN, Role.CLERK})
+    @Secured({Role.LECTURER, Role.ADMIN, Role.CLERK, Role.STUDENT})
     @Path("{id}")
     public Response getCourse(@PathParam("id") int id){
         return Response.ok(coursesBean.get(id)).build();

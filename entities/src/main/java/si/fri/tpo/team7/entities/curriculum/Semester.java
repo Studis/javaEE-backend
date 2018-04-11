@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 
@@ -62,6 +63,7 @@ public class Semester extends BaseEntity {
         this.modules = modules;
     }
 
+    @JsonGetter
     @Override
     public String toString(){
         return ((number+1)/2)+". "+(number%2==0?"Zimski ":"Letni ")+year.toString();

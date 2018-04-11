@@ -58,9 +58,17 @@ public class DatabaseSeeder extends HttpServlet{
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
-            BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan;
+            BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan;
 
-    private Course DiskretneStrukture, Programiranje1, LinearnaAlgebra;
+    Module m1, m2, m3, m4, m5, m6, i1, i2;
+
+    String[] names = new String[]{
+            "Franc", "Janez", "Ivan", "Anton", "Jožef", "Gašper", "Aleks", "Aljaž", "Bojan", "Ciril", "Daniel", "Dejan",
+            "Marija", "Ana", "Maja", "Irena", "Mojca", "Dragica", "Eva", "Ines", "Kaja", "Lara", "Lidija", "Majda"};
+
+    String[] surnames = new String[]{
+            "Kozel", "Kovačič", "Mlakar", "Struna", "Žitnik", "Zupan", "Strnad", "Vlašič", "Jež", "Horvat", "Kokot", "Korošec",
+            "Knavs", "Gosar", "Osterc", "Lapajne", "Žagar", "Ramovš", "Kotnik", "Ahačič", "Kolar", "Kašpar", "Furlan", "Babič"};
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -73,6 +81,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddLecturers(writer);
         AddModulesAndCourses(writer);
         AddStudents(writer);
+        AddAdmin(writer);
 
         writer.println("Done");
     }
@@ -148,6 +157,7 @@ public class DatabaseSeeder extends HttpServlet{
         JakaLindic = AddLecturer("Jaka", "Lindič");
         MatejaDrnovsek = AddLecturer("Mateja", "Drnovšek");
         PaulBorutKersevan = AddLecturer("Paul Borut", "Kerševan");
+        MatejKristan = AddLecturer("Matej", "Kristan");
 
         writer.println("Done");
     }
@@ -168,105 +178,99 @@ public class DatabaseSeeder extends HttpServlet{
         Map<Integer, Semester> semesters = y2015.getSemesters();
         Module m;
         Course c;
-        m = AddModule("1. semester obvezni", semesters.get(1), true);
-        c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m); c.setCode(63277); coursesBean.add(c);
-        Programiranje1 = c;
-        c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m); c.setCode(63203); coursesBean.add(c);
-        DiskretneStrukture = c;
-        c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m); c.setCode(63205); coursesBean.add(c);
-        c = new Course(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m); c.setCode(63204); coursesBean.add(c);
-        c = new Course(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m); c.setCode(63202); coursesBean.add(c);
+        m1 = AddModule("1. semester obvezni", semesters.get(1), true);
+        c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m1); c.setCode(63277); coursesBean.add(c);
+        c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m1); c.setCode(63203); coursesBean.add(c);
+        c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m1); c.setCode(63205); coursesBean.add(c);
+        c = new Course(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m1); c.setCode(63204); coursesBean.add(c);
+        c = new Course(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m1); c.setCode(63202); coursesBean.add(c);
 
-        m = AddModule("2. semester obvezni", semesters.get(2), true);
-        c = new Course(); c.setName("Programiranje 2"); c.setLecturer1(BostjanSlivnik); c.setModule(m); c.setCode(63278); coursesBean.add(c);
-        c = new Course(); c.setName("Arhitektura računalniških sistemov"); c.setLecturer1(BrankoSter); c.setModule(m); c.setCode(63212); coursesBean.add(c);
-        c = new Course(); c.setName("Računalniške komunikacije"); c.setLecturer1(ZoranBosnic); c.setModule(m); c.setCode(63209); coursesBean.add(c);
-        c = new Course(); c.setName("Linearna algebra"); c.setLecturer1(BojanOrel); c.setModule(m); c.setCode(63207); coursesBean.add(c);
-        LinearnaAlgebra = c;
-        c = new Course(); c.setName("Osnove informacijskih sistemov"); c.setLecturer1(DejanLavbic); c.setModule(m); c.setCode(63215); coursesBean.add(c);
+        m2 = AddModule("2. semester obvezni", semesters.get(2), true);
+        c = new Course(); c.setName("Programiranje 2"); c.setLecturer1(BostjanSlivnik); c.setModule(m2); c.setCode(63278); coursesBean.add(c);
+        c = new Course(); c.setName("Arhitektura računalniških sistemov"); c.setLecturer1(BrankoSter); c.setModule(m2); c.setCode(63212); coursesBean.add(c);
+        c = new Course(); c.setName("Računalniške komunikacije"); c.setLecturer1(ZoranBosnic); c.setModule(m2); c.setCode(63209); coursesBean.add(c);
+        c = new Course(); c.setName("Linearna algebra"); c.setLecturer1(BojanOrel); c.setModule(m2); c.setCode(63207); coursesBean.add(c);
+        c = new Course(); c.setName("Osnove informacijskih sistemov"); c.setLecturer1(DejanLavbic); c.setModule(m2); c.setCode(63215); coursesBean.add(c);
 
-        m = AddModule("3. semester obvezni", semesters.get(3), true);
-        c = new Course(); c.setName("Organizacija računalniških sistemov"); c.setLecturer1(PatricioBulic); c.setModule(m); c.setCode(63218); coursesBean.add(c);
-        c = new Course(); c.setName("Izračunljivost in računska zahtevnost"); c.setLecturer1(BorutRobic); c.setModule(m); c.setCode(63283); coursesBean.add(c);
-        c = new Course(); c.setName("Algoritmi in podatkovne strukture 1"); c.setLecturer1(IgorKononenko); c.setModule(m); c.setCode(63279); coursesBean.add(c);
-        c = new Course(); c.setName("Verjetnost in statistika"); c.setLecturer1(AleksandarJurisic); c.setModule(m); c.setCode(63213); coursesBean.add(c);
-        c = new Course(); c.setName("Osnove podatkovnih baz"); c.setLecturer1(MarkoBajec); c.setModule(m); c.setCode(63208); coursesBean.add(c);
+        m3 = AddModule("3. semester obvezni", semesters.get(3), true);
+        c = new Course(); c.setName("Organizacija računalniških sistemov"); c.setLecturer1(PatricioBulic); c.setModule(m3); c.setCode(63218); coursesBean.add(c);
+        c = new Course(); c.setName("Izračunljivost in računska zahtevnost"); c.setLecturer1(BorutRobic); c.setModule(m3); c.setCode(63283); coursesBean.add(c);
+        c = new Course(); c.setName("Algoritmi in podatkovne strukture 1"); c.setLecturer1(IgorKononenko); c.setModule(m3); c.setCode(63279); coursesBean.add(c);
+        c = new Course(); c.setName("Verjetnost in statistika"); c.setLecturer1(AleksandarJurisic); c.setModule(m3); c.setCode(63213); coursesBean.add(c);
+        c = new Course(); c.setName("Osnove podatkovnih baz"); c.setLecturer1(MarkoBajec); c.setModule(m3); c.setCode(63208); coursesBean.add(c);
 
-        m = AddModule("4. semester obvezni", semesters.get(4), true);
-        c = new Course(); c.setName("Teorija informacijskih sistemov"); c.setLecturer1(UrosLotric); c.setModule(m); c.setCode(63216); coursesBean.add(c);
-        c = new Course(); c.setName("Operacijski sistemi"); c.setLecturer1(BorutRobic); c.setModule(m); c.setCode(63217); coursesBean.add(c);
-        c = new Course(); c.setName("Algoritmi in podatkovne strukture 2"); c.setLecturer1(BorutRobic); c.setModule(m); c.setCode(63280); coursesBean.add(c);
+        m4 = AddModule("4. semester obvezni", semesters.get(4), true);
+        c = new Course(); c.setName("Teorija informacijskih sistemov"); c.setLecturer1(UrosLotric); c.setModule(m4); c.setCode(63216); coursesBean.add(c);
+        c = new Course(); c.setName("Operacijski sistemi"); c.setLecturer1(BorutRobic); c.setModule(m4); c.setCode(63217); coursesBean.add(c);
+        c = new Course(); c.setName("Algoritmi in podatkovne strukture 2"); c.setLecturer1(BorutRobic); c.setModule(m4); c.setCode(63280); coursesBean.add(c);
 
-        m = AddModule("5. semester obvezni", semesters.get(5), true);
-        c = new Course(); c.setName("Osnove umetne inteligence"); c.setLecturer1(ZoranBosnic); c.setModule(m); c.setCode(63214); coursesBean.add(c);
+        m5 = AddModule("5. semester obvezni", semesters.get(5), true);
+        c = new Course(); c.setName("Osnove umetne inteligence"); c.setLecturer1(ZoranBosnic); c.setModule(m5); c.setCode(63214); coursesBean.add(c);
 
-        m = AddModule("6. semester obvezni", semesters.get(6), true);
-        c = new Course(); c.setName("Diplomski seminar"); c.setLecturer1(FrancSolina); c.setModule(m); c.setCode(63281); coursesBean.add(c);
+        m6 = AddModule("6. semester obvezni", semesters.get(6), true);
+        c = new Course(); c.setName("Diplomski seminar"); c.setLecturer1(FrancSolina); c.setModule(m6); c.setCode(63281); coursesBean.add(c);
         c = new Course(); c.setName("Ekonomika in podjetništvo");
         c.setLecturer3(JakaLindic); c.setLecturer2(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setCode(63248);
-        c.setModule(m); coursesBean.add(c);
+        c.setModule(m6); coursesBean.add(c);
+
+        i1 = AddModule("Umetna inteligenca 1", semesters.get(5), false);
+        c = new Course(); c.setName("Inteligentni sistemi"); c.setLecturer1(IgorKononenko); c.setLecturer2(MarkoRobnik); c.setModule(i1); c.setCode(63266); coursesBean.add(c);
+        c = new Course(); c.setName("Umetno zaznavanje"); c.setLecturer1(MatejKristan); c.setCode(63267); c.setModule(i1); coursesBean.add(c);
+
+        i2 = AddModule("Umetna inteligenca 2", semesters.get(6), false);
+        c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setLecturer1(DanijelSkocaj); c.setModule(i2); c.setCode(63268); coursesBean.add(c);
 
         writer.println("Done");
     }
 
     private void AddStudents(PrintWriter writer){
         writer.print("Adding students ... ");
+        for(int i = 0; i < names.length; i++){
+            Student student = new Student();
+            student.setName(names[i]);
+            student.setSurname(surnames[i]);
+            studentsBean.addStudent(student);
 
-        Student student = new Student();
-        student.setName("Miha");
-        student.setSurname("Novak");
-        studentsBean.addStudent(student);
+            EnrollmentToken token = new EnrollmentToken();
+            token.setStudent(student);
+            enrollmentTokensBean.add(token);
 
-        EnrollmentToken token = new EnrollmentToken();
-        token.setStudent(student);
-        enrollmentTokensBean.add(token);
+            Enrollment enrollment = new Enrollment();
+            enrollment.setToken(token);
+            enrollment.setProgram(uniProgram);
+            enrollmentsBean.add(enrollment);
 
-        Enrollment enrollment = new Enrollment();
-        enrollment.setToken(token);
-        enrollment.setProgram(uniProgram);
-        enrollmentsBean.add(enrollment);
+            switch(i%3){
+                case 0:
+                    Enroll(enrollment, m1);
+                    Enroll(enrollment, m2);
+                    break;
+                case 1:
+                    Enroll(enrollment, m3);
+                    Enroll(enrollment, m4);
+                    break;
+                case 2:
+                    Enroll(enrollment, m5);
+                    Enroll(enrollment, m6);
+                    Enroll(enrollment, i1);
+                    Enroll(enrollment, i2);
+                    break;
+            }
 
-        EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
-        enrollmentCourse.setEnrollment(enrollment);
-        enrollmentCourse.setCourse(DiskretneStrukture);
-        enrollmentCoursesBean.add(enrollmentCourse);
-
-        EnrollmentCourse enrollmentCourse2 = new EnrollmentCourse();
-        enrollmentCourse2.setEnrollment(enrollment);
-        enrollmentCourse2.setCourse(LinearnaAlgebra);
-        enrollmentCoursesBean.add(enrollmentCourse2);
-
-        EnrollmentCourse enrollmentCourse3 = new EnrollmentCourse();
-        enrollmentCourse3.setEnrollment(enrollment);
-        enrollmentCourse3.setCourse(Programiranje1);
-        enrollmentCoursesBean.add(enrollmentCourse3);
-
-        Student student2 = new Student();
-        student2.setName("Jože");
-        student2.setSurname("Hribar");
-        studentsBean.addStudent(student2);
-
-        EnrollmentToken token2 = new EnrollmentToken();
-        token2.setStudent(student2);
-        enrollmentTokensBean.add(token2);
-
-        Enrollment enrollment2 = new Enrollment();
-        enrollment2.setToken(token2);
-        enrollment2.setProgram(uniProgram);
-        enrollmentsBean.add(enrollment2);
-
-        EnrollmentCourse enrollmentCourse4 = new EnrollmentCourse();
-        enrollmentCourse4.setEnrollment(enrollment2);
-        enrollmentCourse4.setCourse(DiskretneStrukture);
-        enrollmentCoursesBean.add(enrollmentCourse4);
-
-        EnrollmentCourse enrollmentCourse5 = new EnrollmentCourse();
-        enrollmentCourse5.setEnrollment(enrollment2);
-        enrollmentCourse5.setCourse(LinearnaAlgebra);
-        enrollmentCoursesBean.add(enrollmentCourse5);
+        }
 
         writer.println("Done");
+    }
+
+    private void Enroll(Enrollment enrollment, Module module){
+        Module m = modulesBean.get(module.getId());
+        for(Course course: m.getCourses()) {
+            EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
+            enrollmentCourse.setEnrollment(enrollment);
+            enrollmentCourse.setCourse(course);
+            enrollmentCoursesBean.add(enrollmentCourse);
+        }
     }
 
     private Module AddModule(String name, Semester semester, Boolean obligatory){

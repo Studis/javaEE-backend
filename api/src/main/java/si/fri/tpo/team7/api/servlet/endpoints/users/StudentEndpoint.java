@@ -79,7 +79,7 @@ public class StudentEndpoint {
     User authenticatedUser;
 
     @GET
-    @Secured({Role.STUDENT})
+    @Secured({Role.STUDENT, Role.ADMIN, Role.LECTURER, Role.CLERK})
     @Path("me")
     public Response getMe(){
         return Response.ok("{\"id\":\""+authenticatedUser.getId()+"\", \"role\": \""+authenticatedUser.getRole()+"\"}").build();
