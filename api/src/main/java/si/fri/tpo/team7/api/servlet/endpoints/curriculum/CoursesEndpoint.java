@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.curriculum;
 
+import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
@@ -27,6 +28,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 
 @Path("/courses")
+@CrossOrigin
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
