@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.entities.users;
 
+import org.eclipse.persistence.oxm.json.JsonObjectBuilderResult;
+import org.eclipse.persistence.sessions.serializers.JSONSerializer;
 import si.fri.tpo.team7.entities.curriculum.Module;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Role;
@@ -90,5 +92,15 @@ public class Student extends User {
     @Override
     public String toString() {
         return "Student " + name + " "+surname;
+    }
+
+    public String toJson(){
+        String builder = "{" +
+                "\"name\": \"" + name + "\"," +
+                "\"surname\": \"" + surname + "\"," +
+                "\"email\": \"" + eMail + "\"," +
+                "\"username\": \"" + username + "\""
+                +"}";
+        return builder;
     }
 }

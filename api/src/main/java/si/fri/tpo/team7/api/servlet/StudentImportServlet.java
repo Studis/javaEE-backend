@@ -70,8 +70,10 @@ public class StudentImportServlet extends HttpServlet {
         final PrintWriter writer = response.getWriter();
         for(Part part:request.getParts()){
             try {
+                writer.println("[");
                 Scanner sc = new Scanner(part.getInputStream());
                 importStudents(writer, sc);
+                writer.println("]");
             } catch (FileNotFoundException fne) {
                 writer.println("You either did not specify a file to upload or are "
                         + "trying to upload a file to a protected or nonexistent "
@@ -89,8 +91,14 @@ public class StudentImportServlet extends HttpServlet {
 
     public void importStudents(PrintWriter writer, Scanner scanner){
         Student s;
-        while((s = studentFromScanner(scanner)) != null){
-            writer.println("Imported "+s);
+        boolean first = true;
+        while(scanner.hasNext()){
+            s = studentFromScanner(scanner);
+            if(s != null) {
+                if (!first) writer.println(",");
+                first = false;
+                writer.print(s.toJson());
+            }
         }
     }
 
