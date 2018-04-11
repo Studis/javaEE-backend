@@ -58,7 +58,7 @@ public class Bean<T extends BaseEntity> {
         if(obj == null) {
             throw new NotFoundException(_class.getName()+" " + id + " not found.");
         }
-        em.remove(_class);
+        em.remove(obj);
     }
 
     @Transactional
