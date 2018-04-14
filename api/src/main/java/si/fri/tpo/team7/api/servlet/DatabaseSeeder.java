@@ -80,7 +80,7 @@ public class DatabaseSeeder extends HttpServlet{
         PrintWriter writer = resp.getWriter();
 
         int startYear = 2015;
-        int endYear = 2017;
+        int endYear = 2018;
         AddEnrolmentTypes(writer);
         AddPrograms(writer);
         AddYearsAndSemesters(writer, startYear, endYear);
@@ -88,6 +88,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddModulesAndCourses(writer, 2015);
         AddModulesAndCourses(writer, 2016);
         AddModulesAndCourses(writer, 2017);
+        AddModulesAndCourses(writer, 2018);
         AddStudents(writer);
         AddAdmin(writer);
 

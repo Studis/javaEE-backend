@@ -39,14 +39,14 @@ public class StudentEndpoint {
     }
 
     @GET
-    @Secured({Role.STUDENT})
+    @Secured({Role.STUDENT,Role.ADMIN,Role.CLERK,Role.LECTURER})
     @Path("{id}")
     public Response getStudent(@PathParam("id") int id){
         return Response.ok(studentsBean.getStudent(id)).build();
     }
 
     @GET
-    @Secured({Role.STUDENT})
+    @Secured({Role.STUDENT,Role.ADMIN,Role.CLERK,Role.LECTURER})
     @Path("{id}/enrollments")
     public Response getStudentEnrollments(@PathParam("id") int id){
         return Response.ok(studentsBean.getStudent(id).getEnrollments()).build();

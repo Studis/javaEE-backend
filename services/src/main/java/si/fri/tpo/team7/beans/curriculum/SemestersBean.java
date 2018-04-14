@@ -17,13 +17,13 @@ public class SemestersBean extends Bean<Semester> {
     }
 
     public Semester current(){
-        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year = :year AND o.number = 1")
+        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year.year = :year AND o.number = 1")
                 .setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
         return (Semester)q.getSingleResult();
     }
 
     public Semester next(){
-        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year = :year AND o.number = 2")
+        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year.year = :year AND o.number = 2")
                 .setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
         return (Semester)q.getSingleResult();
     }
