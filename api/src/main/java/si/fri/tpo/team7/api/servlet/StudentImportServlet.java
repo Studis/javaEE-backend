@@ -101,7 +101,7 @@ public class StudentImportServlet extends HttpServlet {
             if(s != null) {
                 if (!first) writer.println(",");
                 first = false;
-               // writer.print(s.toJson());
+                writer.print(s.toJson());
             }
         }
     }

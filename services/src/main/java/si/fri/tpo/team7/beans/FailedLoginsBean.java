@@ -27,7 +27,7 @@ public class FailedLoginsBean extends Bean<FailedLogin> {
     public boolean allowedToLogin(String ip){
         try {
             FailedLogin fl = getByIp(ip);
-            if(ChronoUnit.HOURS.between(fl.getTimestamp(), Instant.now()) > 24){
+            if(ChronoUnit.SECONDS.between(fl.getTimestamp(), Instant.now()) > 24){
                 return true;
             }
             return fl.getTrials() < 3;
