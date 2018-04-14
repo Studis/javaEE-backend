@@ -32,5 +32,7 @@ public class CorsFilter implements ContainerResponseFilter {
         String name = "Access-Control-Allow-Origin";
         String value = "*";// some data from request
         responseContext.getHeaders().add(name, value);
+
+        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
     }
 }

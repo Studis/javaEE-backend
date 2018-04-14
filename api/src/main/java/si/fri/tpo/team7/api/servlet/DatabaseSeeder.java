@@ -62,9 +62,10 @@ public class DatabaseSeeder extends HttpServlet{
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
-            BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan;
+            BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan, LukaCehovin,
+            NavrikaBovcon;
 
-    Module m1, m2, m3, m4, m5, m6, i1, i2;
+    Module m1, m2, m3, m4, m5, m6, i1, i2, i3, i4;
 
     String[] names = new String[]{
             "Franc", "Janez", "Ivan", "Anton", "Jožef", "Gašper", "Aleks", "Aljaž", "Bojan", "Ciril", "Daniel", "Dejan",
@@ -165,6 +166,8 @@ public class DatabaseSeeder extends HttpServlet{
         MatejaDrnovsek = AddLecturer("Mateja", "Drnovšek");
         PaulBorutKersevan = AddLecturer("Paul Borut", "Kerševan");
         MatejKristan = AddLecturer("Matej", "Kristan");
+        LukaCehovin = AddLecturer("Luka", "Čehovin Zajc");
+        NavrikaBovcon = AddLecturer("Navrika", "Bovcon");
 
         writer.println("Done");
     }
@@ -184,7 +187,7 @@ public class DatabaseSeeder extends HttpServlet{
         EnrollmentType e;
         e = new EnrollmentType(); e.setCode(1); e.setName("Prvi vpis v letnik/dodatno leto"); enrollmentTypesBean.add(e);
         e = new EnrollmentType(); e.setCode(2); e.setName("Ponavljanje letnika"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(3); e.setName("Nadaljevanje letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setCode(3); e.setName("Nadaljevanje letnika"); enrollmentTypesBean.add(e);
         e = new EnrollmentType(); e.setCode(4); e.setName("Podaljšanje statusa študenta"); enrollmentTypesBean.add(e);
         e = new EnrollmentType(); e.setCode(5); e.setName("Vpis po merilih za prehode v višji letnik"); enrollmentTypesBean.add(e);
         e = new EnrollmentType(); e.setCode(6); e.setName("Vpis v semester skupnega št. programa"); enrollmentTypesBean.add(e);
@@ -244,6 +247,14 @@ public class DatabaseSeeder extends HttpServlet{
 
         i2 = AddModule("Umetna inteligenca 2", semesters.get(keys.get(5)), false);
         c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setLecturer1(DanijelSkocaj); c.setModule(i2); c.setCode(63268); coursesBean.add(c);
+
+        i3 = AddModule("Medijske tehnologije 1", semesters.get(keys.get(4)), false);
+        c = new Course(); c.setName("Multimedijski sistemi"); c.setLecturer1(LukaCehovin); c.setModule(i3); c.setCode(63270); coursesBean.add(c);
+        c = new Course(); c.setName("Računalniška grafika in tehnologija iger");
+        c.setLecturer1(MatijaMarolt); c.setCode(63269); c.setModule(i3); coursesBean.add(c);
+
+        i4 = AddModule("Medijske tehnologije 2", semesters.get(keys.get(5)), false);
+        c = new Course(); c.setName("Osnove oblikovanja"); c.setLecturer1(NavrikaBovcon); c.setModule(i4); c.setCode(63271); coursesBean.add(c);
 
         writer.println("Done");
     }
