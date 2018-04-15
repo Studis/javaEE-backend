@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet;
 
+import org.jboss.weld.context.http.Http;
 import si.fri.tpo.team7.beans.curriculum.*;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
@@ -17,6 +18,9 @@ import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Initialized;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.OneToMany;
@@ -26,13 +30,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static javax.swing.UIManager.put;
 
 @WebServlet("/seed")
+@ApplicationScoped
 public class DatabaseSeeder extends HttpServlet{
+    private Logger log = Logger.getLogger(DatabaseSeeder.class.getName());
+
     @Inject
     private StudentsBean studentsBean;
     @Inject
@@ -75,10 +84,29 @@ public class DatabaseSeeder extends HttpServlet{
             "Kozel", "Kovačič", "Mlakar", "Struna", "Žitnik", "Zupan", "Strnad", "Vlašič", "Jež", "Horvat", "Kokot", "Korošec",
             "Knavs", "Gosar", "Osterc", "Lapajne", "Žagar", "Ramovš", "Kotnik", "Ahačič", "Kolar", "Kašpar", "Furlan", "Babič"};
 
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+        log.info("Seeder started running");
+        PrintWriter writer = new PrintWriter(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+            }
+        });
+
+        runSeed(writer);
+
+        log.info("Seeder finnished");
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
+        runSeed(writer);
+
+        writer.println("Done");
+    }
+
+    protected void runSeed (PrintWriter writer) {
         int startYear = 2015;
         int endYear = 2018;
         AddEnrolmentTypes(writer);
@@ -91,12 +119,10 @@ public class DatabaseSeeder extends HttpServlet{
         AddModulesAndCourses(writer, 2018);
         AddStudents(writer);
         AddAdmin(writer);
-
-        writer.println("Done");
     }
 
     private void AddPrograms(PrintWriter writer){
-        writer.print("Adding programs ... ");
+        log.info("Adding programs ... ");
 
         uniProgram = new Program();
         uniProgram.setCode(1000475);
@@ -110,11 +136,11 @@ public class DatabaseSeeder extends HttpServlet{
         vsProgram.setEcts(180);
         programsBean.add(vsProgram);
 
-        writer.println("Done");
+        log.info("Done");
     }
 
     private void AddYearsAndSemesters(PrintWriter writer, int startYear, int endYear){
-        writer.print("Adding years and semesters ... ");
+        log.info("Adding years and semesters ... ");
 
         for(int yearNumber = startYear; yearNumber <= endYear; yearNumber++){
             Year year = new Year();
@@ -134,11 +160,11 @@ public class DatabaseSeeder extends HttpServlet{
             year.setSemesters(semesterMap);
             yearsBean.updateYear(year);
         }
-        writer.println("Done");
+        log.info("Done");
     }
 
     private void AddLecturers(PrintWriter writer){
-        writer.print("Adding lecturers ... ");
+        log.info("Adding lecturers ... ");
 
         ViljanMahnic = AddLecturer("Viljan", "Mahnič");
         IgorKononenko = AddLecturer("Igor", "Kononenko");
@@ -170,7 +196,7 @@ public class DatabaseSeeder extends HttpServlet{
         LukaCehovin = AddLecturer("Luka", "Čehovin Zajc");
         NavrikaBovcon = AddLecturer("Navrika", "Bovcon");
 
-        writer.println("Done");
+        log.info("Done");
     }
 
     private Lecturer AddLecturer(String name, String surname){
@@ -183,7 +209,7 @@ public class DatabaseSeeder extends HttpServlet{
     }
 
     private void AddEnrolmentTypes(PrintWriter writer){
-        writer.print("Adding enrollment types... ");
+        log.info("Adding enrollment types... ");
 
         EnrollmentType e;
         e = new EnrollmentType(); e.setCode(1); e.setName("Prvi vpis v letnik/dodatno leto"); enrollmentTypesBean.add(e);
@@ -195,11 +221,11 @@ public class DatabaseSeeder extends HttpServlet{
         e = new EnrollmentType(); e.setCode(7); e.setName("Vpis po merilih za prehode v isti letnik"); enrollmentTypesBean.add(e);
         e = new EnrollmentType(); e.setCode(98); e.setName("Vpis za zaključek"); enrollmentTypesBean.add(e);
 
-        writer.println("Done");
+        log.info("Done");
     }
 
     private void AddModulesAndCourses(PrintWriter writer, int year){
-        writer.print("Adding modules and courses ... ");
+        log.info("Adding modules and courses ... ");
 
         Year y = yearsBean.getYear(year);
         Map<Integer, Semester> semesters = y.getSemesters();
@@ -257,11 +283,11 @@ public class DatabaseSeeder extends HttpServlet{
         i4 = AddModule("Medijske tehnologije 2", semesters.get(keys.get(5)), false);
         c = new Course(); c.setName("Osnove oblikovanja"); c.setLecturer1(NavrikaBovcon); c.setModule(i4); c.setCode(63271); coursesBean.add(c);
 
-        writer.println("Done");
+        log.info("Done");
     }
 
     private void AddStudents(PrintWriter writer){
-        writer.print("Adding students ... ");
+        log.info("Adding students ... ");
         for(int i = 0; i < names.length; i++){
             Student student = new Student();
             student.setName(names[i]);
@@ -313,7 +339,7 @@ public class DatabaseSeeder extends HttpServlet{
                     break;
             }
         }
-        writer.println("Done");
+        log.info("Done");
     }
 
     private void Enroll(Enrollment enrollment, Module module){
@@ -336,7 +362,7 @@ public class DatabaseSeeder extends HttpServlet{
     }
 
     private void AddAdmin(PrintWriter writer){
-        writer.print("Adding admin ... ");
+        log.info("Adding admin ... ");
 
         Administrator a = new Administrator();
         a.setUsername("admin");
