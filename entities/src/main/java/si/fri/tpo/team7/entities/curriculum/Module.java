@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Module extends BaseEntity {
@@ -16,8 +14,8 @@ public class Module extends BaseEntity {
     private List<Course> courses;
 
     @ManyToOne
-    @JoinColumn(name="semester", referencedColumnName = "id", nullable=false)
-    private Semester semester;
+    @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
+    private StudyYear studyYear;
 
     @Column(name="obligatory")
     private boolean obligatory;
@@ -29,12 +27,12 @@ public class Module extends BaseEntity {
 
     public void setCourses(List<Course> courses){this.courses = courses;}
 
-    public Semester getSemester() {
-        return semester;
+    public StudyYear getStudyYear() {
+        return studyYear;
     }
 
-    public void setSemester(Semester semester) {
-        this.semester = semester;
+    public void setStudyYear(StudyYear studyYear) {
+        this.studyYear = studyYear;
     }
 
     public boolean isObligatory() {

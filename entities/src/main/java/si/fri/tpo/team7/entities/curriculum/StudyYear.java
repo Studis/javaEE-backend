@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class Semester extends BaseEntity {
+public class StudyYear extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Semester extends BaseEntity {
     private int number;
 
     @ManyToOne
-    @JoinColumn(name="year", referencedColumnName = "year", nullable=false)
+    @JoinColumn(name="year", referencedColumnName = "id", nullable=false)
     private Year year;
 
     @ManyToOne

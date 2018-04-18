@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
@@ -82,8 +81,8 @@ public class StudentsBean {
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);
-            enrollment.setSemester1(semestersBean.current());
-            enrollment.setSemester2(semestersBean.next());
+            enrollment.setStudyYear1(semestersBean.current());
+            enrollment.setStudyYear2(semestersBean.next());
 
             em.persist(enrollment);
 

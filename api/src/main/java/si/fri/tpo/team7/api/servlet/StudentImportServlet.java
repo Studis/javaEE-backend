@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.transaction.Transactional;
 import java.io.*;
 import java.util.Scanner;
 
@@ -130,8 +129,8 @@ public class StudentImportServlet extends HttpServlet {
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);
-            enrollment.setSemester1(semestersBean.current());
-            enrollment.setSemester2(semestersBean.next());
+            enrollment.setStudyYear1(semestersBean.current());
+            enrollment.setStudyYear2(semestersBean.next());
 
             enrollmentsBean.add(enrollment);
             return student;

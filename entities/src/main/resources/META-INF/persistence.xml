@@ -7,7 +7,7 @@
         <class>si.fri.tpo.team7.entities.curriculum.Program</class>
         <class>si.fri.tpo.team7.entities.curriculum.Year</class>
         <class>si.fri.tpo.team7.entities.curriculum.Module</class>
-        <class>si.fri.tpo.team7.entities.curriculum.Semester</class>
+        <class>si.fri.tpo.team7.entities.curriculum.StudyYear</class>
 
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>

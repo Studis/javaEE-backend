@@ -1,19 +1,20 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Entity
-public class Program extends Register {
+public class Curriculum extends BaseEntity {
 
-    @JsonIgnore
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
-    private Set<StudyYear> studyYears;
-    
+
     @Column(name="ects")
     private int ects;
 

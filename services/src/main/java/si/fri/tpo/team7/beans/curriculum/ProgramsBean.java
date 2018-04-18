@@ -1,15 +1,12 @@
 package si.fri.tpo.team7.beans.curriculum;
 
-import org.postgresql.util.PGobject;
-import si.fri.tpo.team7.beans.Bean;
+import si.fri.tpo.team7.beans.EntityBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.persistence.Query;
-import java.util.List;
 
 @ApplicationScoped
-public class ProgramsBean extends Bean<Program> {
+public class ProgramsBean extends EntityBean<Program> {
     public ProgramsBean() {
         super(Program.class);
     }
