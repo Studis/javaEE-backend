@@ -125,7 +125,7 @@ public class StudentImportServlet extends HttpServlet {
             enrollmentTokensBean.add(token1);
             enrollmentTokensBean.add(token2);
 
-            Program program = programsBean.getByCode(programCode);
+            Program program = programsBean.get(programCode);
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);

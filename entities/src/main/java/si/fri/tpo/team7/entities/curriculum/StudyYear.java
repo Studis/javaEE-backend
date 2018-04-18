@@ -27,9 +27,9 @@ public class StudyYear extends BaseEntity {
     @JoinColumn(name="program")
     private Program program;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "semester")
-    private List<Module> modules;
+    private List<Module> modules;*/
 
     public int getNumber() {
         return number;
@@ -56,11 +56,12 @@ public class StudyYear extends BaseEntity {
     }
 
     public List<Module> getModules() {
-        return modules;
+        //return modules;
+        return null;
     }
 
     public void setModules(List<Module> modules) {
-        this.modules = modules;
+        //this.modules = modules;
     }
 
     @JsonGetter

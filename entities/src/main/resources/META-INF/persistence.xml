@@ -9,6 +9,15 @@
         <class>si.fri.tpo.team7.entities.curriculum.Module</class>
         <class>si.fri.tpo.team7.entities.curriculum.StudyYear</class>
 
+        <class>si.fri.tpo.team7.entities.curriculum.ObligatoryCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.ModuleCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.GeneralOptionalCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.ProfessionalOptionalCourse</class>
+
+        <class>si.fri.tpo.team7.entities.enrollments.StudyForm</class>
+        <class>si.fri.tpo.team7.entities.enrollments.StudyType</class>
+
+
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentType</class>

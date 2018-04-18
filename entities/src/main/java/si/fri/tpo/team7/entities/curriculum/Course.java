@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.Register;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
@@ -11,21 +12,15 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-
-public class Course extends BaseEntity implements ICourse{
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "course_type")
+public class Course extends Register {
 
     @Column(name="name")
     private String name;
 
     @Column(name="ects")
     private int ects;
-
-    @Column(name="code")
-    private int code;
-
-    @ManyToOne
-    @JoinColumn(name="module", referencedColumnName = "id", nullable=false)
-    private Module module;
 
     @ManyToOne
     @JoinColumn(name="lecturer1", nullable=false)
@@ -67,14 +62,6 @@ public class Course extends BaseEntity implements ICourse{
         this.ects = ects;
     }
 
-    public Module getModule() {
-        return module;
-    }
-
-    public void setModule(Module module) {
-        this.module = module;
-    }
-
     public Lecturer getLecturer1() {
         return lecturer1;
     }
@@ -105,13 +92,5 @@ public class Course extends BaseEntity implements ICourse{
 
     public void setEnrollmentCourses(Set<EnrollmentCourse> enrollmentCourses) {
         this.enrollmentCourses = enrollmentCourses;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
     }
 }

@@ -11,7 +11,7 @@ public class Module extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-    private List<Course> courses;
+    private List<ModuleCourse> courses;
 
     @ManyToOne
     @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
@@ -23,9 +23,9 @@ public class Module extends BaseEntity {
     @Column(name="name")
     private String name;
 
-    public List<Course> getCourses() { return courses; }
+    public List<ModuleCourse> getCourses() { return courses; }
 
-    public void setCourses(List<Course> courses){this.courses = courses;}
+    public void setCourses(List<ModuleCourse> courses){this.courses = courses;}
 
     public StudyYear getStudyYear() {
         return studyYear;

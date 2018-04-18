@@ -14,7 +14,6 @@ import java.util.Set;
 @Entity
 public class Curriculum extends BaseEntity {
 
-
     @Column(name="ects")
     private int ects;
 
