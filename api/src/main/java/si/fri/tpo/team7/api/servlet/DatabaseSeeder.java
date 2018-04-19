@@ -7,6 +7,7 @@ import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.beans.enrollments.*;
+
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
@@ -259,7 +260,7 @@ public class DatabaseSeeder extends HttpServlet{
         Module m;
         ObligatoryCourse c;
         m1 = AddModule("1. semester obvezni", semesters.get(keys.get(0)), true);
-        c = new ObligatoryCourse(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); /*c.setModule(m1);*/ c.setCode(63277); coursesBean.add(c);
+        c = new ObligatoryCourse(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); /*c.setModule(m1);*/ c.setId(63277); coursesBean.add(c);
         /*c = new ObligatoryCourse(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m1); c.setCode(63203); coursesBean.add(c);
         c = new ObligatoryCourse(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m1); c.setCode(63205); coursesBean.add(c);
         c = new ObligatoryCourse(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m1); c.setCode(63204); coursesBean.add(c);
@@ -303,12 +304,12 @@ public class DatabaseSeeder extends HttpServlet{
 */
         ModuleCourse mc;
         i3 = AddModule("Medijske tehnologije 1", semesters.get(keys.get(4)), false);
-        mc = new ModuleCourse(); mc.setName("Multimedijski sistemi"); mc.setLecturer1(LukaCehovin); mc.setModule(i3); mc.setCode(63270); coursesBean.add(mc);
+        mc = new ModuleCourse(); mc.setName("Multimedijski sistemi"); mc.setLecturer1(LukaCehovin); mc.setModule(i3); mc.setId(63270); coursesBean.add(mc);
         mc = new ModuleCourse(); mc.setName("Računalniška grafika in tehnologija iger");
-        mc.setLecturer1(MatijaMarolt); mc.setCode(63269); mc.setModule(i3); coursesBean.add(mc);
+        mc.setLecturer1(MatijaMarolt); mc.setId(63269); mc.setModule(i3); coursesBean.add(mc);
 
         i4 = AddModule("Medijske tehnologije 2", semesters.get(keys.get(5)), false);
-        mc = new ModuleCourse(); mc.setName("Osnove oblikovanja"); mc.setLecturer1(NavrikaBovcon); mc.setModule(i4); mc.setCode(63271); coursesBean.add(mc);
+        mc = new ModuleCourse(); mc.setName("Osnove oblikovanja"); mc.setLecturer1(NavrikaBovcon); mc.setModule(i4); mc.setId(63271); coursesBean.add(mc);
 
         log.info("Done");
     }
