@@ -6,9 +6,11 @@ import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
+import si.fri.tpo.team7.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.entities.POJOs.Residence;
 import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -41,6 +43,7 @@ import static javax.swing.UIManager.put;
 @ApplicationScoped
 public class DatabaseSeeder extends HttpServlet{
     private Logger log = Logger.getLogger(DatabaseSeeder.class.getName());
+    Random r = new Random();
 
     @Inject
     private StudentsBean studentsBean;
@@ -66,6 +69,8 @@ public class DatabaseSeeder extends HttpServlet{
     private EnrollmentTypesBean enrollmentTypesBean;
     @Inject
     private EnrollmentCoursesBean enrollmentCoursesBean;
+    @Inject
+    private ResidencesBean residencesBean;
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
@@ -113,6 +118,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddPrograms(writer);
         AddYearsAndSemesters(writer, startYear, endYear);
         AddLecturers(writer);
+        AddResidence();
         AddModulesAndCourses(writer, 2015);
         AddModulesAndCourses(writer, 2016);
         AddModulesAndCourses(writer, 2017);
@@ -292,6 +298,8 @@ public class DatabaseSeeder extends HttpServlet{
             Student student = new Student();
             student.setName(names[i]);
             student.setSurname(surnames[i]);
+            student.setTemporary(AddResidence());
+            student.setPermanent(AddResidence());
             studentsBean.addStudent(student);
 
             EnrollmentToken token = new EnrollmentToken();
@@ -368,5 +376,18 @@ public class DatabaseSeeder extends HttpServlet{
         a.setUsername("admin");
         a.setPassword("admin");
         administratorBean.addAdmin(a);
+    }
+
+    private Residence AddResidence(){
+
+        String[] cities = new String[]{"Kranj", "Ljubljana", "Maribor"};
+        Residence r1 = new Residence();
+
+        r1.setCountry("Slovenija");
+        r1.setMunicipality(cities[r.nextInt(cities.length)]);
+        r1.setPlaceOfResidence(cities[r.nextInt(cities.length)]);
+        r1.setPostalNumber("4000");
+        residencesBean.add(r1);
+        return r1;
     }
 }

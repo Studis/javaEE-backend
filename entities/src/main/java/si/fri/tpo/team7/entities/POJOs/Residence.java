@@ -1,14 +1,11 @@
 package si.fri.tpo.team7.entities.POJOs;
 
+import si.fri.tpo.team7.entities.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
-public class Residence {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 7)
-    protected int id;
+public class Residence extends BaseEntity {
 
     private String municipality;
 
