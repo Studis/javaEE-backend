@@ -4,20 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Module extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-    private List<Course> courses;
+    private List<ModuleCourse> courses;
 
     @ManyToOne
-    @JoinColumn(name="semester", referencedColumnName = "id", nullable=false)
-    private Semester semester;
+    @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
+    private StudyYear studyYear;
 
     @Column(name="obligatory")
     private boolean obligatory;
@@ -25,16 +23,16 @@ public class Module extends BaseEntity {
     @Column(name="name")
     private String name;
 
-    public List<Course> getCourses() { return courses; }
+    public List<ModuleCourse> getCourses() { return courses; }
 
-    public void setCourses(List<Course> courses){this.courses = courses;}
+    public void setCourses(List<ModuleCourse> courses){this.courses = courses;}
 
-    public Semester getSemester() {
-        return semester;
+    public StudyYear getStudyYear() {
+        return studyYear;
     }
 
-    public void setSemester(Semester semester) {
-        this.semester = semester;
+    public void setStudyYear(StudyYear studyYear) {
+        this.studyYear = studyYear;
     }
 
     public boolean isObligatory() {

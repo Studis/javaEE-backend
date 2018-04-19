@@ -1,30 +1,27 @@
 package si.fri.tpo.team7.beans.curriculum;
 
-import si.fri.tpo.team7.beans.Bean;
-import si.fri.tpo.team7.entities.curriculum.Semester;
+import si.fri.tpo.team7.beans.EntityBean;
+import si.fri.tpo.team7.entities.curriculum.StudyYear;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.Query;
-import java.time.Instant;
-import java.time.temporal.TemporalField;
 import java.util.Calendar;
-import java.util.List;
 
 @ApplicationScoped
-public class SemestersBean extends Bean<Semester> {
+public class SemestersBean extends EntityBean<StudyYear> {
     public SemestersBean() {
-        super(Semester.class);
+        super(StudyYear.class);
     }
 
-    public Semester current(){
-        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year.year = :year AND o.number = 1")
+    public StudyYear current(){
+        Query q = em.createQuery("SELECT o FROM StudyYear o WHERE o.year.year = :year AND o.number = 1")
                 .setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
-        return (Semester)q.getSingleResult();
+        return (StudyYear)q.getSingleResult();
     }
 
-    public Semester next(){
-        Query q = em.createQuery("SELECT o FROM Semester o WHERE o.year.year = :year AND o.number = 2")
+    public StudyYear next(){
+        Query q = em.createQuery("SELECT o FROM StudyYear o WHERE o.year.year = :year AND o.number = 2")
                 .setParameter("year", Calendar.getInstance().get(Calendar.YEAR));
-        return (Semester)q.getSingleResult();
+        return (StudyYear)q.getSingleResult();
     }
 }

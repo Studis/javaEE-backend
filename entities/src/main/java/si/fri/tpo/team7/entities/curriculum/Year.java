@@ -2,48 +2,33 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import si.fri.tpo.team7.entities.curriculum.Semester;
+import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
-public class Year {
-    @Id
-    @Column(name = "year", length = 4)
-    private int year;
-
+public class Year extends Register {
     //@OneToMany(cascade=CascadeType.ALL, mappedBy="year", fetch = FetchType.EAGER)
     //@OneToMany(fetch = FetchType.EAGER)
     //@JoinColumn(name="year_id")
     //@MapKey
-    //private Map<Integer, Semester> semesters;
+    //private Map<Integer, StudyYear> semesters;
 
-    public void setSemesters(Map<Integer, Semester> semesters) {
+    public void setSemesters(Map<Integer, StudyYear> semesters) {
         this.semesters = semesters;
     }
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
     @MapKey
-    private Map<Integer, Semester> semesters;
+    private Map<Integer, StudyYear> semesters;
 
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public Map<Integer, Semester> getSemesters() { return semesters; }
+    public Map<Integer, StudyYear> getSemesters() { return semesters; }
 
     @JsonGetter
     @Override
     public String toString(){
-        return year+"/"+(year+1);
+        return id+"/"+(id+1);
     }
 }

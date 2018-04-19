@@ -1,10 +1,6 @@
 package si.fri.tpo.team7.beans;
 
-import si.fri.tpo.team7.beans.curriculum.CoursesBean;
-import si.fri.tpo.team7.entities.BaseEntity;
-import si.fri.tpo.team7.entities.curriculum.Course;
-import si.fri.tpo.team7.entities.curriculum.Program;
-import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +10,7 @@ import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Bean<T extends BaseEntity> {
+public class RegisterBean<T extends Register> {
     private Logger log;
 
     private final Class<T> _class;
@@ -22,7 +18,7 @@ public class Bean<T extends BaseEntity> {
     @PersistenceContext(unitName = "studis-jpa")
     protected EntityManager em;
 
-    public Bean(Class<T> _class)
+    public RegisterBean(Class<T> _class)
     {
         this._class = _class;
         log = Logger.getLogger(_class.getName());
@@ -72,12 +68,5 @@ public class Bean<T extends BaseEntity> {
         s.setId(id);
         em.merge(s);
         return s;
-    }
-
-    public T getByCode(int code){
-        Object obj = em.createQuery("SELECT p FROM "+_class.getSimpleName()+" p WHERE p.code = :code")
-                .setParameter("code", code)
-                .getSingleResult();
-        return (T)obj;
     }
 }

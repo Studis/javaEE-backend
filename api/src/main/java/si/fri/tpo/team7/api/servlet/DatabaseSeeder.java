@@ -1,21 +1,18 @@
 package si.fri.tpo.team7.api.servlet;
 
-import org.jboss.weld.context.http.Http;
 import si.fri.tpo.team7.beans.curriculum.*;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.beans.pojo.ResidencesBean;
+import si.fri.tpo.team7.beans.enrollments.*;
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.POJOs.Residence;
 import si.fri.tpo.team7.entities.curriculum.*;
-import si.fri.tpo.team7.entities.enrollments.Enrollment;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
+import si.fri.tpo.team7.entities.enrollments.*;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
@@ -24,8 +21,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.OneToMany;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,8 +31,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.logging.Logger;
-
-import static javax.swing.UIManager.put;
 
 @WebServlet("/seed")
 @ApplicationScoped
@@ -71,6 +64,10 @@ public class DatabaseSeeder extends HttpServlet{
     private EnrollmentCoursesBean enrollmentCoursesBean;
     @Inject
     private ResidencesBean residencesBean;
+    @Inject
+    private StudyFormsBean studyFormsBean;
+    @Inject
+    private StudyTypesBean studyTypesBean;
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
@@ -115,6 +112,8 @@ public class DatabaseSeeder extends HttpServlet{
         int startYear = 2015;
         int endYear = 2018;
         AddEnrolmentTypes(writer);
+        AddStudyTypes(writer);
+        AddStudyForms(writer);
         AddPrograms(writer);
         AddYearsAndSemesters(writer, startYear, endYear);
         AddLecturers(writer);
@@ -123,7 +122,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddModulesAndCourses(writer, 2016);
         AddModulesAndCourses(writer, 2017);
         AddModulesAndCourses(writer, 2018);
-        AddStudents(writer);
+        //AddStudents(writer);
         AddAdmin(writer);
     }
 
@@ -131,13 +130,13 @@ public class DatabaseSeeder extends HttpServlet{
         log.info("Adding programs ... ");
 
         uniProgram = new Program();
-        uniProgram.setCode(1000475);
+        uniProgram.setId(1000475);
         uniProgram.setTitle("Računalništvo in informatika UNI");
         uniProgram.setEcts(180);
         programsBean.add(uniProgram);
 
         vsProgram = new Program();
-        vsProgram.setCode(1000477);
+        vsProgram.setId(1000477);
         vsProgram.setTitle("Računalništvo in informatika VS");
         vsProgram.setEcts(180);
         programsBean.add(vsProgram);
@@ -150,21 +149,21 @@ public class DatabaseSeeder extends HttpServlet{
 
         for(int yearNumber = startYear; yearNumber <= endYear; yearNumber++){
             Year year = new Year();
-            year.setYear(yearNumber);
-            yearsBean.addYear(year);
-            Map<Integer, Semester> semesterMap = year.getSemesters();
+            year.setId(yearNumber);
+            yearsBean.add(year);
+            Map<Integer, StudyYear> semesterMap = year.getSemesters();
 
             for (int semesterNumber = 1; semesterNumber <= 6; semesterNumber++) {
-                Semester semester = new Semester();
-                semester.setYear(year);
-                semester.setNumber(semesterNumber);
-                semester.setProgram(uniProgram);
-                semestersBean.add(semester);
-                semesterMap.put(semester.getId(), semester);
+                StudyYear studyYear = new StudyYear();
+                studyYear.setYear(year);
+                studyYear.setNumber(semesterNumber);
+                studyYear.setProgram(uniProgram);
+                semestersBean.add(studyYear);
+                semesterMap.put(studyYear.getId(), studyYear);
             }
 
             year.setSemesters(semesterMap);
-            yearsBean.updateYear(year);
+            yearsBean.update(year.getId(), year);
         }
         log.info("Done");
     }
@@ -218,14 +217,35 @@ public class DatabaseSeeder extends HttpServlet{
         log.info("Adding enrollment types... ");
 
         EnrollmentType e;
-        e = new EnrollmentType(); e.setCode(1); e.setName("Prvi vpis v letnik/dodatno leto"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(2); e.setName("Ponavljanje letnika"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(3); e.setName("Nadaljevanje letnika"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(4); e.setName("Podaljšanje statusa študenta"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(5); e.setName("Vpis po merilih za prehode v višji letnik"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(6); e.setName("Vpis v semester skupnega št. programa"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(7); e.setName("Vpis po merilih za prehode v isti letnik"); enrollmentTypesBean.add(e);
-        e = new EnrollmentType(); e.setCode(98); e.setName("Vpis za zaključek"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(1); e.setName("Prvi vpis v letnik/dodatno leto"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(2); e.setName("Ponavljanje letnika"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(3); e.setName("Nadaljevanje letnika"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(4); e.setName("Podaljšanje statusa študenta"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(5); e.setName("Vpis po merilih za prehode v višji letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(6); e.setName("Vpis v semester skupnega št. programa"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(7); e.setName("Vpis po merilih za prehode v isti letnik"); enrollmentTypesBean.add(e);
+        e = new EnrollmentType(); e.setId(98); e.setName("Vpis za zaključek"); enrollmentTypesBean.add(e);
+
+        log.info("Done");
+    }
+
+    private void AddStudyTypes(PrintWriter writer){
+        log.info("Adding study types... ");
+
+        StudyType e;
+        e = new StudyType(); e.setId(1); e.setName("Redni"); studyTypesBean.add(e);
+        e = new StudyType(); e.setId(3); e.setName("Izredni"); studyTypesBean.add(e);
+
+        log.info("Done");
+    }
+
+    private void AddStudyForms(PrintWriter writer){
+        log.info("Adding study types... ");
+
+        StudyForm e;
+        e = new StudyForm(); e.setId(1); e.setName("Na lokaciji"); studyFormsBean.add(e);
+        e = new StudyForm(); e.setId(2); e.setName("Na daljavo"); studyFormsBean.add(e);
+        e = new StudyForm(); e.setId(3); e.setName("E-študij"); studyFormsBean.add(e);
 
         log.info("Done");
     }
@@ -233,17 +253,17 @@ public class DatabaseSeeder extends HttpServlet{
     private void AddModulesAndCourses(PrintWriter writer, int year){
         log.info("Adding modules and courses ... ");
 
-        Year y = yearsBean.getYear(year);
-        Map<Integer, Semester> semesters = y.getSemesters();
+        Year y = yearsBean.get(year);
+        Map<Integer, StudyYear> semesters = y.getSemesters();
         ArrayList<Integer> keys = new ArrayList<>(semesters.keySet());
         Module m;
-        Course c;
+        ObligatoryCourse c;
         m1 = AddModule("1. semester obvezni", semesters.get(keys.get(0)), true);
-        c = new Course(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); c.setModule(m1); c.setCode(63277); coursesBean.add(c);
-        c = new Course(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m1); c.setCode(63203); coursesBean.add(c);
-        c = new Course(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m1); c.setCode(63205); coursesBean.add(c);
-        c = new Course(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m1); c.setCode(63204); coursesBean.add(c);
-        c = new Course(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m1); c.setCode(63202); coursesBean.add(c);
+        c = new ObligatoryCourse(); c.setName("Programiranje 1"); c.setLecturer1(ViljanMahnic); /*c.setModule(m1);*/ c.setCode(63277); coursesBean.add(c);
+        /*c = new ObligatoryCourse(); c.setName("Diskretne strukture"); c.setLecturer1(GasperFijavz); c.setModule(m1); c.setCode(63203); coursesBean.add(c);
+        c = new ObligatoryCourse(); c.setName("Fizika"); c.setLecturer1(PaulBorutKersevan); c.setModule(m1); c.setCode(63205); coursesBean.add(c);
+        c = new ObligatoryCourse(); c.setName("Osnove digitalnih vezij"); c.setLecturer1(NikolajZimic); c.setModule(m1); c.setCode(63204); coursesBean.add(c);
+        c = new ObligatoryCourse(); c.setName("Osnove matematične analize"); c.setLecturer1(PolonaOblak); c.setModule(m1); c.setCode(63202); coursesBean.add(c);
 
         m2 = AddModule("2. semester obvezni", semesters.get(keys.get(1)), true);
         c = new Course(); c.setName("Programiranje 2"); c.setLecturer1(BostjanSlivnik); c.setModule(m2); c.setCode(63278); coursesBean.add(c);
@@ -280,14 +300,15 @@ public class DatabaseSeeder extends HttpServlet{
 
         i2 = AddModule("Umetna inteligenca 2", semesters.get(keys.get(5)), false);
         c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setLecturer1(DanijelSkocaj); c.setModule(i2); c.setCode(63268); coursesBean.add(c);
-
+*/
+        ModuleCourse mc;
         i3 = AddModule("Medijske tehnologije 1", semesters.get(keys.get(4)), false);
-        c = new Course(); c.setName("Multimedijski sistemi"); c.setLecturer1(LukaCehovin); c.setModule(i3); c.setCode(63270); coursesBean.add(c);
-        c = new Course(); c.setName("Računalniška grafika in tehnologija iger");
-        c.setLecturer1(MatijaMarolt); c.setCode(63269); c.setModule(i3); coursesBean.add(c);
+        mc = new ModuleCourse(); mc.setName("Multimedijski sistemi"); mc.setLecturer1(LukaCehovin); mc.setModule(i3); mc.setCode(63270); coursesBean.add(mc);
+        mc = new ModuleCourse(); mc.setName("Računalniška grafika in tehnologija iger");
+        mc.setLecturer1(MatijaMarolt); mc.setCode(63269); mc.setModule(i3); coursesBean.add(mc);
 
         i4 = AddModule("Medijske tehnologije 2", semesters.get(keys.get(5)), false);
-        c = new Course(); c.setName("Osnove oblikovanja"); c.setLecturer1(NavrikaBovcon); c.setModule(i4); c.setCode(63271); coursesBean.add(c);
+        mc = new ModuleCourse(); mc.setName("Osnove oblikovanja"); mc.setLecturer1(NavrikaBovcon); mc.setModule(i4); mc.setCode(63271); coursesBean.add(mc);
 
         log.info("Done");
     }
@@ -312,19 +333,19 @@ public class DatabaseSeeder extends HttpServlet{
 
             switch(i%3){
                 case 0:
-                    enrollment.setSemester1(m1.getSemester());
-                    enrollment.setSemester2(m2.getSemester());
-                    enrollment.setType(enrollmentTypesBean.getByCode(1));
+                    enrollment.setStudyYear1(m1.getStudyYear());
+                    enrollment.setStudyYear2(m2.getStudyYear());
+                    enrollment.setType(enrollmentTypesBean.get(1));
                     break;
                 case 1:
-                    enrollment.setSemester1(m3.getSemester());
-                    enrollment.setSemester2(m4.getSemester());
-                    enrollment.setType(enrollmentTypesBean.getByCode(3));
+                    enrollment.setStudyYear1(m3.getStudyYear());
+                    enrollment.setStudyYear2(m4.getStudyYear());
+                    enrollment.setType(enrollmentTypesBean.get(3));
                     break;
                 case 2:
-                    enrollment.setSemester1(m5.getSemester());
-                    enrollment.setSemester2(m6.getSemester());
-                    enrollment.setType(enrollmentTypesBean.getByCode(3));
+                    enrollment.setStudyYear1(m5.getStudyYear());
+                    enrollment.setStudyYear2(m6.getStudyYear());
+                    enrollment.setType(enrollmentTypesBean.get(3));
                     break;
             }
 
@@ -360,11 +381,11 @@ public class DatabaseSeeder extends HttpServlet{
         }
     }
 
-    private Module AddModule(String name, Semester semester, Boolean obligatory){
+    private Module AddModule(String name, StudyYear studyYear, Boolean obligatory){
         Module module = new Module();
         module.setName(name);
         module.setObligatory(obligatory);
-        module.setSemester(semester);
+        module.setStudyYear(studyYear);
         modulesBean.add(module);
         return module;
     }

@@ -1,13 +1,12 @@
 package si.fri.tpo.team7.entities.enrollments;
 
-import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class EnrollmentType extends Register {
+public class StudyType extends Register {
     @Column(name="name")
     protected String name;
 

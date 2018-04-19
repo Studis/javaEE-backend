@@ -2,8 +2,7 @@ package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
-import si.fri.tpo.team7.entities.curriculum.Program;
-import si.fri.tpo.team7.entities.curriculum.Semester;
+import si.fri.tpo.team7.entities.curriculum.StudyYear;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,16 +15,24 @@ public class Enrollment extends BaseEntity {
     private EnrollmentToken token;
 
     @ManyToOne
-    @JoinColumn(name="semester1")
-    private Semester semester1;
+    @JoinColumn(name="studyYear1")
+    private StudyYear studyYear1;
 
     @ManyToOne
-    @JoinColumn(name="semester2")
-    private Semester semester2;
+    @JoinColumn(name="studyYear2")
+    private StudyYear studyYear2;
 
     @ManyToOne
     @JoinColumn(name="type")
     private EnrollmentType type;
+
+    @ManyToOne
+    @JoinColumn(name="study_type")
+    private StudyType studyType;
+
+    @ManyToOne
+    @JoinColumn(name="study_form")
+    private StudyForm studyForm;
 
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
@@ -39,20 +46,20 @@ public class Enrollment extends BaseEntity {
         this.token = token;
     }
 
-    public Semester getSemester1() {
-        return semester1;
+    public StudyYear getStudyYear1() {
+        return studyYear1;
     }
 
-    public void setSemester1(Semester semester) {
-        this.semester1 = semester;
+    public void setStudyYear1(StudyYear studyYear) {
+        this.studyYear1 = studyYear;
     }
 
-    public Semester getSemester2() {
-        return semester2;
+    public StudyYear getStudyYear2() {
+        return studyYear2;
     }
 
-    public void setSemester2(Semester semester) {
-        this.semester2 = semester;
+    public void setStudyYear2(StudyYear studyYear) {
+        this.studyYear2 = studyYear;
     }
 
     public EnrollmentType getType() {

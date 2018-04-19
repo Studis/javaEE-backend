@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @ApplicationScoped
-public class FailedLoginsBean extends Bean<FailedLogin> {
+public class FailedLoginsBean extends EntityBean<FailedLogin> {
     public FailedLoginsBean() {
         super(FailedLogin.class);
     }
