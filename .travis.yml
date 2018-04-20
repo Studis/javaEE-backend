@@ -9,6 +9,7 @@ services:
   - docker
 
 before_install:
+  - mvn clean package
   - docker build -t dgaspi/studis-jdbc .
   - docker tag studis-jdbc dgaspi/studis-jdbc 
 
@@ -20,7 +21,8 @@ cache:
   directories:
   - "$HOME/.m2"
 install: mvn clean install -DskipTests=true -V -U
-script: mvn test
+script: 
+  - mvn test
 deploy:
   provider: script
   script: bash docker_push
