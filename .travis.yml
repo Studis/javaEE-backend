@@ -2,6 +2,12 @@ sudo: required
 
 language: java
 
+general:
+  branches:
+    only:
+      - release
+
+
 env: 
   - DOCKER_COMPOSE_VERSION=1.18.0
 
@@ -26,4 +32,4 @@ deploy:
   provider: script
   script: bash docker_push
   on:
-    branch: master
+    branch: release 
