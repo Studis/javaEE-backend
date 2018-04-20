@@ -10,7 +10,7 @@ services:
 
 before_install:
   - mvn clean package
-  - docker build -t dgaspi/studis-jdbc .
+  - docker build -t dgaspe/studis-jdbc .
 
 dist: trusty
 
