@@ -2,12 +2,6 @@ sudo: required
 
 language: java
 
-general:
-  branches:
-    only:
-      - release
-
-
 env: 
   - DOCKER_COMPOSE_VERSION=1.18.0
 
