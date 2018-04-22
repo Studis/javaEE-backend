@@ -2,7 +2,9 @@ package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
+import si.fri.tpo.team7.entities.curriculum.Year;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -33,6 +35,10 @@ public class Enrollment extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="study_form")
     private StudyForm studyForm;
+
+    @ManyToOne
+    @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
+    private Curriculum curriculum;
 
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
@@ -68,5 +74,13 @@ public class Enrollment extends BaseEntity {
 
     public void setType(EnrollmentType type) {
         this.type = type;
+    }
+
+    public Curriculum getCurriculum() {
+        return curriculum;
+    }
+
+    public void setCurriculum(Curriculum curriculum) {
+        this.curriculum = curriculum;
     }
 }

@@ -1,13 +1,16 @@
 package si.fri.tpo.team7.entities.POJOs;
 
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.users.Municipality;
 
 import javax.persistence.*;
 
 @Entity
 public class Residence extends BaseEntity {
 
-    private String municipality;
+    @ManyToOne
+    @JoinColumn(name="municipality", nullable=false)
+    private Municipality municipality;
 
     private String country;
 
@@ -15,11 +18,11 @@ public class Residence extends BaseEntity {
 
     private String postalNumber;
 
-    public String getMunicipality() {
+    public Municipality getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(String municipality) {
+    public void setMunicipality(Municipality municipality) {
         this.municipality = municipality;
     }
 

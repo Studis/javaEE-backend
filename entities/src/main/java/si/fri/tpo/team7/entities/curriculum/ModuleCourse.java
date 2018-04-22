@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @DiscriminatorValue(value = "Module")
-public class ModuleCourse extends Course {
+public class ModuleCourse extends CourseExecution {
     @ManyToOne
     @JoinColumn(name="module", referencedColumnName = "id", nullable=false)
     private Module module;

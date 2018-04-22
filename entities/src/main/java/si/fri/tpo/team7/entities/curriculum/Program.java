@@ -12,7 +12,7 @@ public class Program extends Register {
 
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
-    private Set<StudyYear> studyYears;
+    private Set<Curriculum> curriculums;
     
     @Column(name="ects")
     private int ects;

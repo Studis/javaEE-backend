@@ -81,6 +81,8 @@ public abstract class User {
         this.eMail = eMail;
     }
 
+    public String getUniversityEmail(){ return username+"@fri.uni-lj.si"; }
+
     public abstract Role getRole();
 
     public String getPasswordResetToken() {

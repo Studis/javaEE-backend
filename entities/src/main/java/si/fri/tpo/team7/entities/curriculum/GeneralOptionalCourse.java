@@ -5,5 +5,5 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue(value = "GeneralOptional")
-public class GeneralOptionalCourse extends Course {
+public class GeneralOptionalCourse extends CourseExecution {
 }

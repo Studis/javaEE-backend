@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.enrollments;
 
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Course;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 
 import javax.persistence.*;
 
@@ -13,8 +14,8 @@ public class EnrollmentCourse extends BaseEntity {
     private Enrollment enrollment;
 
     @ManyToOne
-    @JoinColumn(name="course", referencedColumnName = "id", nullable=false)
-    private Course course;
+    @JoinColumn(name="courseExecution", referencedColumnName = "id", nullable=false)
+    private CourseExecution courseExecution;
 
     public Enrollment getEnrollment() {
         return enrollment;
@@ -24,11 +25,11 @@ public class EnrollmentCourse extends BaseEntity {
         this.enrollment = enrollment;
     }
 
-    public Course getCourse() {
-        return course;
+    public CourseExecution getCourseExecution() {
+        return courseExecution;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseExecution(CourseExecution courseExecution) {
+        this.courseExecution = courseExecution;
     }
 }

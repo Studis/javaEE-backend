@@ -6,6 +6,7 @@ import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.*;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 public class Year extends Register {
@@ -15,16 +16,9 @@ public class Year extends Register {
     //@MapKey
     //private Map<Integer, StudyYear> semesters;
 
-    public void setSemesters(Map<Integer, StudyYear> semesters) {
-        this.semesters = semesters;
-    }
-
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
-    @MapKey
-    private Map<Integer, StudyYear> semesters;
-
-    public Map<Integer, StudyYear> getSemesters() { return semesters; }
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="year")
+    private Set<Curriculum> curriculums;
 
     @JsonGetter
     @Override

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
@@ -12,39 +13,17 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "course_type")
-public class Course extends Register {
 
+public class Course extends Register {
     @Column(name="name")
     private String name;
 
     @Column(name="ects")
     private int ects;
 
-    @ManyToOne
-    @JoinColumn(name="lecturer1", nullable=false)
-    private Lecturer lecturer1;
-
-    @ManyToOne
-    @JoinColumn(name="lecturer2", nullable=true)
-    private Lecturer lecturer2;
-
-    @ManyToOne
-    @JoinColumn(name="lecturer3", nullable=true)
-    private Lecturer lecturer3;
-
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private Set<EnrollmentCourse> enrollmentCourses;
-
-    public Set<Lecturer> getLecturers(){
-        Set<Lecturer> set = new HashSet<>();
-        set.add(lecturer1);
-        if(lecturer2 != null) set.add(lecturer2);
-        if(lecturer3 != null) set.add(lecturer3);
-        return set;
-    }
+    private List<CourseExecution> courseExecutions;
 
     public String getName() {
         return name;
@@ -62,35 +41,7 @@ public class Course extends Register {
         this.ects = ects;
     }
 
-    public Lecturer getLecturer1() {
-        return lecturer1;
-    }
+    public List<CourseExecution> getCourseExecutions() { return courseExecutions; }
 
-    public void setLecturer1(Lecturer lecturer1) {
-        this.lecturer1 = lecturer1;
-    }
 
-    public Lecturer getLecturer2() {
-        return lecturer2;
-    }
-
-    public void setLecturer2(Lecturer lecturer2) {
-        this.lecturer2 = lecturer2;
-    }
-
-    public Lecturer getLecturer3() {
-        return lecturer3;
-    }
-
-    public void setLecturer3(Lecturer lecturer3) {
-        this.lecturer3 = lecturer3;
-    }
-
-    public Set<EnrollmentCourse> getEnrollmentCourses() {
-        return enrollmentCourses;
-    }
-
-    public void setEnrollmentCourses(Set<EnrollmentCourse> enrollmentCourses) {
-        this.enrollmentCourses = enrollmentCourses;
-    }
 }

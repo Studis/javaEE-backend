@@ -17,9 +17,6 @@ public class Module extends BaseEntity {
     @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
     private StudyYear studyYear;
 
-    @Column(name="obligatory")
-    private boolean obligatory;
-
     @Column(name="name")
     private String name;
 
@@ -33,14 +30,6 @@ public class Module extends BaseEntity {
 
     public void setStudyYear(StudyYear studyYear) {
         this.studyYear = studyYear;
-    }
-
-    public boolean isObligatory() {
-        return obligatory;
-    }
-
-    public void setObligatory(boolean obligatory) {
-        this.obligatory = obligatory;
     }
 
     public String getName() {

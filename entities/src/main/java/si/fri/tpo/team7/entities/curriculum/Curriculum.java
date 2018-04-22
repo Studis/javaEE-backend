@@ -4,35 +4,56 @@ package si.fri.tpo.team7.entities.curriculum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 public class Curriculum extends BaseEntity {
 
-    @Column(name="ects")
-    private int ects;
+    @ManyToOne
+    @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
+    private StudyYear studyYear;
 
-    @Column(name = "title")
-    private String title;
+    @ManyToOne
+    @JoinColumn(name="program", referencedColumnName = "id", nullable=false)
+    private Program program;
 
-    public String getTitle() {
-        return title;
+    @ManyToOne
+    @JoinColumn(name="year", referencedColumnName = "id", nullable=false)
+    private Year year;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
+    private List<Enrollment> enrollments;
+
+    public StudyYear getStudyYear() {
+        return studyYear;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStudyYear(StudyYear studyYear) {
+        this.studyYear = studyYear;
     }
 
-    public int getEcts() {
-        return ects;
+    public Program getProgram() {
+        return program;
     }
 
-    public void setEcts(int ects) {
-        this.ects = ects;
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
     }
 }

@@ -7,9 +7,11 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
+import si.fri.tpo.team7.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 import si.fri.tpo.team7.entities.enums.Role;
@@ -41,7 +43,7 @@ import si.fri.tpo.team7.entities.users.User;
 public class CoursesEndpoint {
 
     @Inject
-    private CoursesBean coursesBean;
+    private CourseExecutionsBean courseExecutionsBean;
 
     @Inject
     private EnrollmentCoursesBean enrollmentCoursesBean;
@@ -53,10 +55,10 @@ public class CoursesEndpoint {
     @GET
     @Secured({Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getCourses(){
-        List<Course> courses = coursesBean.get();
-        List<Course> resultCourses = new ArrayList<>();
+        List<CourseExecution> courses = courseExecutionsBean.get();
+        List<CourseExecution> resultCourses = new ArrayList<>();
         if(authenticatedUser.getRole() == Role.LECTURER) {
-            for (Course c : courses) {
+            for (CourseExecution c : courses) {
                 if (c.getLecturer1().getId() == authenticatedUser.getId()
                         || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
                         || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
@@ -72,20 +74,20 @@ public class CoursesEndpoint {
     @Secured({Role.LECTURER, Role.ADMIN, Role.CLERK, Role.STUDENT})
     @Path("{id}")
     public Response getCourse(@PathParam("id") int id){
-        return Response.ok(coursesBean.get(id)).build();
+        return Response.ok(courseExecutionsBean.get(id)).build();
     }
 
     @PUT
     @Path("{id}")
-    public  Response updateCourse(@PathParam("id") int id, Course course) {
-        return Response.ok(coursesBean.update(id, course)).build();
+    public  Response updateCourse(@PathParam("id") int id, CourseExecution course) {
+        return Response.ok(courseExecutionsBean.update(id, course)).build();
     }
 
     @GET
     //@Secured({Role.LECTURER, Role.ADMIN, Role.CLERK})
     @Path("{id}/enrollments")
     public Response getCourseEnrollments(@PathParam("id") int id){
-        Course course = coursesBean.get(id);
+        CourseExecution course = courseExecutionsBean.get(id);
         return Response.ok(course.getEnrollmentCourses()).build();
     }
 
@@ -94,7 +96,7 @@ public class CoursesEndpoint {
     @Path("{id}/enrollments/csv")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getCourseEnrollmentsCsv(@PathParam("id") int id){
-        Course course = coursesBean.get(id);
+        CourseExecution course = courseExecutionsBean.get(id);
         Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
         String csv = "";
         int cnt = 1;
@@ -114,7 +116,7 @@ public class CoursesEndpoint {
     @Path("{id}/enrollments/pdf")
     @Produces("application/pdf")
     public Response getCourseEnrollmentsPdf(@PathParam("id") int id){
-        Course course = coursesBean.get(id);
+        CourseExecution course = courseExecutionsBean.get(id);
         Set<EnrollmentCourse> courses = course.getEnrollmentCourses();
 
         try{
@@ -129,7 +131,7 @@ public class CoursesEndpoint {
                 contents.beginText();
                 contents.setFont(font, 14);
                 contents.newLineAtOffset(100, 700);
-                contents.showText(course.getName());
+                contents.showText(course.getCourse().getName());
                 contents.setFont(font, 12);
 
                 boolean first = true;
