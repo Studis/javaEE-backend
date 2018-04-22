@@ -88,16 +88,16 @@ public class DatabaseSeeder extends HttpServlet{
             "Knavs", "Gosar", "Osterc", "Lapajne", "Žagar", "Ramovš", "Kotnik", "Ahačič", "Kolar", "Kašpar", "Furlan", "Babič"};
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        log.info("Seeder started running");
-        PrintWriter writer = new PrintWriter(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-            }
-        });
-
-        runSeed(writer);
-
-        log.info("Seeder finnished");
+//        log.info("Seeder started running");
+//        PrintWriter writer = new PrintWriter(new OutputStream() {
+//            @Override
+//            public void write(int b) throws IOException {
+//            }
+//        });
+//
+//        runSeed(writer);
+//
+//        log.info("Seeder finnished");
     }
 
     @Override
