@@ -1,4 +1,4 @@
-FOM openjdk:8-jre-alpine
+FROM openjdk:8-jre-alpine
 WORKDIR /app
 ADD ./api/target/api-1.0-SNAPSHOT.jar /app
 EXPOSE 9000 
