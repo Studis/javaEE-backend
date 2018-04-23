@@ -22,10 +22,6 @@
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-servlet-jetty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
         <dependency>
@@ -63,7 +59,7 @@
                     <execution>
                         <id>package</id>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
