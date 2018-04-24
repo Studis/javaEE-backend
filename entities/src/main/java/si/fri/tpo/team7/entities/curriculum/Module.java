@@ -1,11 +1,13 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 public class Module extends BaseEntity {
 
@@ -20,29 +22,8 @@ public class Module extends BaseEntity {
     @Column(name="name")
     private String name;
 
-    public List<ModuleCourse> getCourses() { return courses; }
-
-    public void setCourses(List<ModuleCourse> courses){this.courses = courses;}
-
-    public Curriculum getCurriculum() {
-        return curriculum;
-    }
-
-    public void setCurriculum(Curriculum curriculum) {
-        this.curriculum = curriculum;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString(){
         return name;
     }
-
 }

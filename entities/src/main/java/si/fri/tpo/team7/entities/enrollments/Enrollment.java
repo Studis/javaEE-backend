@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
@@ -9,6 +10,7 @@ import si.fri.tpo.team7.entities.curriculum.Year;
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
 @Entity
 public class Enrollment extends BaseEntity {
 
@@ -43,44 +45,4 @@ public class Enrollment extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
     private Set<EnrollmentCourse> courses;
-
-    public EnrollmentToken getToken() {
-        return token;
-    }
-
-    public void setToken(EnrollmentToken token) {
-        this.token = token;
-    }
-
-    public StudyYear getStudyYear1() {
-        return studyYear1;
-    }
-
-    public void setStudyYear1(StudyYear studyYear) {
-        this.studyYear1 = studyYear;
-    }
-
-    public StudyYear getStudyYear2() {
-        return studyYear2;
-    }
-
-    public void setStudyYear2(StudyYear studyYear) {
-        this.studyYear2 = studyYear;
-    }
-
-    public EnrollmentType getType() {
-        return type;
-    }
-
-    public void setType(EnrollmentType type) {
-        this.type = type;
-    }
-
-    public Curriculum getCurriculum() {
-        return curriculum;
-    }
-
-    public void setCurriculum(Curriculum curriculum) {
-        this.curriculum = curriculum;
-    }
 }

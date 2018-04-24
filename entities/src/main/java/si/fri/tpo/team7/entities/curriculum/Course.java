@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -12,8 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
-
 public class Course extends Register {
     @Column(name="name")
     private String name;
@@ -24,24 +25,4 @@ public class Course extends Register {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<CourseExecution> courseExecutions;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getEcts() {
-        return ects;
-    }
-
-    public void setEcts(int ects) {
-        this.ects = ects;
-    }
-
-    public List<CourseExecution> getCourseExecutions() { return courseExecutions; }
-
-
 }

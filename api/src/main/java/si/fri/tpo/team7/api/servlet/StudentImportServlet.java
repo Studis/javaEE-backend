@@ -108,7 +108,7 @@ public class StudentImportServlet extends HttpServlet {
             student.setName(scanner.next());
             student.setSurname(scanner.next());
             int programCode = scanner.nextInt();
-            student.seteMail(scanner.next());
+            student.setEMail(scanner.next());
 
             studentsBean.addStudent(student);
 

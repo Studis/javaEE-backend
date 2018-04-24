@@ -83,7 +83,7 @@ public class StudentsBean {
             em.persist(enrollment);
 
             scanner.next();
-            student.seteMail(scanner.next());
+            student.setEMail(scanner.next());
             return student;
         }
         catch(Exception e){

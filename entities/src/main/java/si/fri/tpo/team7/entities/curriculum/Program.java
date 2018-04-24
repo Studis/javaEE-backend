@@ -1,12 +1,18 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Program extends Register {
 
@@ -19,20 +25,4 @@ public class Program extends Register {
 
     @Column(name = "title")
     private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getEcts() {
-        return ects;
-    }
-
-    public void setEcts(int ects) {
-        this.ects = ects;
-    }
 }

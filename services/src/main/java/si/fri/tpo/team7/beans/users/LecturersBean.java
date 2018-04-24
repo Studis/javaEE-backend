@@ -43,7 +43,7 @@ public class LecturersBean {
         em.persist(s);
         em.flush();
         s.setPassword(s.getUsername());
-        s.seteMail(s.getUsername() + "@fri.uni-lj.si");
+        s.setEMail(s.getUsername() + "@fri.uni-lj.si");
         return s;
     }
 
