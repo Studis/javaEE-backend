@@ -274,7 +274,6 @@ public class DatabaseSeeder extends HttpServlet{
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token);
 
-
             /*switch(i%3){
                 case 0:
                     enrollment.setStudyYear1(m1.getStudyYear());
