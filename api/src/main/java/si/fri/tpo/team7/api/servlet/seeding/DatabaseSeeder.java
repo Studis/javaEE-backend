@@ -229,6 +229,15 @@ public class DatabaseSeeder extends HttpServlet{
         c.setLecturer3(JakaLindic); c.setLecturer2(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setCourse(coursesBean.get(63248)); c.setWinter(false); courseExecutionsBean.add(c);
 
+        List<Curriculum> curriculums = new ArrayList<>();
+        curriculums.add(cur);
+
+        GeneralOptionalCourse goc;
+        goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63281)); goc.setLecturer1(BorutRobic); goc.setCurriculums(curriculums); courseExecutionsBean.add(goc);
+
+        ProfessionalOptionalCourse poc;
+        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(32222)); poc.setLecturer1(BorutRobic); poc.setCurriculums(curriculums); courseExecutionsBean.add(poc);
+
         m = new Module(); m.setName("Umetna inteligenca"); m.setCurriculum(cur); modulesBean.add(m);
         mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); courseExecutionsBean.add(mc);
         mc = new ModuleCourse(); mc.setLecturer1(MatejKristan); mc.setCourse(coursesBean.get(63267)); mc.setModule(m); courseExecutionsBean.add(mc);
