@@ -193,6 +193,7 @@ public class DatabaseSeeder extends HttpServlet{
         Year y = yearsBean.get(year);
         Module m;
         ObligatoryCourse c;
+        ModuleCourse mc;
 
         Curriculum cur;
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(1)); curriculumsBean.add(cur);
@@ -228,22 +229,30 @@ public class DatabaseSeeder extends HttpServlet{
         c.setLecturer3(JakaLindic); c.setLecturer2(DarjaPeljhan); c.setLecturer1(MatejaDrnovsek);
         c.setCourse(coursesBean.get(63248)); c.setWinter(false); courseExecutionsBean.add(c);
 
-        /*i1 = AddModule("Umetna inteligenca 1", semesters.get(keys.get(4)), false);
-        c = new Course(); c.setName("Inteligentni sistemi"); c.setLecturer1(IgorKononenko); c.setLecturer2(MarkoRobnik); c.setModule(i1); c.setCode(63266); coursesBean.add(c);
-        c = new Course(); c.setName("Umetno zaznavanje"); c.setLecturer1(MatejKristan); c.setCode(63267); c.setModule(i1); coursesBean.add(c);
+        m = new Module(); m.setName("Umetna inteligenca"); m.setCurriculum(cur); modulesBean.add(m);
+        mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(MatejKristan); mc.setCourse(coursesBean.get(63267)); mc.setModule(m); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(DanijelSkocaj); mc.setModule(m); mc.setCourse(coursesBean.get(63268)); courseExecutionsBean.add(mc);
 
-        i2 = AddModule("Umetna inteligenca 2", semesters.get(keys.get(5)), false);
-        c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setLecturer1(DanijelSkocaj); c.setModule(i2); c.setCode(63268); coursesBean.add(c);
+        m = new Module(); m.setName("Medijske tehnologije"); m.setCurriculum(cur); modulesBean.add(m);
+        mc = new ModuleCourse(); mc.setLecturer1(LukaCehovin); mc.setModule(m); mc.setCourse(coursesBean.get(63270)); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(MatijaMarolt); mc.setModule(m); mc.setCourse(coursesBean.get(63269));  courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(NavrikaBovcon); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); courseExecutionsBean.add(mc);
 
-        ModuleCourse mc;
-        i3 = AddModule("Medijske tehnologije 1", semesters.get(keys.get(4)), false);
-        mc = new ModuleCourse(); mc.setName("Multimedijski sistemi"); mc.setLecturer1(LukaCehovin); mc.setModule(i3); mc.setId(63270); coursesBean.add(mc);
-        mc = new ModuleCourse(); mc.setName("Računalniška grafika in tehnologija iger");
-        mc.setLecturer1(MatijaMarolt); mc.setId(63269); mc.setModule(i3); coursesBean.add(mc);
+        m = new Module(); m.setName("Informacijski sistemi"); m.setCurriculum(cur); modulesBean.add(m);
 
-        i4 = AddModule("Medijske tehnologije 2", semesters.get(keys.get(5)), false);
-        mc = new ModuleCourse(); mc.setName("Osnove oblikovanja"); mc.setLecturer1(NavrikaBovcon); mc.setModule(i4); mc.setId(63271); coursesBean.add(mc);
-*/
+        m = new Module(); m.setName("Algoritmi in sistemski programi"); m.setCurriculum(cur); modulesBean.add(m);
+
+        m = new Module(); m.setName("Obvladovanje informatike"); m.setCurriculum(cur); modulesBean.add(m);
+
+        m = new Module(); m.setName("Razvoj programske opreme"); m.setCurriculum(cur); modulesBean.add(m);
+
+        m = new Module(); m.setName("Računalniška omrežja"); m.setCurriculum(cur); modulesBean.add(m);
+
+        m = new Module(); m.setName("Računalniški sistemi"); m.setCurriculum(cur); modulesBean.add(m);
+
+
+
         writer.println("Done");
     }
 
@@ -263,7 +272,6 @@ public class DatabaseSeeder extends HttpServlet{
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token);*/
-
 
             /*switch(i%3){
                 case 0:
@@ -315,10 +323,10 @@ public class DatabaseSeeder extends HttpServlet{
         }
     }
 
-    private Module AddModule(String name, StudyYear studyYear){
+    private Module AddModule(String name, Curriculum curriculum){
         Module module = new Module();
         module.setName(name);
-        module.setStudyYear(studyYear);
+        module.setCurriculum(curriculum);
         modulesBean.add(module);
         return module;
     }

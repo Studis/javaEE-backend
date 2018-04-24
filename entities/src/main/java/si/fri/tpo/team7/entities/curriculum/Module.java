@@ -14,8 +14,8 @@ public class Module extends BaseEntity {
     private List<ModuleCourse> courses;
 
     @ManyToOne
-    @JoinColumn(name="studyYear", referencedColumnName = "id", nullable=false)
-    private StudyYear studyYear;
+    @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
+    private Curriculum curriculum;
 
     @Column(name="name")
     private String name;
@@ -24,12 +24,12 @@ public class Module extends BaseEntity {
 
     public void setCourses(List<ModuleCourse> courses){this.courses = courses;}
 
-    public StudyYear getStudyYear() {
-        return studyYear;
+    public Curriculum getCurriculum() {
+        return curriculum;
     }
 
-    public void setStudyYear(StudyYear studyYear) {
-        this.studyYear = studyYear;
+    public void setCurriculum(Curriculum curriculum) {
+        this.curriculum = curriculum;
     }
 
     public String getName() {
