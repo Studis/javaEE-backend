@@ -12,12 +12,11 @@ import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.MunicipalitiesBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
-import si.fri.tpo.team7.entities.POJOs.Residence;
+import si.fri.tpo.team7.entities.users.Residence;
 import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.enrollments.*;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
-import si.fri.tpo.team7.entities.users.Municipality;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -121,7 +120,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddModulesAndCourses(writer, 2016);
         AddModulesAndCourses(writer, 2017);
         AddModulesAndCourses(writer, 2018);
-        //AddStudents(writer);
+        AddStudents(writer);
         AddAdmin(writer);
     }
 
@@ -258,12 +257,12 @@ public class DatabaseSeeder extends HttpServlet{
             student.setPermanent(AddResidence());
             studentsBean.addStudent(student);
 
-            EnrollmentToken token = new EnrollmentToken();
+            /*EnrollmentToken token = new EnrollmentToken();
             token.setStudent(student);
             enrollmentTokensBean.add(token);
 
             Enrollment enrollment = new Enrollment();
-            enrollment.setToken(token);
+            enrollment.setToken(token);*/
 
 
             /*switch(i%3){
@@ -284,7 +283,7 @@ public class DatabaseSeeder extends HttpServlet{
                     break;
             }*/
 
-            enrollmentsBean.add(enrollment);
+            //enrollmentsBean.add(enrollment);
 
             /*switch(i%3){
                 case 0:

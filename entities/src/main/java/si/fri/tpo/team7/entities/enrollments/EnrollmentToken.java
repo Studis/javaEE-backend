@@ -25,7 +25,7 @@ public class EnrollmentToken extends BaseEntity {
     public void setStudent(Student student) {
         this.student = student;
     }
-
+Q
     public Set<Enrollment> getEnrollments() {
         return enrollments;
     }

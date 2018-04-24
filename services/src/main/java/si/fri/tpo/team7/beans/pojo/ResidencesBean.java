@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.beans.pojo;
 
 import si.fri.tpo.team7.beans.EntityBean;
-import si.fri.tpo.team7.entities.POJOs.Residence;
+import si.fri.tpo.team7.entities.users.Residence;
 
 import javax.enterprise.context.ApplicationScoped;
 
