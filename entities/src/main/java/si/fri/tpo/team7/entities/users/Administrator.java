@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(value = "Administrator")
 public class Administrator extends User {
+
     @Override
     public Role getRole() {
         return Role.ADMIN;

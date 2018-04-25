@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.api.servlet.endpoints.curriculum;
 
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -8,21 +9,17 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.beans.curriculum.CourseExecutionsBean;
-import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
-import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.entities.users.User;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,9 +28,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.pdfbox.pdmodel.PDDocument;
-import si.fri.tpo.team7.entities.users.User;
 
 @Path("/courses")
 @CrossOrigin

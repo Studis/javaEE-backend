@@ -1,22 +1,18 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.beans.curriculum.*;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentCoursesBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
-import si.fri.tpo.team7.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.beans.enrollments.*;
-
+import si.fri.tpo.team7.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
 import si.fri.tpo.team7.beans.users.MunicipalitiesBean;
 import si.fri.tpo.team7.beans.users.StudentsBean;
-import si.fri.tpo.team7.entities.users.Residence;
 import si.fri.tpo.team7.entities.curriculum.*;
-import si.fri.tpo.team7.entities.enrollments.*;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
+import si.fri.tpo.team7.entities.users.Residence;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,7 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @WebServlet("/seed")

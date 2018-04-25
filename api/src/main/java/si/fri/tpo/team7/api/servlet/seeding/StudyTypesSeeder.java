@@ -3,9 +3,6 @@ package si.fri.tpo.team7.api.servlet.seeding;
 import si.fri.tpo.team7.beans.enrollments.StudyTypesBean;
 import si.fri.tpo.team7.entities.enrollments.StudyType;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
 public class StudyTypesSeeder extends Seeder {
 
     private StudyTypesBean studyTypesBean;

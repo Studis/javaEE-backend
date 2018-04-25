@@ -1,21 +1,19 @@
 package si.fri.tpo.team7.beans.management;
 
-import com.sun.mail.smtp.SMTPTransport;
-import com.sun.mail.util.BASE64EncoderStream;
 import si.fri.tpo.team7.entities.users.User;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.mail.*;
-import javax.mail.internet.AddressException;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ApplicationScoped

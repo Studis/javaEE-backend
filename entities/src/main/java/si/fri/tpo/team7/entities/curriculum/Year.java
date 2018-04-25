@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import si.fri.tpo.team7.entities.Register;
 
-import javax.persistence.*;
-import java.util.Map;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Data

@@ -1,10 +1,6 @@
 package si.fri.tpo.team7.beans;
 
-import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.entities.BaseEntity;
-import si.fri.tpo.team7.entities.curriculum.Course;
-import si.fri.tpo.team7.entities.curriculum.Program;
-import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

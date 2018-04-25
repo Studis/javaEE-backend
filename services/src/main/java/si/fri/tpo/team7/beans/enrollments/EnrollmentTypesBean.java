@@ -1,6 +1,5 @@
 package si.fri.tpo.team7.beans.enrollments;
 
-import si.fri.tpo.team7.beans.EntityBean;
 import si.fri.tpo.team7.beans.RegisterBean;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 

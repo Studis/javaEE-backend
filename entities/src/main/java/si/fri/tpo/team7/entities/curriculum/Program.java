@@ -3,12 +3,12 @@ package si.fri.tpo.team7.entities.curriculum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 @Data

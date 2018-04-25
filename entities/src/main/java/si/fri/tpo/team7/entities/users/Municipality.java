@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 @Data
 @Entity
 public class Municipality extends Register {
+
     @Column(name="name")
     protected String name;
 }

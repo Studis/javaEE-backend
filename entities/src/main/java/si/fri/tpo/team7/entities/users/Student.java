@@ -8,7 +8,8 @@ import si.fri.tpo.team7.entities.enums.Role;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity

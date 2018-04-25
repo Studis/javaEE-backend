@@ -5,7 +5,6 @@ import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
-import si.fri.tpo.team7.entities.curriculum.Year;
 
 import javax.persistence.*;
 import java.util.Set;

@@ -3,11 +3,6 @@ package si.fri.tpo.team7.api.servlet.seeding;
 import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Scope;
-
 public class EnrollmentTypesSeeders extends Seeder {
 
     private EnrollmentTypesBean enrollmentTypesBean;

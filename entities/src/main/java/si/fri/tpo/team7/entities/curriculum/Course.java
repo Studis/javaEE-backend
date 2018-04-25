@@ -2,16 +2,13 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.Register;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
-import si.fri.tpo.team7.entities.users.Lecturer;
 
-import javax.persistence.*;
-import java.util.HashSet;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity

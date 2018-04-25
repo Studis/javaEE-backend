@@ -3,11 +3,6 @@ package si.fri.tpo.team7.api.servlet.seeding;
 import si.fri.tpo.team7.beans.users.MunicipalitiesBean;
 import si.fri.tpo.team7.entities.users.Municipality;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.io.PrintWriter;
-import java.io.Writer;
-
 public class MunicipalitiesSeeder extends Seeder {
     private MunicipalitiesBean municipalitiesBean;
 

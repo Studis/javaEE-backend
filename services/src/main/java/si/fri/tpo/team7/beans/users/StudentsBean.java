@@ -7,7 +7,6 @@ import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Student;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -101,7 +100,6 @@ public class StudentsBean {
         em.flush();
         s.setUsername(generateUsername(s));
         s.setPassword(s.getUsername());
-        //s.seteMail(s.getUsername() + "@fri.uni-lj.si");
         s.setEnrollmentNumber(generateEnrollmentNum(s));
         return s;
     }

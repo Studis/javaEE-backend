@@ -2,8 +2,6 @@ package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
-import si.fri.tpo.team7.entities.curriculum.ModuleCourse;
-import si.fri.tpo.team7.entities.curriculum.ObligatoryCourse;
 
 public class CoursesSeeder extends Seeder {
     CoursesBean coursesBean;
