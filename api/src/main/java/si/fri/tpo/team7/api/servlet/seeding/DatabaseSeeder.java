@@ -353,7 +353,7 @@ public class DatabaseSeeder extends HttpServlet{
         String[] cities = new String[]{"Kranj", "Ljubljana", "Maribor"};
         Residence r1 = new Residence();
 
-        r1.setCountry("Slovenija");
+        r1.setCountry("SI");
         r1.setMunicipality(municipalitiesBean.get(70));
         r1.setPlaceOfResidence(cities[r.nextInt(cities.length)]);
         r1.setPostalNumber("4000");
