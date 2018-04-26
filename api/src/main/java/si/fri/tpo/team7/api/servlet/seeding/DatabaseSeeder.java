@@ -271,6 +271,7 @@ public class DatabaseSeeder extends HttpServlet{
             student.setSurname(surnames[i]);
             student.setTemporary(AddResidence());
             student.setPermanent(AddResidence());
+            student.setPhoneNumber(AddPhoneNumber());
             studentsBean.addStudent(student);
 
             /*EnrollmentToken token = new EnrollmentToken();
@@ -349,15 +350,30 @@ public class DatabaseSeeder extends HttpServlet{
     }
 
     private Residence AddResidence(){
-
-        String[] cities = new String[]{"Kranj", "Ljubljana", "Maribor"};
+        String[] postCodes = new String[]{"4000", "1000", "2000"};
+        String[] places = new String[]{"Kolodvorska cesta 10", "Večna pot 100", "Ulica Generala Maistra 10"};
         Residence r1 = new Residence();
 
+        int rand = r.nextInt(postCodes.length);
+        int municipality;
+        if(rand == 0) {
+            municipality = 52;
+        } else if(rand == 1) {
+            municipality = 61;
+        } else {
+            municipality = 70;
+        }
         r1.setCountry("SI");
-        r1.setMunicipality(municipalitiesBean.get(70));
-        r1.setPlaceOfResidence(cities[r.nextInt(cities.length)]);
-        r1.setPostalNumber("4000");
+        r1.setMunicipality(municipalitiesBean.get(municipality));
+        r1.setPlaceOfResidence(places[rand]);
+        r1.setPostalNumber(postCodes[rand]);
         residencesBean.add(r1);
         return r1;
+    }
+
+    private String AddPhoneNumber() {
+        String[] prefixes = new String[]{"031", "041", "070", "040"};
+        String suffix = Integer.toString(r.nextInt(899999) + 100000);
+        return prefixes[r.nextInt(prefixes.length)] + suffix;
     }
 }
