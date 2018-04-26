@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Provider
 @Dependent
-@Priority(Priorities.AUTHENTICATION)
+@Priority(Priorities.HEADER_DECORATOR)
 public class CorsFilter implements ContainerResponseFilter {
 
     @Inject
@@ -22,10 +22,15 @@ public class CorsFilter implements ContainerResponseFilter {
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
             throws IOException {
-        String name = "Access-Control-Allow-Origin";
-        String value = "*";// some data from request
-        responseContext.getHeaders().add(name, value);
-
-        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
+        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
+        responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
+        if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
+            responseContext.getHeaders().add("Access-Control-Allow-Headers", requestContext.getHeaderString("Access-Control-Request-Headers"));
+        }
+//        String name = "Access-Control-Allow-Origin";
+//        String value = "*";// some data from request
+//        responseContext.getHeaders().add(name, value);
+//
+//        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
     }
 }

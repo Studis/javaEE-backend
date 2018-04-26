@@ -1,6 +1,5 @@
 package si.fri.tpo.team7.api.servlet.endpoints.curriculum;
 
-import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 
 @Path("/courses")
-@CrossOrigin
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
