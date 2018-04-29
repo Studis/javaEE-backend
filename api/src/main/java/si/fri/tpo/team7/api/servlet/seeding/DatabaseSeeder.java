@@ -13,7 +13,7 @@ import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
-import si.fri.tpo.team7.entities.users.Residence;
+import si.fri.tpo.team7.entities.location.Residence;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;

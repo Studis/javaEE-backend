@@ -160,3 +160,5 @@ $RECYCLE.BIN/
 
 ObjectStore/*
 lib/
+
+config.yaml

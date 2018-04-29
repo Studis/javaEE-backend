@@ -96,6 +96,7 @@ public class StudentsBean {
         if(s == null){
             return null;
         }
+
         em.persist(s);
         em.flush();
         s.setUsername(generateUsername(s));

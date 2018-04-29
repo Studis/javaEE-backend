@@ -1,4 +1,4 @@
-package si.fri.tpo.team7.entities.users;
+package si.fri.tpo.team7.entities.location;
 
 import lombok.Data;
 import si.fri.tpo.team7.entities.Register;

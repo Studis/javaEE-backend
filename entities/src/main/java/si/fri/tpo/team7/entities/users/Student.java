@@ -5,9 +5,13 @@ import lombok.Data;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Role;
+import si.fri.tpo.team7.entities.location.Residence;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +27,10 @@ public class Student extends User {
 
     @Column(length = 13, unique = true)
     protected String emso;
-    protected Instant dateOfBirth;
+
+    protected LocalDate dateOfBirth;
     protected String placeOfBirth;
     protected String gender;
-
     protected String nationality;
 
     protected String taxNumber;
@@ -46,6 +50,7 @@ public class Student extends User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "student")
     private List<EnrollmentToken> enrollmentTokens;
 
+    private boolean freshman = true;
 
     @Override
     public Role getRole() {

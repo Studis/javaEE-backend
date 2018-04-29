@@ -13,16 +13,28 @@
     <artifactId>entities</artifactId>
 
     <dependencies>
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.20</version>
         </dependency>
+        <!-- Countries -->
         <dependency>
             <groupId>com.neovisionaries</groupId>
             <artifactId>nv-i18n</artifactId>
             <version>LATEST</version>
         </dependency>
+        <!-- Bean validation-->
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-el-uel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-bean-validation-hibernate-validator</artifactId>
+        </dependency>
+        <!-- DB Postgres -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

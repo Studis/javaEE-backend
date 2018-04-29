@@ -1,9 +1,9 @@
-package si.fri.tpo.team7.entities.users;
+package si.fri.tpo.team7.entities.location;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.location.Municipality;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -24,7 +24,7 @@ public class Residence extends BaseEntity {
     private String postalNumber;
 
     //https://stackoverflow.com/questions/139867/is-there-an-open-source-java-enum-of-iso-3166-1-country-codes
-    public void setCountry(@NotNull String country) throws IllegalArgumentException {
+    public void setCountry(String country) throws IllegalArgumentException {
         try {
             CountryCode cc = CountryCode.getByCodeIgnoreCase(country);
             if(cc == null) {

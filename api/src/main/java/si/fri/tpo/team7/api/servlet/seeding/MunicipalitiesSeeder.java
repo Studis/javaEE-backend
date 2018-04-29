@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.services.beans.users.MunicipalitiesBean;
-import si.fri.tpo.team7.entities.users.Municipality;
+import si.fri.tpo.team7.entities.location.Municipality;
 
 public class MunicipalitiesSeeder extends Seeder {
     private MunicipalitiesBean municipalitiesBean;
