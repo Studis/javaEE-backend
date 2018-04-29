@@ -1,12 +1,14 @@
 package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Data
 @Entity
 public class EnrollmentToken extends BaseEntity {
 
@@ -17,20 +19,4 @@ public class EnrollmentToken extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="token")
     private Set<Enrollment> enrollments;
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-    public Set<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(Set<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
 }

@@ -1,10 +1,14 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
-import si.fri.tpo.team7.entities.curriculum.Course;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Data
 @Entity
 public class EnrollmentCourse extends BaseEntity {
 
@@ -13,22 +17,6 @@ public class EnrollmentCourse extends BaseEntity {
     private Enrollment enrollment;
 
     @ManyToOne
-    @JoinColumn(name="course", referencedColumnName = "id", nullable=false)
-    private Course course;
-
-    public Enrollment getEnrollment() {
-        return enrollment;
-    }
-
-    public void setEnrollment(Enrollment enrollment) {
-        this.enrollment = enrollment;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+    @JoinColumn(name="courseExecution", referencedColumnName = "id", nullable=false)
+    private CourseExecution courseExecution;
 }

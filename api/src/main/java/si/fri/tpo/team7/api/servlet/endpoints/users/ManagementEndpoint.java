@@ -1,7 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.users;
 
-import com.kumuluz.ee.cors.annotations.CrossOrigin;
-import si.fri.tpo.team7.beans.management.ManagementBean;
+import si.fri.tpo.team7.services.beans.management.ManagementBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("management")
-@CrossOrigin
 @Consumes({MediaType.APPLICATION_JSON,
 MediaType.TEXT_PLAIN})
 @Produces(MediaType.APPLICATION_JSON)

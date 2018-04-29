@@ -1,7 +1,13 @@
 package si.fri.tpo.team7.entities;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
+import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
+
+@Data
 @Entity
 @MappedSuperclass
 @NamedQueries(value =
@@ -10,16 +16,18 @@ import javax.persistence.*;
                 @NamedQuery(name = "Student.removeStudent", query = "DELETE FROM Student s WHERE s.id = :id")
         })
 public class BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 7)
     protected int id;
 
-    public int getId() {
-        return id;
-    }
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date createdAt;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date updatedAt;
+
 }

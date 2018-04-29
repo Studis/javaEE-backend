@@ -1,10 +1,15 @@
 package si.fri.tpo.team7.entities.exams;
 
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+@Data
 @Entity
 public class ExamEnrollment extends BaseEntity {
     @ManyToOne
@@ -17,4 +22,7 @@ public class ExamEnrollment extends BaseEntity {
 
     @Column(name="mark")
     private int mark;
+
+    @Column(name="score")
+    private int score;
 }

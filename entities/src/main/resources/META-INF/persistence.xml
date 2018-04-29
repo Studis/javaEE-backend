@@ -4,10 +4,21 @@
         <jta-data-source>jdbc/StudisJdbcDS</jta-data-source>
 
         <class>si.fri.tpo.team7.entities.curriculum.Course</class>
+        <class>si.fri.tpo.team7.entities.curriculum.CourseExecution</class>
+        <class>si.fri.tpo.team7.entities.curriculum.Curriculum</class>
         <class>si.fri.tpo.team7.entities.curriculum.Program</class>
         <class>si.fri.tpo.team7.entities.curriculum.Year</class>
         <class>si.fri.tpo.team7.entities.curriculum.Module</class>
-        <class>si.fri.tpo.team7.entities.curriculum.Semester</class>
+        <class>si.fri.tpo.team7.entities.curriculum.StudyYear</class>
+
+        <class>si.fri.tpo.team7.entities.curriculum.ObligatoryCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.ModuleCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.GeneralOptionalCourse</class>
+        <class>si.fri.tpo.team7.entities.curriculum.ProfessionalOptionalCourse</class>
+
+        <class>si.fri.tpo.team7.entities.enrollments.StudyForm</class>
+        <class>si.fri.tpo.team7.entities.enrollments.StudyType</class>
+
 
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentCourse</class>
         <class>si.fri.tpo.team7.entities.enrollments.EnrollmentToken</class>
@@ -24,7 +35,8 @@
         <class>si.fri.tpo.team7.entities.users.Administrator</class>
 
         <class>si.fri.tpo.team7.entities.FailedLogin</class>
-        <class>si.fri.tpo.team7.entities.POJOs.Residence</class>
+        <class>si.fri.tpo.team7.entities.users.Municipality</class>
+        <class>si.fri.tpo.team7.entities.users.Residence</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

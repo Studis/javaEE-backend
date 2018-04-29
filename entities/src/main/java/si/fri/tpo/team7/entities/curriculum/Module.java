@@ -1,61 +1,29 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
-import java.util.Set;
 
+@Data
 @Entity
 public class Module extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-    private List<Course> courses;
+    private List<ModuleCourse> courses;
 
     @ManyToOne
-    @JoinColumn(name="semester", referencedColumnName = "id", nullable=false)
-    private Semester semester;
-
-    @Column(name="obligatory")
-    private boolean obligatory;
+    @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
+    private Curriculum curriculum;
 
     @Column(name="name")
     private String name;
-
-    public List<Course> getCourses() { return courses; }
-
-    public void setCourses(List<Course> courses){this.courses = courses;}
-
-    public Semester getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Semester semester) {
-        this.semester = semester;
-    }
-
-    public boolean isObligatory() {
-        return obligatory;
-    }
-
-    public void setObligatory(boolean obligatory) {
-        this.obligatory = obligatory;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString(){
         return name;
     }
-
 }

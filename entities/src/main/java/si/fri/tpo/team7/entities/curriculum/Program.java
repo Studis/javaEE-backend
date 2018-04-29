@@ -1,48 +1,28 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import si.fri.tpo.team7.entities.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import si.fri.tpo.team7.entities.Register;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
-public class Program extends BaseEntity {
+public class Program extends Register {
 
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="program")
-    private Set<Semester> semesters;
-
-    @Column(name="code", unique = true)
-    private int code;
+    private Set<Curriculum> curriculums;
     
     @Column(name="ects")
     private int ects;
 
     @Column(name = "title")
     private String title;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getEcts() {
-        return ects;
-    }
-
-    public void setEcts(int ects) {
-        this.ects = ects;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 }

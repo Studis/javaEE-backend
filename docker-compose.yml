@@ -1,0 +1,22 @@
+version: "3" 
+services:
+  db:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+  studis-image:
+    image: dgaspe/studis-jdbc:latest
+    environment:
+      KUMULUZEE_DATASOURCES0_CONNECTIONURL: jdbc:postgresql://db:5432/postgres
+      KUMULUZEE_DATASOURCES0_JNDINAME: jdbc/StudisJdbcDS
+      KUMULUZEE_DATASOURCES0_USERNAME: postgres
+      KUMULUZEE_DATASOURCES0_PASSWORD: postgres
+    ports:
+      - "8080:4000"
+    depends_on:
+      - db 
+

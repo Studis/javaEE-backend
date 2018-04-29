@@ -1,10 +1,9 @@
 package si.fri.tpo.team7.api.servlet;
 
-import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
-import si.fri.tpo.team7.beans.curriculum.SemestersBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
-import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.services.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
+import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
@@ -18,8 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.transaction.Transactional;
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 @WebServlet(name = "FileUploadServlet", urlPatterns = {"/v1/import-students"})
@@ -37,9 +37,6 @@ public class StudentImportServlet extends HttpServlet {
 
     @Inject
     ProgramsBean programsBean;
-
-    @Inject
-    SemestersBean semestersBean;
 
     @Inject
     EnrollmentsBean enrollmentsBean;
@@ -113,7 +110,7 @@ public class StudentImportServlet extends HttpServlet {
             student.setName(scanner.next());
             student.setSurname(scanner.next());
             int programCode = scanner.nextInt();
-            student.seteMail(scanner.next());
+            student.setEMail(scanner.next());
 
             studentsBean.addStudent(student);
 
@@ -126,12 +123,12 @@ public class StudentImportServlet extends HttpServlet {
             enrollmentTokensBean.add(token1);
             enrollmentTokensBean.add(token2);
 
-            Program program = programsBean.getByCode(programCode);
+            Program program = programsBean.get(programCode);
 
             Enrollment enrollment = new Enrollment();
             enrollment.setToken(token1);
-            enrollment.setSemester1(semestersBean.current());
-            enrollment.setSemester2(semestersBean.next());
+            //enrollment.setStudyYear1(semestersBean.current());
+            //enrollment.setStudyYear2(semestersBean.next());
 
             enrollmentsBean.add(enrollment);
             return student;
