@@ -1,10 +1,12 @@
 package si.fri.tpo.team7.services.interceptors;
 
+import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.exams.Exam;
 
 import javax.annotation.Priority;
+import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -39,12 +41,8 @@ public class ScheduleExamInterceptor {
                 log.severe("Exam cannot be writen at that hour, please select time between 6 and 21");
                 return null;
             }
-            try {
-                return context.proceed();
-            } finally {
-
-            }
         }
-        return null;
+        return context.proceed();
+
     }
 }
