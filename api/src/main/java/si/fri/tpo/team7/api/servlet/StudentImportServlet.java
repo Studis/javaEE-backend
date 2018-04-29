@@ -1,9 +1,9 @@
 package si.fri.tpo.team7.api.servlet;
 
-import si.fri.tpo.team7.beans.curriculum.ProgramsBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentTokensBean;
-import si.fri.tpo.team7.beans.enrollments.EnrollmentsBean;
-import si.fri.tpo.team7.beans.users.StudentsBean;
+import si.fri.tpo.team7.services.beans.curriculum.ProgramsBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentTokensBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
+import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;

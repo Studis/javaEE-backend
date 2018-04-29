@@ -1,14 +1,10 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-import si.fri.tpo.team7.beans.curriculum.CoursesBean;
-import si.fri.tpo.team7.beans.exams.ExamsBean;
+import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
+import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
 
-import javax.inject.Inject;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

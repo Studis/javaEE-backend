@@ -3,7 +3,7 @@ package si.fri.tpo.team7.api.servlet.filters;
 import org.apache.commons.codec.binary.Base64;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
-import si.fri.tpo.team7.beans.FailedLoginsBean;
+import si.fri.tpo.team7.services.beans.FailedLoginsBean;
 import si.fri.tpo.team7.entities.users.User;
 
 import javax.annotation.Priority;

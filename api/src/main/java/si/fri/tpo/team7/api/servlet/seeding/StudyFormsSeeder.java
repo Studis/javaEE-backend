@@ -1,6 +1,6 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import si.fri.tpo.team7.beans.enrollments.StudyFormsBean;
+import si.fri.tpo.team7.services.beans.enrollments.StudyFormsBean;
 import si.fri.tpo.team7.entities.enrollments.StudyForm;
 
 public class StudyFormsSeeder extends Seeder {

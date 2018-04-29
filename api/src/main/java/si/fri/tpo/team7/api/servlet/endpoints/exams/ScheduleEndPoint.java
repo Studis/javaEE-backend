@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.api.servlet.endpoints.exams;
 
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
-import si.fri.tpo.team7.beans.exams.ExamsBean;
+import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
 
