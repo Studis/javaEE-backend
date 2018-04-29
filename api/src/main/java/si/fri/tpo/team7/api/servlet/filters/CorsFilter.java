@@ -27,10 +27,5 @@ public class CorsFilter implements ContainerResponseFilter {
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
             responseContext.getHeaders().add("Access-Control-Allow-Headers", requestContext.getHeaderString("Access-Control-Request-Headers"));
         }
-//        String name = "Access-Control-Allow-Origin";
-//        String value = "*";// some data from request
-//        responseContext.getHeaders().add(name, value);
-//
-//        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
     }
 }

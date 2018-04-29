@@ -22,7 +22,7 @@ public class ScheduleEndPoint {
     private ExamsBean examsBean;
 
     @GET
-    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    // @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getExams(){
         List<Exam> exams = examsBean.get();
         return Response.ok(exams).build();
