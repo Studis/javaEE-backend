@@ -23,6 +23,7 @@ public class Residence extends BaseEntity {
 
     private String postalNumber;
 
+    //https://stackoverflow.com/questions/139867/is-there-an-open-source-java-enum-of-iso-3166-1-country-codes
     public void setCountry(@NotNull String country) throws IllegalArgumentException {
         try {
             CountryCode cc = CountryCode.getByCodeIgnoreCase(country);
