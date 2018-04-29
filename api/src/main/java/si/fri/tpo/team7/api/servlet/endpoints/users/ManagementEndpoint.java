@@ -1,6 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.users;
 
-import si.fri.tpo.team7.beans.management.ManagementBean;
+import si.fri.tpo.team7.services.beans.management.ManagementBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

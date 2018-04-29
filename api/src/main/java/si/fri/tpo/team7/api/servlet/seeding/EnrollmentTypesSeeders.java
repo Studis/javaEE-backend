@@ -1,6 +1,6 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import si.fri.tpo.team7.beans.enrollments.EnrollmentTypesBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentTypesBean;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
 
 public class EnrollmentTypesSeeders extends Seeder {

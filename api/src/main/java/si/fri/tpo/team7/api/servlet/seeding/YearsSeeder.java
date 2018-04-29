@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import si.fri.tpo.team7.beans.curriculum.StudyYearsBean;
-import si.fri.tpo.team7.beans.curriculum.YearsBean;
+import si.fri.tpo.team7.services.beans.curriculum.StudyYearsBean;
+import si.fri.tpo.team7.services.beans.curriculum.YearsBean;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
 import si.fri.tpo.team7.entities.curriculum.Year;
 
