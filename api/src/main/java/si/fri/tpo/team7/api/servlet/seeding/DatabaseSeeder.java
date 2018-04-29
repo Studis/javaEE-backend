@@ -73,25 +73,7 @@ public class DatabaseSeeder extends HttpServlet{
     String[] surnames = new String[]{
             "Kozel", "Kovačič", "Mlakar", "Struna", "Žitnik", "Zupan", "Strnad", "Vlašič", "Jež", "Horvat", "Kokot", "Korošec",
             "Knavs", "Gosar", "Osterc", "Lapajne", "Žagar", "Ramovš", "Kotnik", "Ahačič", "Kolar", "Kašpar", "Furlan", "Babič"};
-
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
-//        log.info("Seeder started running");
-        PrintWriter writer = new PrintWriter(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-
-            @Override
-            public void write(byte[] b, int off, int len) throws IOException {
-                log.info(new String(b, off, len));
-            }
-        });
-//
-//        runSeed(writer);
-//
-//        log.info("Seeder finnished");
-    }
+    
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
