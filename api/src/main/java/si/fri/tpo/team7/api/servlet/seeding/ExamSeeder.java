@@ -47,8 +47,7 @@ public class ExamSeeder extends Seeder {
                 e.setScheduledAt(calendar.getTime());
                 e.setWritten(pastImport);
             }
-            while (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
-                    calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || examsBean.add(e) == null);
+            while (examsBean.add(e) == null);
             index++;
         }
     }
