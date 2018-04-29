@@ -1,8 +1,11 @@
 package si.fri.tpo.team7.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Entity
@@ -18,4 +21,13 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 7)
     protected int id;
+
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date createdAt;
+
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date updatedAt;
+
 }

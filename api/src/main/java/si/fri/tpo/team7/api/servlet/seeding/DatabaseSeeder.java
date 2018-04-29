@@ -2,6 +2,7 @@ package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.beans.curriculum.*;
 import si.fri.tpo.team7.beans.enrollments.*;
+import si.fri.tpo.team7.beans.exams.ExamsBean;
 import si.fri.tpo.team7.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.beans.users.AdministratorBean;
 import si.fri.tpo.team7.beans.users.LecturersBean;
@@ -56,6 +57,7 @@ public class DatabaseSeeder extends HttpServlet{
     @Inject private StudyYearsBean studyYearsBean;
     @Inject private CourseExecutionsBean courseExecutionsBean;
     @Inject private CurriculumsBean curriculumsBean;
+    @Inject private ExamsBean examsBean;
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
@@ -110,6 +112,7 @@ public class DatabaseSeeder extends HttpServlet{
         new MunicipalitiesSeeder(municipalitiesBean).Seed(writer);
         new CoursesSeeder(coursesBean).Seed(writer);
         new YearsSeeder(startYear, endYear, yearsBean, studyYearsBean).Seed(writer);
+        new ExamSeeder(examsBean, coursesBean).Seed(writer);
 
         AddPrograms(writer);
         AddLecturers(writer);

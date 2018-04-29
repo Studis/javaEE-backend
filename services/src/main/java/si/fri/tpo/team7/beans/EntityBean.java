@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -45,6 +46,7 @@ public class EntityBean<T extends BaseEntity> {
         if(obj == null){
             return null;
         }
+        obj.setCreatedAt(new Date());
         em.persist(obj);
         em.flush();
         return obj;
@@ -65,6 +67,7 @@ public class EntityBean<T extends BaseEntity> {
         if(obj == null) {
             throw new NotFoundException(_class.getName()+" " + id + " not found.");
         }
+        obj.setUpdatedAt(new Date());
         s.setId(id);
         em.merge(s);
         return s;
