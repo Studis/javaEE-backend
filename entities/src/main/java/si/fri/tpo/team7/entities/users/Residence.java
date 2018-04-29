@@ -1,7 +1,6 @@
 package si.fri.tpo.team7.entities.users;
 
 import com.neovisionaries.i18n.CountryCode;
-import com.sun.istack.internal.NotNull;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class Residence extends BaseEntity {
 
     private String postalNumber;
 
-    public void setCountry(@NotNull String country) throws IllegalArgumentException {
+    public void setCountry(String country) throws IllegalArgumentException {
         try {
             CountryCode cc = CountryCode.getByCodeIgnoreCase(country);
             if(cc == null) {
