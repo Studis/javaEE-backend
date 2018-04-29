@@ -2,14 +2,12 @@ package si.fri.tpo.team7.entities.curriculum;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
 @Entity
 public class Curriculum extends BaseEntity {
 
@@ -28,4 +26,36 @@ public class Curriculum extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
     private List<Enrollment> enrollments;
+
+    public StudyYear getStudyYear() {
+        return studyYear;
+    }
+
+    public void setStudyYear(StudyYear studyYear) {
+        this.studyYear = studyYear;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public Year getYear() {
+        return year;
+    }
+
+    public void setYear(Year year) {
+        this.year = year;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
 }

@@ -1,7 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.CascadeType;
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-@Data
 @Entity
 public class Course extends Register {
     @Column(name="name")
@@ -22,4 +20,29 @@ public class Course extends Register {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<CourseExecution> courseExecutions;
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
+    }
+
+    public List<CourseExecution> getCourseExecutions() {
+        return courseExecutions;
+    }
+
+    public void setCourseExecutions(List<CourseExecution> courseExecutions) {
+        this.courseExecutions = courseExecutions;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

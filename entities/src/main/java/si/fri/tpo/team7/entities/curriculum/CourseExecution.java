@@ -1,7 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
@@ -10,7 +9,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "course_type")
@@ -34,6 +32,50 @@ public class CourseExecution extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="lecturer3", nullable=true)
     private Lecturer lecturer3;
+
+    public void setWinter(boolean winter) {
+        this.winter = winter;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public Lecturer getLecturer1() {
+        return lecturer1;
+    }
+
+    public void setLecturer1(Lecturer lecturer1) {
+        this.lecturer1 = lecturer1;
+    }
+
+    public Lecturer getLecturer2() {
+        return lecturer2;
+    }
+
+    public void setLecturer2(Lecturer lecturer2) {
+        this.lecturer2 = lecturer2;
+    }
+
+    public Lecturer getLecturer3() {
+        return lecturer3;
+    }
+
+    public void setLecturer3(Lecturer lecturer3) {
+        this.lecturer3 = lecturer3;
+    }
+
+    public Set<EnrollmentCourse> getEnrollmentCourses() {
+        return enrollmentCourses;
+    }
+
+    public void setEnrollmentCourses(Set<EnrollmentCourse> enrollmentCourses) {
+        this.enrollmentCourses = enrollmentCourses;
+    }
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseExecution")

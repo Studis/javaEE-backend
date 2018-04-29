@@ -1,8 +1,6 @@
 package si.fri.tpo.team7.entities.exams;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Course;
 
@@ -10,8 +8,6 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Exam extends BaseEntity {
 
@@ -30,4 +26,35 @@ public class Exam extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date scheduledAt;
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public boolean isWritten() {
+        return written;
+    }
+
+    public void setWritten(boolean written) {
+        this.written = written;
+    }
+
+    public boolean isPastImport() {
+        return pastImport;
+    }
+
+    public void setPastImport(boolean pastImport) {
+        this.pastImport = pastImport;
+    }
+
+    public Date getScheduledAt() {
+        return scheduledAt;
+    }
+
+    public void setScheduledAt(Date scheduledAt) {
+        this.scheduledAt = scheduledAt;
+    }
 }

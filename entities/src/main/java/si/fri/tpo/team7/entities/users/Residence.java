@@ -2,14 +2,12 @@ package si.fri.tpo.team7.entities.users;
 
 import com.neovisionaries.i18n.CountryCode;
 import com.sun.istack.internal.NotNull;
-import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Data
 @Entity
 public class Residence extends BaseEntity {
 
@@ -33,5 +31,33 @@ public class Residence extends BaseEntity {
         } catch (Exception e) {
             throw new IllegalArgumentException(country + " is not a valid country.");
         }
+    }
+
+    public Municipality getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(Municipality municipality) {
+        this.municipality = municipality;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getPlaceOfResidence() {
+        return placeOfResidence;
+    }
+
+    public void setPlaceOfResidence(String placeOfResidence) {
+        this.placeOfResidence = placeOfResidence;
+    }
+
+    public String getPostalNumber() {
+        return postalNumber;
+    }
+
+    public void setPostalNumber(String postalNumber) {
+        this.postalNumber = postalNumber;
     }
 }

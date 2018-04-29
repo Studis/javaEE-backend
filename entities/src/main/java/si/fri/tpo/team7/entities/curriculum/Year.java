@@ -2,7 +2,6 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.CascadeType;
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
-@Data
 @Entity
 public class Year extends Register {
     //@OneToMany(cascade=CascadeType.ALL, mappedBy="year", fetch = FetchType.EAGER)

@@ -1,13 +1,11 @@
 package si.fri.tpo.team7.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
-@Data
 @Entity
 @MappedSuperclass
 @NamedQueries(value =
@@ -26,8 +24,33 @@ public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createdAt;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     protected Date updatedAt;
+
 
 }

@@ -1,8 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.Register;
 
 import javax.persistence.CascadeType;
@@ -11,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Program extends Register {
 
@@ -25,4 +21,28 @@ public class Program extends Register {
 
     @Column(name = "title")
     private String title;
+
+    public Set<Curriculum> getCurriculums() {
+        return curriculums;
+    }
+
+    public void setCurriculums(Set<Curriculum> curriculums) {
+        this.curriculums = curriculums;
+    }
+
+    public int getEcts() {
+        return ects;
+    }
+
+    public void setEcts(int ects) {
+        this.ects = ects;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
