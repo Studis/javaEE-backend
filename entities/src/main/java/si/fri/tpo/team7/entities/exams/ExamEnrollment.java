@@ -25,4 +25,5 @@ public class ExamEnrollment extends BaseEntity {
 
     @Column(name="score")
     private int score;
+    
 }
