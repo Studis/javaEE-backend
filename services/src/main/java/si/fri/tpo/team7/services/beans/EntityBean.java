@@ -69,8 +69,7 @@ public class EntityBean<T extends BaseEntity> {
         }
         obj.setUpdatedAt(new Date());
         s.setId(id);
-        em.merge(s);
-        return s;
+        return em.merge(s);
     }
 
     public T getByCode(int code){

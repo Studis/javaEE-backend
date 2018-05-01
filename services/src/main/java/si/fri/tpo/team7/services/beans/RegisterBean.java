@@ -66,7 +66,6 @@ public class RegisterBean<T extends Register> {
             throw new NotFoundException(_class.getName()+" " + id + " not found.");
         }
         s.setId(id);
-        em.merge(s);
-        return s;
+        return em.merge(s);
     }
 }
