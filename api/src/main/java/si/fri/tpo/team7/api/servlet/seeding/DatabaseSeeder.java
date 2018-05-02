@@ -4,6 +4,7 @@ import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
+import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.services.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.services.beans.users.*;
@@ -57,6 +58,7 @@ public class DatabaseSeeder extends HttpServlet{
     @Inject private CourseExecutionsBean courseExecutionsBean;
     @Inject private CurriculumsBean curriculumsBean;
     @Inject private ExamsBean examsBean;
+    @Inject private ExamEnrollmentBean examEnrollmentBean;
     @Inject private ClerksBean clerksBean;
 
     Program uniProgram, vsProgram;
@@ -128,6 +130,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddAdmin(writer);
 
         new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
+        new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean);
     }
 
     private void AddPrograms(PrintWriter writer){
