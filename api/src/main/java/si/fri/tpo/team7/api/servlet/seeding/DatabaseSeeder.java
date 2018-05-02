@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
@@ -232,6 +233,7 @@ public class DatabaseSeeder extends HttpServlet{
         addObligatory(cur, DejanLavbic, 63215, false);
 
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(2)); curriculumsBean.add(cur);
+        Curriculum cur2 = cur;
         addObligatory(cur, PatricioBulic, 63218, true);
         addObligatory(cur, BorutRobic, 63283, true);
         addObligatory(cur, IgorKononenko, 63279, true);
@@ -253,15 +255,29 @@ public class DatabaseSeeder extends HttpServlet{
 
         List<Curriculum> curriculums = new ArrayList<>();
         curriculums.add(cur);
+        curriculums.add(cur2);
 
+        List<GeneralOptionalCourse> gocs = new ArrayList<>();
         GeneralOptionalCourse goc;
         goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63222)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(false); courseExecutionsBean.add(goc);
+        gocs.add(goc);
         goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63223)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(true); courseExecutionsBean.add(goc);
+        gocs.add(goc);
         goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63224)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(false); courseExecutionsBean.add(goc);
+        gocs.add(goc);
 
+        List<ProfessionalOptionalCourse> pocs = new ArrayList<>();
         ProfessionalOptionalCourse poc;
-        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63219)); poc.setLecturer1(NezkaMramor); poc.setCurriculums(curriculums); poc.setWinter(false); courseExecutionsBean.add(poc);
-        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63220)); poc.setLecturer1(AndrejBauer); poc.setCurriculums(curriculums); poc.setWinter(false); courseExecutionsBean.add(poc);
+        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63219)); poc.setLecturer1(NezkaMramor); poc.setWinter(false); courseExecutionsBean.add(poc);
+        pocs.add(poc);
+        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63220)); poc.setLecturer1(AndrejBauer); poc.setWinter(false); courseExecutionsBean.add(poc);
+        pocs.add(poc);
+
+        for(Curriculum scur : curriculums){
+            scur.setProfessionalOptionalCourses(pocs);
+            scur.setGeneralOptionalCourses(gocs);
+            curriculumsBean.update(scur.getId(), scur);
+        }
 
         m = new Module(); m.setName("Umetna inteligenca"); m.setCurriculum(cur); modulesBean.add(m);
         mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); mc.setWinter(true); courseExecutionsBean.add(mc);
@@ -284,8 +300,6 @@ public class DatabaseSeeder extends HttpServlet{
         m = new Module(); m.setName("Računalniška omrežja"); m.setCurriculum(cur); modulesBean.add(m);
 
         m = new Module(); m.setName("Računalniški sistemi"); m.setCurriculum(cur); modulesBean.add(m);
-
-
 
         writer.println("Done");
     }
@@ -310,56 +324,57 @@ public class DatabaseSeeder extends HttpServlet{
             student.setPhoneNumber(AddPhoneNumber());
             studentsBean.addStudent(student);
 
-            /*EnrollmentToken token = new EnrollmentToken();
+            EnrollmentToken token = new EnrollmentToken();
             token.setStudent(student);
             enrollmentTokensBean.add(token);
 
             Enrollment enrollment = new Enrollment();
-            enrollment.setToken(token);*/
+            enrollment.setToken(token);
 
-            /*switch(i%3){
+            Curriculum c = null;
+            switch(i%3){
                 case 0:
-                    enrollment.setStudyYear1(m1.getStudyYear());
-                    enrollment.setStudyYear2(m2.getStudyYear());
+                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(1));
+                    enrollment.setCurriculum(c);
                     enrollment.setType(enrollmentTypesBean.get(1));
                     break;
                 case 1:
-                    enrollment.setStudyYear1(m3.getStudyYear());
-                    enrollment.setStudyYear2(m4.getStudyYear());
+                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(2));
+                    enrollment.setCurriculum(c);
                     enrollment.setType(enrollmentTypesBean.get(3));
                     break;
                 case 2:
-                    enrollment.setStudyYear1(m5.getStudyYear());
-                    enrollment.setStudyYear2(m6.getStudyYear());
+                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(3));
+                    enrollment.setCurriculum(c);
                     enrollment.setType(enrollmentTypesBean.get(3));
                     break;
-            }*/
+            }
 
-            //enrollmentsBean.add(enrollment);
-
-            /*switch(i%3){
+            enrollmentsBean.add(enrollment);
+            switch(i%3){
                 case 0:
-                    Enroll(enrollment, m1);
-                    Enroll(enrollment, m2);
+                    Enroll(enrollment, c.getObligatoryCourses());
                     break;
                 case 1:
-                    Enroll(enrollment, m3);
-                    Enroll(enrollment, m4);
+                    Enroll(enrollment, c.getObligatoryCourses());
+                    Enroll(enrollment, c.getGeneralOptionalCourses());
+                    Enroll(enrollment, c.getProfessionalOptionalCourses());
                     break;
                 case 2:
-                    Enroll(enrollment, m5);
-                    Enroll(enrollment, m6);
-                    Enroll(enrollment, i1);
-                    Enroll(enrollment, i2);
+                    Enroll(enrollment, c.getObligatoryCourses());
+                    Enroll(enrollment, c.getGeneralOptionalCourses());
+                    Enroll(enrollment, c.getProfessionalOptionalCourses());
+                    for(Module m : c.getModules()){
+                        Enroll(enrollment, m.getCourses());
+                    }
                     break;
-            }*/
+            }
         }
         writer.println("Done");
     }
 
-    private void Enroll(Enrollment enrollment, Module module){
-        Module m = modulesBean.get(module.getId());
-        for(CourseExecution course: m.getCourses()) {
+    private void Enroll(Enrollment enrollment, List<? extends CourseExecution> courses){
+        for(CourseExecution course: courses) {
             EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
             enrollmentCourse.setEnrollment(enrollment);
             enrollmentCourse.setCourseExecution(course);

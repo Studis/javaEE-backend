@@ -18,14 +18,6 @@ public class Enrollment extends BaseEntity {
     private EnrollmentToken token;
 
     @ManyToOne
-    @JoinColumn(name="studyYear1")
-    private StudyYear studyYear1;
-
-    @ManyToOne
-    @JoinColumn(name="studyYear2")
-    private StudyYear studyYear2;
-
-    @ManyToOne
     @JoinColumn(name="type")
     private EnrollmentType type;
 
