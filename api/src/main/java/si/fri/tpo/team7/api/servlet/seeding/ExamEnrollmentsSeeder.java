@@ -12,6 +12,7 @@ import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -52,21 +53,25 @@ public class ExamEnrollmentsSeeder extends Seeder {
 
     public void seedExamSchedule (Calendar calendar, List<Exam> exams, List<ExamEnrollment> examEnrollments, boolean pastImport) {
 
+
         for (EnrollmentCourse enrollmentCourse: enrollmentCoursesBean.get()) {
             ExamEnrollment e = new ExamEnrollment();
             for (Exam exam: examsBean.get()) {
-                Random rn = new Random();
-                Integer max = 10;
-                Integer min = 5;
-                if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
-                    e.setEnrollment(enrollmentCourse);
-                    e.setExam(exam);
-                    e.setMark(rn.nextInt(max - min + 1) + min);
-                    max = 100;
-                    min = 0;
-                    e.setScore(rn.nextInt(max - min + 1) + min);
-                    examEnrollmentBean.add(e);
+                if (exam.getScheduledAt().after(new Date())) { // If exam is scheduled in the future
+                    Random rn = new Random();
+                    Integer max = 10;
+                    Integer min = 5;
+                    if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                        e.setEnrollment(enrollmentCourse);
+                        e.setExam(exam);
+                        e.setMark(rn.nextInt(max - min + 1) + min);
+                        max = 100;
+                        min = 0;
+                        e.setScore(rn.nextInt(max - min + 1) + min);
+                        examEnrollmentBean.add(e);
+                    }
                 }
+
             }
         }
     }
