@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Provider
 @Dependent
-@Priority(Priorities.HEADER_DECORATOR)
+@Priority(Priorities.AUTHENTICATION)
 public class CorsFilter implements ContainerResponseFilter {
 
     @Inject
