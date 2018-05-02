@@ -5,19 +5,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Course;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false,exclude={
+        "courseExecution"})
 @Entity
 public class Exam extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name="course")
-    private Course course;
+    @JoinColumn(name="courseExecution")
+    private CourseExecution courseExecution;
 
     @Column(name="written")
     private boolean written;

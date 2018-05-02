@@ -114,7 +114,7 @@ public class DatabaseSeeder extends HttpServlet{
         new MunicipalitiesSeeder(municipalitiesBean).Seed(writer);
         new CoursesSeeder(coursesBean).Seed(writer);
         new YearsSeeder(startYear, endYear, yearsBean, studyYearsBean).Seed(writer);
-        new ExamSeeder(examsBean, coursesBean).Seed(writer);
+
 
         AddPrograms(writer);
         AddLecturers(writer);
@@ -126,6 +126,8 @@ public class DatabaseSeeder extends HttpServlet{
         AddModulesAndCourses(writer, 2018);
         AddStudents(writer);
         AddAdmin(writer);
+
+        new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
     }
 
     private void AddPrograms(PrintWriter writer){
