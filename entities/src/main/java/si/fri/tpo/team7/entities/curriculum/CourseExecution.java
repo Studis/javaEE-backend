@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Lecturer;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "course_type")
+@EqualsAndHashCode(exclude = "enrollmentCourses")
 public class CourseExecution extends BaseEntity {
 
     @Column(name="winter")

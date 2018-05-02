@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
@@ -11,19 +12,12 @@ import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = "courses")
 public class Enrollment extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="token")
     private EnrollmentToken token;
-
-    @ManyToOne
-    @JoinColumn(name="studyYear1")
-    private StudyYear studyYear1;
-
-    @ManyToOne
-    @JoinColumn(name="studyYear2")
-    private StudyYear studyYear2;
 
     @ManyToOne
     @JoinColumn(name="type")

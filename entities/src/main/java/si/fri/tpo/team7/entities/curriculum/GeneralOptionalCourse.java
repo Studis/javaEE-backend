@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -14,6 +15,6 @@ import java.util.List;
 @DiscriminatorValue(value = "GeneralOptional")
 public class GeneralOptionalCourse extends CourseExecution {
 
-    @OneToMany
+    @ManyToMany(mappedBy = "generalOptionalCourses")
     protected List<Curriculum> curriculums;
 }

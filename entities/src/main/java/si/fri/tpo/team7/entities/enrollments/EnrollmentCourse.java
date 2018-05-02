@@ -1,6 +1,8 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 

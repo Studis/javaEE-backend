@@ -161,4 +161,4 @@ $RECYCLE.BIN/
 ObjectStore/*
 lib/
 
-config.yaml
+api/src/main/resources/config.yaml
