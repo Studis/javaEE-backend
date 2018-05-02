@@ -142,8 +142,7 @@ public class StudentsBean {
             throw new NotFoundException("Student " + id + " not found.");
         }
         s.setId(id);
-        em.merge(s);
-        return s;
+        return em.merge(s);
     }
 
     @Transactional

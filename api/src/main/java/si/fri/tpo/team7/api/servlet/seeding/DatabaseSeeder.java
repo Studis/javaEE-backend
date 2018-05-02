@@ -1,13 +1,11 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
+import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.services.beans.pojo.ResidencesBean;
-import si.fri.tpo.team7.services.beans.users.AdministratorBean;
-import si.fri.tpo.team7.services.beans.users.LecturersBean;
-import si.fri.tpo.team7.services.beans.users.MunicipalitiesBean;
-import si.fri.tpo.team7.services.beans.users.StudentsBean;
+import si.fri.tpo.team7.services.beans.users.*;
 import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -58,6 +56,7 @@ public class DatabaseSeeder extends HttpServlet{
     @Inject private CourseExecutionsBean courseExecutionsBean;
     @Inject private CurriculumsBean curriculumsBean;
     @Inject private ExamsBean examsBean;
+    @Inject private ClerksBean clerksBean;
 
     Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
@@ -65,6 +64,8 @@ public class DatabaseSeeder extends HttpServlet{
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan, LukaCehovin,
             NavrikaBovcon, NinaBostic, AndrejBauer;
+
+    private Clerk DanicaKotnik;
 
     String[] names = new String[]{
             "Franc", "Janez", "Ivan", "Anton", "Jožef", "Gašper", "Aleks", "Aljaž", "Bojan", "Ciril", "Daniel", "Dejan",
@@ -116,6 +117,7 @@ public class DatabaseSeeder extends HttpServlet{
 
         AddPrograms(writer);
         AddLecturers(writer);
+        AddClerks(writer);
         AddResidence();
         AddModulesAndCourses(writer, 2015);
         AddModulesAndCourses(writer, 2016);
@@ -181,12 +183,29 @@ public class DatabaseSeeder extends HttpServlet{
         writer.println("Done");
     }
 
+    private void AddClerks(PrintWriter writer) {
+        writer.print("Adding Clerks ... ");
+
+        DanicaKotnik = AddClerk("Danica", "Kotnik");
+        writer.println("Done");
+
+    }
+
     private Lecturer AddLecturer(String name, String surname){
         Lecturer l = new Lecturer();
         l.setName(name);
         l.setSurname(surname);
         l.setUsername(name.toLowerCase()+"."+surname.replace(' ', '.').toLowerCase());
         lecturersBean.addLecturer(l);
+        return l;
+    }
+
+    private Clerk AddClerk(String name, String surname){
+        Clerk l = new Clerk();
+        l.setName(name);
+        l.setSurname(surname);
+        l.setUsername(name.toLowerCase()+"."+surname.replace(' ', '.').toLowerCase());
+        clerksBean.addClerk(l);
         return l;
     }
 

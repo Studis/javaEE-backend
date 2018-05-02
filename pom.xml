@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <kumuluzee-security.version>1.0.1</kumuluzee-security.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencyManagement>
@@ -56,6 +57,15 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-api -->
+        <dependency>
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2-api</artifactId>
+            <version>2.5.0-b61</version>
+        </dependency>
+
+    </dependencies>
     <build>
         <plugins>
             <plugin>

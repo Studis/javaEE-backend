@@ -1,6 +1,8 @@
 sudo: required
 
 language: java
+jdk:
+ - openjdk8
 
 env: 
   - DOCKER_COMPOSE_VERSION=1.18.0
@@ -26,4 +28,4 @@ deploy:
   provider: script
   script: bash docker_push
   on:
-    branch: release 
+    branch: database 

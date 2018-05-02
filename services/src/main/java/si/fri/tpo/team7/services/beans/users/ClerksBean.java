@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.services.beans.users;
 
+
+import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,29 +13,29 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @ApplicationScoped
-public class LecturersBean {
-    private Logger log = Logger.getLogger(LecturersBean.class.getName());
+public class ClerksBean {
+    private Logger log = Logger.getLogger(ClerksBean.class.getName());
 
     @PersistenceContext(unitName = "studis-jpa")
     private EntityManager em;
 
     @Transactional
-    public List<Lecturer> getLecturers() {
+    public List<Clerk> getClerks() {
 
-        return em.createNamedQuery("Lecturer.getAll", Lecturer.class).getResultList();
+        return em.createNamedQuery("Clerk.getAll", Clerk.class).getResultList();
     }
 
     @Transactional
-    public Lecturer getLecturer(int id){
-        Lecturer lecturer = em.find(Lecturer.class, id);
-        if(lecturer == null) {
+    public Clerk getClerk(int id){
+        Clerk clerk = em.find(Clerk.class, id);
+        if(clerk == null) {
             throw new NotFoundException("Lecturer " + id + " not found.");
         }
-        return lecturer;
+        return clerk;
     }
 
     @Transactional
-    public Lecturer addLecturer(Lecturer s) {
+    public Clerk addClerk(Clerk s) {
         if(s == null){
             return null;
         }
@@ -45,19 +47,19 @@ public class LecturersBean {
     }
 
     @Transactional
-    public void removeLecturer(int id) {
-        Lecturer lecturer = em.find(Lecturer.class, id);
-        if(lecturer == null) {
-            throw new NotFoundException("Lecturer " + id + " not found.");
+    public void removeClerk(int id) {
+        Clerk clerk = em.find(Clerk.class, id);
+        if(clerk == null) {
+            throw new NotFoundException("Clerk " + id + " not found.");
         }
-        em.remove(lecturer);
+        em.remove(clerk);
     }
 
     @Transactional
-    public Lecturer updateLecturer(int id, Lecturer s) {
-        Lecturer lecturer = em.find(Lecturer.class, id);
-        if(lecturer == null) {
-            throw new NotFoundException("Lecturer " + id + " not found.");
+    public Clerk updateClerk(int id, Clerk s) {
+        Clerk clerk = em.find(Clerk.class, id);
+        if(clerk == null) {
+            throw new NotFoundException("Clerk " + id + " not found.");
         }
         s.setId(id);
         return em.merge(s);
