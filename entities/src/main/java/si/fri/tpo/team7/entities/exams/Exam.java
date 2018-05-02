@@ -12,8 +12,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = false,exclude={
-        "courseExecution"})
+@EqualsAndHashCode(callSuper = false)
 @Entity
 public class Exam extends BaseEntity {
 

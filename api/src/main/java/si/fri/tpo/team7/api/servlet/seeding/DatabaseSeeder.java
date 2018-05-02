@@ -90,9 +90,9 @@ public class DatabaseSeeder extends HttpServlet{
             }
         });
 //
-//        runSeed(writer);
+        runSeed(writer);
 //
-//        log.info("Seeder finnished");
+        log.info("Seeder finnished");
     }
 
     @Override

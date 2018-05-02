@@ -7,6 +7,7 @@ import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.entities.exams.BEScheduleExam;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
@@ -22,10 +23,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Path("/exams/scheduled")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -57,30 +55,34 @@ public class ScheduleEndPoint {
 
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    /**
+     * Get exams visible by particular role
+     * */
     public Response getExams() {
         List<Exam> exams = examsBean.get();
         List<Exam> resultExams = new ArrayList<>(); // Get lecturer's courses
 
         List<CourseExecution> courseExecutions = courseExecutionsBean.get();
-        List<CourseExecution> resultCourseExecutions = new ArrayList<>();
+        List<Integer> resultCourseExecutionsIds = new ArrayList<>();
 
         if(authenticatedUser.getRole() == Role.LECTURER) {
             for (CourseExecution c : courseExecutions) {
                 if (c.getLecturer1().getId() == authenticatedUser.getId()
                         || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
                         || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
-                    resultCourseExecutions.add(c);
+                    resultCourseExecutionsIds.add(c.getId());
                 }
             }
             for (Exam e : exams) {
-                if (resultCourseExecutions.contains(e.getCourseExecution())) {
+                CourseExecution rs = e.getCourseExecution();
+                if (resultCourseExecutionsIds.contains(e.getCourseExecution().getId())) {
                     resultExams.add(e);
                 }
             }
         }
         else if (authenticatedUser.getRole() == Role.CLERK || authenticatedUser.getRole() == Role.ADMIN) {
            resultExams = exams;
-        } else if (authenticatedUser.getRole() == Role.STUDENT) { //TODO:  Check if student is enrolled
+        } else if (authenticatedUser.getRole() == Role.STUDENT) {
             Integer userId = authenticatedUser.getId();
             List<EnrollmentToken> enrollmentTokens = enrollmentTokensBean.get(); // get tokens of user
             for (EnrollmentToken enrollmentToken: enrollmentTokens) {
@@ -88,14 +90,12 @@ public class ScheduleEndPoint {
 
                     List<Enrollment> userEnrollments = new ArrayList<>(); // User enrollments
 
-
                     List<Enrollment> allEnrollments = enrollmentsBean.get(); // User enrollments
                     for (Enrollment oneEnrollment: allEnrollments) {
                         if (oneEnrollment.getToken().getId() == (enrollmentToken.getId())) {
                             userEnrollments.add(oneEnrollment);
                         }
                     }
-                    // correct
 
                     List<EnrollmentCourse> enrollmentCourses = enrollmentCoursesBean.get();
 
@@ -107,18 +107,17 @@ public class ScheduleEndPoint {
                             userEnrollmentCourses.add(enrollmentCourse);
                         }
                      }
-
                     // Iterate overy user enrollments
                     for (EnrollmentCourse userEnrollment: userEnrollmentCourses) {
 
                         // CourseExecution ce = enrollmentCoursesBean.get(userEnrollment.getId()).getCourseExecution();
 
-                        resultCourseExecutions.add(userEnrollment.getCourseExecution());
+                        resultCourseExecutionsIds.add(userEnrollment.getCourseExecution().getId());
                     }
                 }
             }
             for (Exam e : exams) {
-                if (resultCourseExecutions.contains(e.getCourseExecution())) {
+                if (resultCourseExecutionsIds.contains(e.getCourseExecution().getId())) {
                     resultExams.add(e);
                 }
             }
@@ -127,6 +126,7 @@ public class ScheduleEndPoint {
         }
         return Response.ok(resultExams).build();
     }
+
 
     @GET
     @Secured({Role.LECTURER, Role.ADMIN, Role.CLERK, Role.STUDENT})
@@ -142,11 +142,31 @@ public class ScheduleEndPoint {
         return Response.ok(examsBean.update(id, exam)).build();
     }
 
+    /**
+     *
+     {
+     "scheduledAt": "2018-01-23T17:37:59Z",
+     "courseExecution": "128"
+     }
+     */
     @POST
     @Secured({Role.LECTURER, Role.CLERK})
-    public  Response addExam(Exam exam) {
-        examsBean.add(exam);
-        return Response.ok(exam).build();
+    public  Response addExam(BEScheduleExam beScheduleExam) {
+        try {
+            Integer courseExecutionId = beScheduleExam.getCourseExecution();
+            Date scheduledAt = beScheduleExam.getScheduledAt();
+            Exam exam = new Exam();
+            CourseExecution courseExecution = courseExecutionsBean.get(courseExecutionId);
+            if (courseExecution == null) throw new NotFoundException("Course execution is not valid!");
+            exam.setCourseExecution(courseExecution);
+            exam.setScheduledAt(scheduledAt);
+            exam.setPastImport(false);
+            exam.setWritten(false);
+            examsBean.add(exam);
+            return Response.ok(exam).build();
+        } catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
+        }
     }
 
 }

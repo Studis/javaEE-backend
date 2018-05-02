@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import javax.ws.rs.NotAllowedException;
+import javax.ws.rs.NotFoundException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -30,16 +32,13 @@ public class ScheduleExamInterceptor {
             calendar.setTime(obj.getScheduledAt());
             if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
                     calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                log.severe("Exam is not allowed to be scheduled on weekends");
-                return null;
+                throw new NotFoundException( "Exam is not allowed to be scheduled on weekends");
             }
             if (obj.getScheduledAt().before(new Date()) && !obj.isPastImport()) {
-                log.severe("Exam is not allowed to be scheduled in the past");
-                return null;
+                throw new NotFoundException( "Exam is not allowed to be scheduled in the past");
             }
             if (calendar.get(Calendar.HOUR_OF_DAY) < 6 && calendar.get(Calendar.HOUR_OF_DAY) > 21) {
-                log.severe("Exam cannot be writen at that hour, please select time between 6 and 21");
-                return null;
+                throw new NotFoundException("Exam cannot be writen at that hour, please select time between 6 and 21");
             }
         }
         return context.proceed();

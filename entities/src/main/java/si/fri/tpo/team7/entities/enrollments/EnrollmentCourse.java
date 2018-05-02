@@ -12,9 +12,6 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude={
-        "enrollment",
-        "courseExecution"})
 public class EnrollmentCourse extends BaseEntity {
 
     @ManyToOne

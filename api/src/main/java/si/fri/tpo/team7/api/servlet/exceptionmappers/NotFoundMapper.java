@@ -16,12 +16,12 @@ public class NotFoundMapper implements ExceptionMapper<NotFoundException> {
     public Response toResponse(NotFoundException e) {
 
         RestError restError = new RestError();
-        restError.setStatus(404);
-        restError.setCode("resource.not.found");
+        restError.setStatus(400);
+        restError.setCode("bad.request");
         restError.setMessage(e.getMessage());
 
         return Response
-                .status(Response.Status.NOT_FOUND)
+                .status(Response.Status.BAD_REQUEST)
                 .entity(restError)
                 .build();
     }
