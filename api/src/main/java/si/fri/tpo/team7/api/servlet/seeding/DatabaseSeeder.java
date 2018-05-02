@@ -279,27 +279,27 @@ public class DatabaseSeeder extends HttpServlet{
             curriculumsBean.update(scur.getId(), scur);
         }
 
-        m = new Module(); m.setName("Umetna inteligenca"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Umetna inteligenca", cur);
         mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); mc.setWinter(true); courseExecutionsBean.add(mc);
         mc = new ModuleCourse(); mc.setLecturer1(MatejKristan); mc.setCourse(coursesBean.get(63267)); mc.setModule(m); mc.setWinter(true); courseExecutionsBean.add(mc);
         mc = new ModuleCourse(); mc.setLecturer1(DanijelSkocaj); mc.setCourse(coursesBean.get(63268)); mc.setModule(m); mc.setWinter(false); courseExecutionsBean.add(mc);
 
-        m = new Module(); m.setName("Medijske tehnologije"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Medijske tehnologije", cur);
         mc = new ModuleCourse(); mc.setLecturer1(LukaCehovin); mc.setModule(m); mc.setCourse(coursesBean.get(63270)); mc.setWinter(true); courseExecutionsBean.add(mc);
         mc = new ModuleCourse(); mc.setLecturer1(MatijaMarolt); mc.setModule(m); mc.setCourse(coursesBean.get(63269)); mc.setWinter(true); courseExecutionsBean.add(mc);
         mc = new ModuleCourse(); mc.setLecturer1(NavrikaBovcon); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
-        m = new Module(); m.setName("Informacijski sistemi"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Informacijski sistemi", cur);
 
-        m = new Module(); m.setName("Algoritmi in sistemski programi"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Algoritmi in sistemski programi", cur);
 
-        m = new Module(); m.setName("Obvladovanje informatike"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Obvladovanje informatike", cur);
 
-        m = new Module(); m.setName("Razvoj programske opreme"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Razvoj programske opreme", cur);
 
-        m = new Module(); m.setName("Računalniška omrežja"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Računalniška omrežja", cur);
 
-        m = new Module(); m.setName("Računalniški sistemi"); m.setCurriculum(cur); modulesBean.add(m);
+        m = AddModule("Računalniški sistemi", cur);
 
         writer.println("Done");
     }
@@ -324,53 +324,67 @@ public class DatabaseSeeder extends HttpServlet{
             student.setPhoneNumber(AddPhoneNumber());
             studentsBean.addStudent(student);
 
-            EnrollmentToken token = new EnrollmentToken();
-            token.setStudent(student);
-            enrollmentTokensBean.add(token);
-
-            Enrollment enrollment = new Enrollment();
-            enrollment.setToken(token);
-
-            Curriculum c = null;
-            switch(i%3){
+            switch(i%3) {
                 case 0:
-                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(1));
-                    enrollment.setCurriculum(c);
-                    enrollment.setType(enrollmentTypesBean.get(1));
+                    EnrollInYear(student, 2015, 1);
+                    EnrollInYear(student, 2016, 2);
+                    EnrollInYear(student, 2017, 3);
                     break;
                 case 1:
-                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(2));
-                    enrollment.setCurriculum(c);
-                    enrollment.setType(enrollmentTypesBean.get(3));
+                    EnrollInYear(student, 2016, 1);
+                    EnrollInYear(student, 2017, 2);
+                    EnrollInYear(student, 2018, 3);
                     break;
                 case 2:
-                    c = curriculumsBean.get(uniProgram, yearsBean.get(2017), studyYearsBean.get(3));
-                    enrollment.setCurriculum(c);
-                    enrollment.setType(enrollmentTypesBean.get(3));
-                    break;
-            }
-
-            enrollmentsBean.add(enrollment);
-            switch(i%3){
-                case 0:
-                    Enroll(enrollment, c.getObligatoryCourses());
-                    break;
-                case 1:
-                    Enroll(enrollment, c.getObligatoryCourses());
-                    Enroll(enrollment, c.getGeneralOptionalCourses());
-                    Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    break;
-                case 2:
-                    Enroll(enrollment, c.getObligatoryCourses());
-                    Enroll(enrollment, c.getGeneralOptionalCourses());
-                    Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    for(Module m : c.getModules()){
-                        Enroll(enrollment, m.getCourses());
-                    }
+                    EnrollInYear(student, 2017, 1);
+                    EnrollInYear(student, 2018, 2);
                     break;
             }
         }
         writer.println("Done");
+    }
+
+    private void EnrollInYear(Student student, int year, int studyYear){
+        Curriculum c = curriculumsBean.get(uniProgram, yearsBean.get(year), studyYearsBean.get(studyYear));
+
+        EnrollmentToken token = new EnrollmentToken();
+        token.setStudent(student);
+        enrollmentTokensBean.add(token);
+
+        Enrollment enrollment = new Enrollment();
+        enrollment.setToken(token);
+        enrollment.setCurriculum(c);
+
+        switch(studyYear){
+            case 1:
+                enrollment.setType(enrollmentTypesBean.get(1));
+                break;
+            case 2:
+            case 3:
+                enrollment.setCurriculum(c);
+                enrollment.setType(enrollmentTypesBean.get(3));
+                break;
+        }
+
+        enrollmentsBean.add(enrollment);
+        switch(studyYear){
+            case 1:
+                Enroll(enrollment, c.getObligatoryCourses());
+                break;
+            case 2:
+                Enroll(enrollment, c.getObligatoryCourses());
+                Enroll(enrollment, c.getGeneralOptionalCourses());
+                Enroll(enrollment, c.getProfessionalOptionalCourses());
+                break;
+            case 3:
+                Enroll(enrollment, c.getObligatoryCourses());
+                Enroll(enrollment, c.getGeneralOptionalCourses());
+                Enroll(enrollment, c.getProfessionalOptionalCourses());
+                for(Module m : c.getModules()){
+                    Enroll(enrollment, m.getCourses());
+                }
+                break;
+        }
     }
 
     private void Enroll(Enrollment enrollment, List<? extends CourseExecution> courses){
@@ -402,7 +416,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     private Residence AddResidence(){
         String[] postCodes = new String[]{"4000", "1000", "2000"};
-        String[] places = new String[]{"Kolodvorska cesta 10", "Večna pot 100", "Ulica Generala Maistra 10"};
+        String[] places = new String[]{"Kolodvorska cesta", "Večna pot", "Ulica Generala Maistra"};
         Residence r1 = new Residence();
 
         int rand = r.nextInt(postCodes.length);
@@ -416,7 +430,7 @@ public class DatabaseSeeder extends HttpServlet{
         }
         r1.setCountry("SI");
         r1.setMunicipality(municipalitiesBean.get(municipality));
-        r1.setPlaceOfResidence(places[rand]);
+        r1.setPlaceOfResidence(places[rand]+" "+r.nextInt(50));
         r1.setPostalNumber(postCodes[rand]);
         residencesBean.add(r1);
         return r1;

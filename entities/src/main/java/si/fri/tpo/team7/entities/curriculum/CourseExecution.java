@@ -8,6 +8,7 @@ import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -37,7 +38,7 @@ public class CourseExecution extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseExecution")
-    private Set<EnrollmentCourse> enrollmentCourses;
+    private List<EnrollmentCourse> enrollmentCourses;
 
     public Set<Lecturer> getLecturers(){
         Set<Lecturer> set = new HashSet<>();
