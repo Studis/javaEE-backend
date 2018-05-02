@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Role;
@@ -18,6 +19,7 @@ import java.util.List;
 @Data
 @Entity
 @DiscriminatorValue(value = "Student")
+@EqualsAndHashCode(exclude = "enrollmentTokens")
 @NamedQueries(value =
         {
                 @NamedQuery(name = "Student.getAll", query = "SELECT s FROM Student s"),

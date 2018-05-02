@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.users.Student;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = "enrollments")
 public class EnrollmentToken extends BaseEntity {
 
     @ManyToOne
