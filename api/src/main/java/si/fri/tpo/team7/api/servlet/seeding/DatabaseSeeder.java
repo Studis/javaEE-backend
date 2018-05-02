@@ -64,7 +64,7 @@ public class DatabaseSeeder extends HttpServlet{
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan, LukaCehovin,
-            NavrikaBovcon;
+            NavrikaBovcon, NinaBostic, AndrejBauer;
 
     String[] names = new String[]{
             "Franc", "Janez", "Ivan", "Anton", "Jožef", "Gašper", "Aleks", "Aljaž", "Bojan", "Ciril", "Daniel", "Dejan",
@@ -175,6 +175,8 @@ public class DatabaseSeeder extends HttpServlet{
         MatejKristan = AddLecturer("Matej", "Kristan");
         LukaCehovin = AddLecturer("Luka", "Čehovin Zajc");
         NavrikaBovcon = AddLecturer("Navrika", "Bovcon");
+        NinaBostic = AddLecturer("Nina", "Bostič Bishop");
+        AndrejBauer = AddLecturer("Andrej", "Bauer");
 
         writer.println("Done");
     }
@@ -198,31 +200,31 @@ public class DatabaseSeeder extends HttpServlet{
 
         Curriculum cur;
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(1)); curriculumsBean.add(cur);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(ViljanMahnic); c.setCourse(coursesBean.get(63277)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(GasperFijavz); c.setCourse(coursesBean.get(63203)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(PaulBorutKersevan); c.setCourse(coursesBean.get(63205)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(NikolajZimic); c.setCourse(coursesBean.get(63204)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(PolonaOblak); c.setCourse(coursesBean.get(63202)); c.setWinter(true); courseExecutionsBean.add(c);
+        addObligatory(cur, ViljanMahnic, 63277, true);
+        addObligatory(cur, GasperFijavz, 63203, true);
+        addObligatory(cur, PaulBorutKersevan, 63205, true);
+        addObligatory(cur, NikolajZimic, 63204, true);
+        addObligatory(cur, PolonaOblak, 63202, true);
 
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BostjanSlivnik); c.setCourse(coursesBean.get(63278)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BrankoSter); c.setCourse(coursesBean.get(63212)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(ZoranBosnic); c.setCourse(coursesBean.get(63209)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BojanOrel); c.setCourse(coursesBean.get(63207)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(DejanLavbic); c.setCourse(coursesBean.get(63215)); c.setWinter(false); courseExecutionsBean.add(c);
+        addObligatory(cur, BostjanSlivnik, 63278, false);
+        addObligatory(cur, BrankoSter, 63212, false);
+        addObligatory(cur, ZoranBosnic, 63209, false);
+        addObligatory(cur, BojanOrel, 63207, false);
+        addObligatory(cur, DejanLavbic, 63215, false);
 
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(2)); curriculumsBean.add(cur);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(PatricioBulic); c.setCourse(coursesBean.get(63218)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BorutRobic); c.setCourse(coursesBean.get(63283)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(IgorKononenko); c.setCourse(coursesBean.get(63279)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(AleksandarJurisic); c.setCourse(coursesBean.get(63213)); c.setWinter(true); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(MarkoBajec); c.setCourse(coursesBean.get(63208)); c.setWinter(true); courseExecutionsBean.add(c);
+        addObligatory(cur, PatricioBulic, 63218, true);
+        addObligatory(cur, BorutRobic, 63283, true);
+        addObligatory(cur, IgorKononenko, 63279, true);
+        addObligatory(cur, AleksandarJurisic, 63213, true);
+        addObligatory(cur, MarkoBajec, 63208, true);
 
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(UrosLotric); c.setCourse(coursesBean.get(63216)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BorutRobic); c.setCourse(coursesBean.get(63217)); c.setWinter(false); courseExecutionsBean.add(c);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(BorutRobic); c.setCourse(coursesBean.get(63280)); c.setWinter(false); courseExecutionsBean.add(c);
+        addObligatory(cur, UrosLotric, 63216, false);
+        addObligatory(cur, BorutRobic, 63217, false);
+        addObligatory(cur, BorutRobic, 63280, false);
 
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(3)); curriculumsBean.add(cur);
-        c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(ZoranBosnic); c.setCourse(coursesBean.get(63214)); c.setWinter(true); courseExecutionsBean.add(c);
+        addObligatory(cur, ZoranBosnic, 63214, true);
 
         c = new ObligatoryCourse(); c.setCurriculum(cur); c.setLecturer1(FrancSolina); c.setCourse(coursesBean.get(63281)); c.setWinter(false); courseExecutionsBean.add(c);
         c = new ObligatoryCourse();
@@ -234,20 +236,23 @@ public class DatabaseSeeder extends HttpServlet{
         curriculums.add(cur);
 
         GeneralOptionalCourse goc;
-        goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63281)); goc.setLecturer1(BorutRobic); goc.setCurriculums(curriculums); courseExecutionsBean.add(goc);
+        goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63222)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(false); courseExecutionsBean.add(goc);
+        goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63223)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(true); courseExecutionsBean.add(goc);
+        goc = new GeneralOptionalCourse(); goc.setCourse(coursesBean.get(63224)); goc.setLecturer1(NinaBostic); goc.setCurriculums(curriculums); goc.setWinter(false); courseExecutionsBean.add(goc);
 
         ProfessionalOptionalCourse poc;
-        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63281)); poc.setLecturer1(BorutRobic); poc.setCurriculums(curriculums); courseExecutionsBean.add(poc);
+        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63219)); poc.setLecturer1(NezkaMramor); poc.setCurriculums(curriculums); poc.setWinter(false); courseExecutionsBean.add(poc);
+        poc = new ProfessionalOptionalCourse(); poc.setCourse(coursesBean.get(63220)); poc.setLecturer1(AndrejBauer); poc.setCurriculums(curriculums); poc.setWinter(false); courseExecutionsBean.add(poc);
 
         m = new Module(); m.setName("Umetna inteligenca"); m.setCurriculum(cur); modulesBean.add(m);
-        mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); courseExecutionsBean.add(mc);
-        mc = new ModuleCourse(); mc.setLecturer1(MatejKristan); mc.setCourse(coursesBean.get(63267)); mc.setModule(m); courseExecutionsBean.add(mc);
-        mc = new ModuleCourse(); mc.setLecturer1(DanijelSkocaj); mc.setModule(m); mc.setCourse(coursesBean.get(63268)); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(IgorKononenko); mc.setLecturer2(MarkoRobnik); mc.setCourse(coursesBean.get(63266)); mc.setModule(m); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(MatejKristan); mc.setCourse(coursesBean.get(63267)); mc.setModule(m); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(DanijelSkocaj); mc.setCourse(coursesBean.get(63268)); mc.setModule(m); mc.setWinter(false); courseExecutionsBean.add(mc);
 
         m = new Module(); m.setName("Medijske tehnologije"); m.setCurriculum(cur); modulesBean.add(m);
-        mc = new ModuleCourse(); mc.setLecturer1(LukaCehovin); mc.setModule(m); mc.setCourse(coursesBean.get(63270)); courseExecutionsBean.add(mc);
-        mc = new ModuleCourse(); mc.setLecturer1(MatijaMarolt); mc.setModule(m); mc.setCourse(coursesBean.get(63269));  courseExecutionsBean.add(mc);
-        mc = new ModuleCourse(); mc.setLecturer1(NavrikaBovcon); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(LukaCehovin); mc.setModule(m); mc.setCourse(coursesBean.get(63270)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(MatijaMarolt); mc.setModule(m); mc.setCourse(coursesBean.get(63269)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(NavrikaBovcon); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
         m = new Module(); m.setName("Informacijski sistemi"); m.setCurriculum(cur); modulesBean.add(m);
 
@@ -264,6 +269,15 @@ public class DatabaseSeeder extends HttpServlet{
 
 
         writer.println("Done");
+    }
+
+    public void addObligatory(Curriculum cur, Lecturer lecturer, int courseId, boolean winter){
+        ObligatoryCourse c = new ObligatoryCourse();
+        c.setCurriculum(cur);
+        c.setLecturer1(lecturer);
+        c.setCourse(coursesBean.get(courseId));
+        c.setWinter(winter);
+        courseExecutionsBean.add(c);
     }
 
     private void AddStudents(PrintWriter writer){

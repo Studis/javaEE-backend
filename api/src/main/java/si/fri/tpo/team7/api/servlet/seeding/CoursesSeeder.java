@@ -48,6 +48,9 @@ public class CoursesSeeder extends Seeder {
         c = new Course(); c.setName("Principi programskih jezikov"); c.setId(63220); c.setEcts(6); coursesBean.add(c);
 
         // General optional courses
+        c = new Course(); c.setName("Angleški jezik - nivo A"); c.setId(63222); c.setEcts(3); coursesBean.add(c);
+        c = new Course(); c.setName("Angleški jezik - nivo B"); c.setId(63223); c.setEcts(3); coursesBean.add(c);
+        c = new Course(); c.setName("Angleški jezik - nivo C"); c.setId(63224); c.setEcts(3); coursesBean.add(c);
 
         //Module courses
 
