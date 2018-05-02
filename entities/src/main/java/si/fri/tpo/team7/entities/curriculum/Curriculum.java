@@ -3,6 +3,7 @@ package si.fri.tpo.team7.entities.curriculum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 
@@ -11,6 +12,12 @@ import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude={
+        "obligatoryCourses",
+        "enrollments",
+        "professionalOptionalCourses",
+        "generalOptionalCourses",
+        "modules"})
 public class Curriculum extends BaseEntity {
 
     @ManyToOne
