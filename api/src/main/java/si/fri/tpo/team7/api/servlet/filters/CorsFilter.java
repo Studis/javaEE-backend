@@ -23,7 +23,11 @@ public class CorsFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
             throws IOException {
         responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, HEAD, DELETE");
-        responseContext.getHeaders().add("Access-Control-Allow-Origin", "https://www.studis.tk");
+        if (CorsFilter.class.getResource("CorsFilter.class").toString().substring(0,2).equals("fi")) { // Running from fi(le) (development)
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:8081");
+        } else { // Running from jar (production)
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", "https://www.studis.tk");
+        }
         responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
             responseContext.getHeaders().add("Access-Control-Allow-Headers", requestContext.getHeaderString("Access-Control-Request-Headers"));
