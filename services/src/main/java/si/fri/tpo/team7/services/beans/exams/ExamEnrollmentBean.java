@@ -2,6 +2,7 @@ package si.fri.tpo.team7.services.beans.exams;
 
 
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.entities.exams.Exam;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 @ApplicationScoped
+@EnrollToExam
 public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
     public ExamEnrollmentBean() {
