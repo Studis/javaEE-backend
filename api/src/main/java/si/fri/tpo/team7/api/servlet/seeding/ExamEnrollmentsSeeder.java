@@ -54,32 +54,53 @@ public class ExamEnrollmentsSeeder extends Seeder {
             for (EnrollmentCourse enrollmentCourse: enrollmentCoursesBean.get()) {
 
                 if (student.getId() == enrollmentCourse.getEnrollment().getToken().getStudent().getId()) { // If student has token then he can enroll
-                    ExamEnrollment e = new ExamEnrollment();
                     for (Exam exam : examsBean.get()) {
                         if (exam.getScheduledAt().after(new Date())) { // If exam is scheduled in the future
                             Random rn = new Random();
-                            Integer max = 10;
-                            Integer min = 5;
+                            Integer max = 100;
+                            Integer min = 0;
                             if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                                ExamEnrollment e = new ExamEnrollment();
                                 e.setEnrollment(enrollmentCourse);
                                 e.setExam(exam);
-                                e.setMark(rn.nextInt(max - min + 1) + min);
-                                max = 100;
-                                min = 0;
-                                e.setScore(rn.nextInt(max - min + 1) + min);
+                                examEnrollmentBean.add(e);
+                                break;
+                            }
+                        } else { // Past enrollments
+                            Random rn = new Random();
+                            Integer max = 100;
+                            Integer min = 0;
+                            if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                                ExamEnrollment e = new ExamEnrollment();
+                                e.setEnrollment(enrollmentCourse);
+                                e.setExam(exam);
+                                Integer score = rn.nextInt(max - min + 1) + min;
+                                e.setScore(score);
+                                e.setMark(getMarkFromScore(score));
+                                e.setPastImport(true);
                                 examEnrollmentBean.add(e);
                                 break;
                             }
                         }
-
                     }
                 }
             }
-
-
         }
+    }
 
-
+    public static Integer getMarkFromScore(Integer score) {
+        if (score > 89) { // 100 - 90
+            return 10;
+        } else if (score > 79) { // 89 - 70
+            return 9;
+        } else if (score > 69) { // 60 -
+            return 8;
+        } else if (score > 59) {
+            return 7;
+        } else if (score > 49) {
+            return 6;
+        }
+        return 5;
     }
 }
 

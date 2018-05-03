@@ -1,7 +1,6 @@
 package si.fri.tpo.team7.services.interceptors;
 
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
@@ -47,7 +46,7 @@ public class ExamEnrollmentInterceptor {
             Instant now = Instant.now();
             Instant latestExamApplicationDate =  examEnrollment.getExam().getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23,ChronoUnit.HOURS).plus(55,ChronoUnit.MINUTES).minus(MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS); // Truncate
 
-            if (now.isAfter(latestExamApplicationDate)) { // Cannot enroll in exam after the application date is over
+            if (now.isAfter(latestExamApplicationDate) && !examEnrollment.getExam().isPastImport()) { // Cannot enroll in exam after the application date is over
                 throw new NotFoundException( "You can no longer enroll to this exam! Lattest application date was " + latestExamApplicationDate);
             }
 

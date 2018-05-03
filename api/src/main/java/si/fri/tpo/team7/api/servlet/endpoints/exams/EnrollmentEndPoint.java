@@ -2,6 +2,7 @@ package si.fri.tpo.team7.api.servlet.endpoints.exams;
 
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enums.Role;
@@ -17,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +38,14 @@ public class EnrollmentEndPoint {
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getEnrollments() {
-        List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
 
-
-        if (authenticatedUser.getRole() == Role.STUDENT) {
+        if (authenticatedUser.getRole() == Role.STUDENT) { // Return all current enrollments to exams
             List<ExamEnrollment> myExamEnrollments = getExamEnrollmentsForMeStudent();
             return Response.ok(myExamEnrollments).build();
+        } else if (authenticatedUser.getRole() == Role.CLERK) {
+            return Response.ok(allEnrollments()).build();
+        } else if (authenticatedUser.getRole() == Role.LECTURER) {
+            return Response.ok(enrolledToExamForMyCourse()).build();
         }
         else {
             return Response.ok(Response.status(501)).build(); // Not implemented
@@ -54,10 +58,32 @@ public class EnrollmentEndPoint {
         for (ExamEnrollment examEnrollment:enrollmentList) {
             Integer userId = examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
             if (userId == authenticatedUser.getId()) {
-                userEnrollments.add(examEnrollment);
+                if (examEnrollment.getMark() == null) { // He has not received mark for that enrollment
+                    userEnrollments.add(examEnrollment);
+                }
             }
         }
         return userEnrollments;
+    }
+
+    public List<ExamEnrollment> allEnrollments () {
+        List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
+        return enrollmentList;
+    }
+
+    public List<ExamEnrollment> enrolledToExamForMyCourse () {
+        List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
+        List<ExamEnrollment> myExamEnrollments = new ArrayList<>();
+        for (ExamEnrollment examEnrollment: enrollmentList) {
+            CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
+
+            if (c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
+                    || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
+                    || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
+                myExamEnrollments.add(examEnrollment);
+            }
+        }
+        return myExamEnrollments;
     }
 
 }

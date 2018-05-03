@@ -65,6 +65,12 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
             Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
 
+
+            // If exam has not yet been written you cannot add mark to it
+            if (((pending.getScore() != null) || (pending.getMark() != null)) && pending.getExam().getScheduledAt().after(new Date())) {
+                throw new NotFoundException("Exam has not yet been written, you cannot add marks or scores to future exams!");
+            }
+
             // If user is already enrolled in the exam with same course execution and has not received mark yet
             if (userIsEnrolledToSameCourse && examenrollment.getMark() == null) {
                 throw new NotFoundException("You can't enroll before you receive final mark!");
