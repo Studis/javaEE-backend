@@ -26,7 +26,7 @@ public class CorsFilter implements ContainerResponseFilter {
         if (CorsFilter.class.getResource("CorsFilter.class").toString().substring(0,2).equals("fi")) { // Running from fi(le) (development)
             responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:8081");
         } else { // Running from jar (production)
-            responseContext.getHeaders().add("Access-Control-Allow-Origin", "https://www.studis.tk");
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://www.studis.tk");
         }
         responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
