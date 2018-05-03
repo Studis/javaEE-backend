@@ -65,6 +65,10 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
             Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
 
+            if (pending.getEnrollment().getCourseExecution().getId() != pending.getExam().getCourseExecution().getId()) {
+                throw new NotFoundException("Exam term does not exist for given enrollment course!");
+
+            }
 
             // If exam has not yet been written you cannot add mark to it
             if (((pending.getScore() != null) || (pending.getMark() != null)) && pending.getExam().getScheduledAt().after(new Date())) {
@@ -82,7 +86,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             }
 
             // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
-            if (userIsEnrolledToSameCourse && examenrollment.getExam().isWritten()) {
+            if (userIsEnrolledToSameCourse && examenrollment.getExam().isWritten() && examenrollment.getExam().getId() != pending.getExam().getId()) {
                 Instant firstExam = examenrollment.getExam().getScheduledAt().toInstant();
                 Instant secondExam = pending.getExam().getScheduledAt().toInstant();
 

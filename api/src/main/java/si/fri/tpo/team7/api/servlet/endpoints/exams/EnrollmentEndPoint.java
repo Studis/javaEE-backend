@@ -73,6 +73,8 @@ public class EnrollmentEndPoint {
         if (authenticatedUser.getRole() == Role.STUDENT) { // Return all current enrollments to exams
             ExamEnrollment examEnrollment = new ExamEnrollment();
             examEnrollment.setExam(examsBean.get(beEnrollmentExam.getExamId()));
+            Integer userEnrollmentCourseId = enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()).getEnrollment().getToken().getStudent().getId();
+            if (userEnrollmentCourseId != authenticatedUser.getId()) throw new NotFoundException("You are not enrolled in this course");
             examEnrollment.setEnrollment(enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()));
             examEnrollmentBean.add(examEnrollment);
             return Response.ok(examEnrollment).build();
