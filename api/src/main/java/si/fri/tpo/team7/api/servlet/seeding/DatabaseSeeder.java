@@ -155,37 +155,37 @@ public class DatabaseSeeder extends HttpServlet{
     private void AddLecturers(PrintWriter writer){
         writer.print("Adding lecturers ... ");
 
-        ViljanMahnic = AddLecturer("Viljan", "Mahnič");
-        IgorKononenko = AddLecturer("Igor", "Kononenko");
-        BorutRobic = AddLecturer("Borut", "Robič");
-        BostjanSlivnik = AddLecturer("Boštjan", "Slivnik");
-        BrankoSter = AddLecturer("Branko", "Šter");
-        UrosLotric = AddLecturer("Uroš", "Lotrič");
-        GasperFijavz = AddLecturer("Gašper", "Fijavž");
-        TomazHovelja = AddLecturer("Tomaž", "Hovelja");
-        DanijelSkocaj = AddLecturer("Danijel", "Skočaj");
-        PolonaOblak = AddLecturer("Polona", "Oblak");
-        ZoranBosnic = AddLecturer("Zoran", "Bosnić");
-        DejanLavbic = AddLecturer("Dejan", "Lavbič");
-        NezkaMramor  = AddLecturer("Nežka", "Mramor Kosta");
-        MatijaMarolt = AddLecturer("Matija", "Marolt");
-        MarkoRobnik  = AddLecturer("Marko", "Robnik Šikonja");
-        FrancSolina = AddLecturer("Franc", "Solina");
-        NikolajZimic = AddLecturer("Nikolaj", "Zimic");
-        MarkoBajec = AddLecturer("Marko", "Bajec");
-        PatricioBulic = AddLecturer("Patricio", "Bulić");
-        PolonaLavbic = AddLecturer("Polona", "Lavbič");
-        AleksandarJurisic = AddLecturer("Aleksandar", "Jurišić");
-        BojanOrel = AddLecturer("Bojan", "Orel");
-        DarjaPeljhan = AddLecturer("Darja", "Peljhan");
-        JakaLindic = AddLecturer("Jaka", "Lindič");
-        MatejaDrnovsek = AddLecturer("Mateja", "Drnovšek");
-        PaulBorutKersevan = AddLecturer("Paul Borut", "Kerševan");
-        MatejKristan = AddLecturer("Matej", "Kristan");
-        LukaCehovin = AddLecturer("Luka", "Čehovin Zajc");
-        NavrikaBovcon = AddLecturer("Navrika", "Bovcon");
-        NinaBostic = AddLecturer("Nina", "Bostič Bishop");
-        AndrejBauer = AddLecturer("Andrej", "Bauer");
+        ViljanMahnic = AddLecturer("Viljan", "Mahnič", 1);
+        IgorKononenko = AddLecturer("Igor", "Kononenko", 2);
+        BorutRobic = AddLecturer("Borut", "Robič", 3);
+        BostjanSlivnik = AddLecturer("Boštjan", "Slivnik", 4);
+        BrankoSter = AddLecturer("Branko", "Šter", 5);
+        UrosLotric = AddLecturer("Uroš", "Lotrič", 6);
+        GasperFijavz = AddLecturer("Gašper", "Fijavž", 7);
+        TomazHovelja = AddLecturer("Tomaž", "Hovelja", 42);
+        DanijelSkocaj = AddLecturer("Danijel", "Skočaj", 42);
+        PolonaOblak = AddLecturer("Polona", "Oblak", 42);
+        ZoranBosnic = AddLecturer("Zoran", "Bosnić", 42);
+        DejanLavbic = AddLecturer("Dejan", "Lavbič", 42);
+        NezkaMramor  = AddLecturer("Nežka", "Mramor Kosta", 42);
+        MatijaMarolt = AddLecturer("Matija", "Marolt", 42);
+        MarkoRobnik  = AddLecturer("Marko", "Robnik Šikonja", 42);
+        FrancSolina = AddLecturer("Franc", "Solina", 42);
+        NikolajZimic = AddLecturer("Nikolaj", "Zimic", 42);
+        MarkoBajec = AddLecturer("Marko", "Bajec", 42);
+        PatricioBulic = AddLecturer("Patricio", "Bulić", 42);
+        PolonaLavbic = AddLecturer("Polona", "Lavbič", 42);
+        AleksandarJurisic = AddLecturer("Aleksandar", "Jurišić", 42);
+        BojanOrel = AddLecturer("Bojan", "Orel", 42);
+        DarjaPeljhan = AddLecturer("Darja", "Peljhan", 42);
+        JakaLindic = AddLecturer("Jaka", "Lindič", 42);
+        MatejaDrnovsek = AddLecturer("Mateja", "Drnovšek", 42);
+        PaulBorutKersevan = AddLecturer("Paul Borut", "Kerševan", 42);
+        MatejKristan = AddLecturer("Matej", "Kristan", 42);
+        LukaCehovin = AddLecturer("Luka", "Čehovin Zajc", 42);
+        NavrikaBovcon = AddLecturer("Navrika", "Bovcon", 42);
+        NinaBostic = AddLecturer("Nina", "Bostič Bishop", 42);
+        AndrejBauer = AddLecturer("Andrej", "Bauer", 42);
 
         writer.println("Done");
     }
@@ -198,10 +198,11 @@ public class DatabaseSeeder extends HttpServlet{
 
     }
 
-    private Lecturer AddLecturer(String name, String surname){
+    private Lecturer AddLecturer(String name, String surname, int code){
         Lecturer l = new Lecturer();
         l.setName(name);
         l.setSurname(surname);
+        l.setCode(code);
         l.setUsername(name.toLowerCase()+"."+surname.replace(' ', '.').toLowerCase());
         lecturersBean.addLecturer(l);
         return l;

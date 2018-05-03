@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.enums.Role;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -23,4 +20,7 @@ public class Lecturer extends User {
         public Role getRole() {
                 return Role.LECTURER;
         }
+
+        @Column(name="code")
+        protected int code;
 }
