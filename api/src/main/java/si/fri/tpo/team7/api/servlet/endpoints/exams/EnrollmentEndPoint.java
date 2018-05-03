@@ -6,16 +6,17 @@ import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enums.Role;
+import si.fri.tpo.team7.entities.exams.BEEnrollmentExam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
+import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
+import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.image.RescaleOp;
@@ -35,6 +36,12 @@ public class EnrollmentEndPoint {
     @Inject
     ExamEnrollmentBean examEnrollmentBean;
 
+    @Inject
+    ExamsBean examsBean;
+
+    @Inject
+    EnrollmentCoursesBean enrollmentCoursesBean;
+
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getEnrollments() {
@@ -49,6 +56,30 @@ public class EnrollmentEndPoint {
         }
         else {
             return Response.ok(Response.status(501)).build(); // Not implemented
+        }
+    }
+
+    /**
+     * Enrollment to the exam endpoint, this is applicable to students or // TODO: clerk - #23
+     *{
+     * 	"enrollmentCourseId": "12",
+     * 	"examId": "120"
+     * }
+     */
+    @POST
+    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    public Response addEnrollment(BEEnrollmentExam beEnrollmentExam) {
+
+        if (authenticatedUser.getRole() == Role.STUDENT) { // Return all current enrollments to exams
+            ExamEnrollment examEnrollment = new ExamEnrollment();
+            examEnrollment.setExam(examsBean.get(beEnrollmentExam.getExamId()));
+            examEnrollment.setEnrollment(enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()));
+            examEnrollmentBean.add(examEnrollment);
+            return Response.ok(examEnrollment).build();
+        } else if (authenticatedUser.getRole() == Role.CLERK) {
+            return Response.ok(Response.status(501)).build(); // Not implemented in this userstory
+        } else {
+            return Response.ok(authenticatedUser.getRole() + " cannot enroll to exam!").build();
         }
     }
 
