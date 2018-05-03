@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.exams;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -21,9 +22,16 @@ public class ExamEnrollment extends BaseEntity {
     private EnrollmentCourse enrollment;
 
     @Column(name="mark")
-    private int mark;
+    private Integer mark;
 
     @Column(name="score")
-    private int score;
+    private Integer score;
+
+    @JsonIgnore
+    private Boolean paid;
+
+    // To import exam enrollments from past
+    @JsonIgnore
+    private boolean pastImport;
     
 }
