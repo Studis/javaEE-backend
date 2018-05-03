@@ -130,7 +130,7 @@ public class DatabaseSeeder extends HttpServlet{
         AddAdmin(writer);
 
         new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
-        new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean).Seed(writer);
+        new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean).Seed(writer);
     }
 
     private void AddPrograms(PrintWriter writer){

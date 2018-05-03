@@ -9,16 +9,109 @@ import si.fri.tpo.team7.entities.exams.Exam;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
+import javax.ws.rs.NotFoundException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 @ApplicationScoped
 @EnrollToExam
 public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
+    private Logger log = Logger.getLogger(ExamsBean.class.getName());
+    private final Integer DURATION_BETWEEN_EXAM_ATTEMPTS = 14;
 
     public ExamEnrollmentBean() {
         super(ExamEnrollment.class);
+    }
+
+    @Override
+    @Transactional
+    public ExamEnrollment add(ExamEnrollment obj) {
+        if(obj == null){
+            return null;
+        }
+
+        if (existingEnrollmentsMiddleWare(super.get(),obj)) {
+            obj.setCreatedAt(new Date());
+            em.persist(obj);
+            em.flush();
+            return obj;
+        }
+        return null;
+    }
+
+
+    /**
+     *
+     * @param examEnrollments - List of all exam enrollments
+     * @param pending
+     * @return
+     * @throws NotFoundException
+     */
+    public boolean existingEnrollmentsMiddleWare(List<ExamEnrollment> examEnrollments, ExamEnrollment pending) throws NotFoundException {
+        Integer examAttemptsInCurrentYear = 0;
+        Integer totalExamAttempts = 0;
+        for (ExamEnrollment examenrollment: examEnrollments) {
+
+            Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
+            Integer currentUserId = examenrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
+
+            Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
+            Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId();
+
+
+            Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
+
+            // If user is already enrolled in the exam with same course execution and has not received mark yet
+            if (userIsEnrolledToSameCourse && examenrollment.getMark() == null) {
+                throw new NotFoundException("You can't enroll before you receive final mark!");
+            }
+
+            // If user is already enrolled in the exam with same course execution and has completed it
+            if (userIsEnrolledToSameCourse && examenrollment.getMark() > 5) {
+                throw new NotFoundException("You have already completed this exam!");
+            }
+
+            // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
+            if (userIsEnrolledToSameCourse && examenrollment.getExam().isWritten()) {
+                Instant firstExam = examenrollment.getExam().getScheduledAt().toInstant();
+                Instant secondExam = pending.getExam().getScheduledAt().toInstant();
+
+                if (Duration.between(firstExam,secondExam).toDays() <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
+                    log.info(firstExam.toString() + " " + secondExam.toString());
+                    throw new NotFoundException( "Duration between attempts must be " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
+                }
+            }
+
+            Integer examenrollmentStudyYear = examenrollment.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
+            Integer pendingStudyYear = pending.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
+
+            // Total exam attempts in study year is 3
+            if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
+                examAttemptsInCurrentYear++;
+            }
+
+            // Total exam attempts max is 6
+            if (userIsEnrolledToSameCourse) {
+                totalExamAttempts++;
+            }
+
+        }
+
+        // If user has already written exam 6 times then he is not allowed to write it again
+        if (totalExamAttempts == 6) {
+            throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
+        }
+
+        // If user has already written exam 3 times in the current study year then he is not allowed to write it again
+        if (examAttemptsInCurrentYear == 3) {
+            throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again");
+        }
+        return true;
+
     }
 
 }
