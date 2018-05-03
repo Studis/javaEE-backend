@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.entities.enrollments.StudyType;
 import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
@@ -363,11 +364,15 @@ public class DatabaseSeeder extends HttpServlet{
         switch(studyYear){
             case 1:
                 enrollment.setType(enrollmentTypesBean.get(1));
+                enrollment.setStudyType(studyTypesBean.get(1));
+                enrollment.setStudyForm(studyFormsBean.get(1));
                 break;
             case 2:
             case 3:
                 enrollment.setCurriculum(c);
                 enrollment.setType(enrollmentTypesBean.get(3));
+                enrollment.setStudyType(studyTypesBean.get(1));
+                enrollment.setStudyForm(studyFormsBean.get(1));
                 break;
         }
 
