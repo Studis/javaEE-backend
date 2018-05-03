@@ -99,6 +99,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             Integer examenrollmentStudyYear = examenrollment.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
             Integer pendingStudyYear = pending.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
 
+
             // Total exam attempts in study year is 3
             if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
                 examAttemptsInCurrentYear++;
@@ -109,17 +110,29 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
                 totalExamAttempts++;
             }
 
+            // If user has already written exam 6 times then he is not allowed to write it again
+            if (totalExamAttempts == 6) {
+                throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
+            }
+
+            // If user has already written exam 3 times in the current study year then he is not allowed to write it again
+            if (examAttemptsInCurrentYear == 3) {
+                throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again this year");
+            }
+
+            if (totalExamAttempts >= 3 && !pending.getPaid()) {
+                throw new NotFoundException("You need to pay for exam due to total attempt " + totalExamAttempts+1 +" in order to enroll!");
+            }
+
+            Integer typeOfStudy = pending.getEnrollment().getEnrollment().getStudyType().getId();
+
+            if (typeOfStudy == 3 && !pending.getPaid()) {
+                throw new NotFoundException("You need to pay for exams in order to enroll! Please settle the paynment!");
+            }
+            
         }
 
-        // If user has already written exam 6 times then he is not allowed to write it again
-        if (totalExamAttempts == 6) {
-            throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
-        }
 
-        // If user has already written exam 3 times in the current study year then he is not allowed to write it again
-        if (examAttemptsInCurrentYear == 3) {
-            throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again");
-        }
         return true;
 
     }

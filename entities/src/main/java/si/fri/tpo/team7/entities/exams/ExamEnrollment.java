@@ -27,6 +27,9 @@ public class ExamEnrollment extends BaseEntity {
     @Column(name="score")
     private Integer score;
 
+    @JsonIgnore
+    private Boolean paid;
+
     // To import exam enrollments from past
     @JsonIgnore
     private boolean pastImport;

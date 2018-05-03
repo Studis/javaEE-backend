@@ -8,5 +8,7 @@ public class BEEnrollmentExam {
     private Integer enrollmentCourseId;
 
     private Integer examId;
+
+    Boolean paid;
 }
 
