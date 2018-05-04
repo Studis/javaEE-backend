@@ -5,10 +5,7 @@ import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -33,5 +30,15 @@ public class ExamEnrollment extends BaseEntity {
     // To import exam enrollments from past
     @JsonIgnore
     private boolean pastImport;
+
+    @JsonIgnore
+    @Basic
+    private String status;
+
+
+    // UserId that has deleted exam enrollment
+    @JsonIgnore
+    @Basic
+    private Integer deletedBy;
     
 }

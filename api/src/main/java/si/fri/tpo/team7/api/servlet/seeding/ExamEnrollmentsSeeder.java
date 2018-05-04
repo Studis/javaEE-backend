@@ -14,6 +14,7 @@ import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 
+import javax.ws.rs.NotFoundException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;

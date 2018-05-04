@@ -56,6 +56,8 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         Integer totalExamAttempts = 0;
         for (ExamEnrollment examenrollment: examEnrollments) {
 
+            if (examenrollment.getStatus() != null) continue; // Do not count exam enrollment that was canceled (has set status to deleted) in the correct due date
+
             Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
             Integer currentUserId = examenrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
 
@@ -129,12 +131,32 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             if (typeOfStudy == 3 && !pending.getPaid()) {
                 throw new NotFoundException("You need to pay for exams in order to enroll! Please settle the paynment!");
             }
-            
+
         }
 
 
         return true;
 
+    }
+
+
+        @Transactional
+    public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s) { // deletedBy is set in endpoint
+        ExamEnrollment obj = em.find(ExamEnrollment.class, id);
+        if(obj == null) {
+            throw new NotFoundException(ExamEnrollment.class.getName() + " " + id + " not found.");
+        }
+        s.setUpdatedAt(new Date());
+        s.setStatus("deleted");
+        s.setId(id);
+        return em.merge(s);
+
+    }
+
+    @Override
+    @Transactional
+    public void remove(int id) {
+        throw new NotFoundException("Use cancelEnrollment method!");
     }
 
 }
