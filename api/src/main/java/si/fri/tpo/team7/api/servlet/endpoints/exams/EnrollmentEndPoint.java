@@ -55,7 +55,7 @@ public class EnrollmentEndPoint {
             return Response.ok(enrolledToExamForMyCourse()).build();
         }
         else {
-            return Response.ok(Response.status(501)).build(); // Not implemented
+            return Response.ok("Not implemented").build(); // Not implemented
         }
     }
 
@@ -80,7 +80,7 @@ public class EnrollmentEndPoint {
             examEnrollmentBean.add(examEnrollment);
             return Response.ok(examEnrollment).build();
         } else if (authenticatedUser.getRole() == Role.CLERK) {
-            return Response.ok(Response.status(501)).build(); // Not implemented in this userstory
+            return Response.ok(Response.status(501)).build(); // Not implemented in this userstory, !doNotShowArchivedEnrollments
         } else {
             return Response.ok(authenticatedUser.getRole() + " cannot enroll to exam!").build();
         }
@@ -90,10 +90,12 @@ public class EnrollmentEndPoint {
         List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
         List<ExamEnrollment> userEnrollments = new ArrayList<>();
         for (ExamEnrollment examEnrollment:enrollmentList) {
-            Integer userId = examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
-            if (userId == authenticatedUser.getId()) {
-                if (examEnrollment.getMark() == null) { // He has not received mark for that enrollment
-                    userEnrollments.add(examEnrollment);
+            if (doNotShowArchivedEnrollments(examEnrollment)) {
+                Integer userId = examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
+                if (userId == authenticatedUser.getId()) {
+                    if (examEnrollment.getMark() == null) { // He has not received mark for that enrollment
+                        userEnrollments.add(examEnrollment);
+                    }
                 }
             }
         }
@@ -118,6 +120,10 @@ public class EnrollmentEndPoint {
             }
         }
         return myExamEnrollments;
+    }
+
+    public boolean doNotShowArchivedEnrollments(ExamEnrollment examEnrollment) { // Not deleted
+        return examEnrollment.getStatus() == null;
     }
 
 }

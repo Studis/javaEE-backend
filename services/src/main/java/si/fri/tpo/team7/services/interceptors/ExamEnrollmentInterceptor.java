@@ -51,6 +51,18 @@ public class ExamEnrollmentInterceptor {
             }
 
 
+        } else if(nameOfMethod == "cancelEnrollment") {
+            ExamEnrollment examEnrollment = (ExamEnrollment) context.getParameters()[1];
+
+            if (examEnrollment.getStatus() != null) throw new NotFoundException("You are currently not enrolled in this exam!");
+
+            Instant now = Instant.now();
+            Instant latestExamApplicationDate =  examEnrollment.getExam().getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23,ChronoUnit.HOURS).plus(55,ChronoUnit.MINUTES).minus(MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS); // Truncate
+
+            if (now.isAfter(latestExamApplicationDate)) { // Cannot enroll in exam after the application date is over
+                throw new NotFoundException( "You can no longer cancel disenroll from this exam! Latest cancellation date was " + latestExamApplicationDate);
+            }
+
         }
         return context.proceed();
 
