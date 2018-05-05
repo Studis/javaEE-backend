@@ -320,7 +320,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     private void AddStudents(PrintWriter writer){
         writer.print("Adding students ... ");
-        Integer reduceSeeder = 10;
+        Integer reduceSeeder = 50;
         for(int i = 0; i < surnames.length/reduceSeeder; i++){
             Student student = new Student();
             student.setName(names[i]);
