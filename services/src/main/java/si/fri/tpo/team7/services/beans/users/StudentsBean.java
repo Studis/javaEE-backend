@@ -56,42 +56,6 @@ public class StudentsBean {
     }
 
     @Transactional
-    public Student studentFromScanner(Scanner scanner)
-    {
-        try {
-            Student student = new Student();
-            student.setName(scanner.next());
-            student.setSurname(scanner.next());
-
-            EnrollmentToken token1 = new EnrollmentToken();
-            token1.setStudent(student);
-
-            EnrollmentToken token2 = new EnrollmentToken();
-            token2.setStudent(student);
-
-            em.persist(token1);
-            em.persist(token2);
-
-            Program program = programsBean.get(scanner.nextInt());
-
-            Enrollment enrollment = new Enrollment();
-            enrollment.setToken(token1);
-            //enrollment.setStudyYear1(semestersBean.current());
-            //enrollment.setStudyYear2(semestersBean.next());
-
-            em.persist(enrollment);
-
-            scanner.next();
-            student.setEMail(scanner.next());
-            return student;
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Transactional
     public Student addStudent(Student s) {
         if(s == null){
             return null;
