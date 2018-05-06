@@ -27,7 +27,7 @@ public abstract class User {
     @Column(length = 30)
     protected String password;
 
-    @Column(name = "e_mail", length = 60)
+    @Column(name = "e_mail", length = 60, unique = true)
     protected String eMail;
 
     @Column(length = 30)

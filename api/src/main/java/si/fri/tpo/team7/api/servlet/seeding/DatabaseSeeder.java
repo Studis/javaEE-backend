@@ -89,6 +89,7 @@ public class DatabaseSeeder extends HttpServlet{
             public void write(byte[] b, int off, int len) throws IOException {
                 log.info(new String(b, off, len));
             }
+
         });
 //
         runSeed(writer);

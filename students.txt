@@ -1,24 +1,6 @@
-Anica
-Kepic
-1000475
-AnicaMarijaKepic@dayrep.com 
-
-August
-Rožić
-1000475
-AugustRozic@teleworm.us 
-
-Marieta
-Prelevšek
-1000471
-MarietaPrelevsek@armyspy.com
-
-Katica
-Zakonjšek
-1000477
-KaticaZakonjsek@armyspy.com 
-
-Brano
-Zajelšnik
-1000475
-BranoZajelsnik@dayrep.com 
+Anica                         Kepic                         1000475anicamarijakepic@dayrep.com 
+August                        Rožić                         1000475AugustRozic@teleworm.us 
+Marieta                       Prelevšek                     1000471MarietaPrelevsek@armyspy.com
+Katica                        Zakonjšek                     1000477KaticaZakonjsek@armyspy.com 
+Brano                         Zajelšnik                     1000475BranoZajelsnik@dayrep.com 
+Anica                         Kepic                         1000475anicamarijakepic@dayrep.com 

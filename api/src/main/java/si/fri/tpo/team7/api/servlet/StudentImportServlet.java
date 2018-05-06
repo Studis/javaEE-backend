@@ -107,14 +107,15 @@ public class StudentImportServlet extends HttpServlet {
     {
         try {
             Student student = new Student();
-            student.setName(scanner.next());
-            student.setSurname(scanner.next());
-            int programCode = scanner.nextInt();
-            student.setEMail(scanner.next());
+            String line = scanner.nextLine();
+            student.setName(line.substring(0, 30).trim());
+            student.setSurname(line.substring(29, 60).trim());
+            int programCode = Integer.parseInt(line.substring(59, 67).trim());
+            student.setEMail(line.substring(67, line.length()-1).trim());
 
             studentsBean.addStudent(student);
 
-            EnrollmentToken token1 = new EnrollmentToken();
+            /*EnrollmentToken token1 = new EnrollmentToken();
             token1.setStudent(student);
 
             EnrollmentToken token2 = new EnrollmentToken();
@@ -130,7 +131,7 @@ public class StudentImportServlet extends HttpServlet {
             //enrollment.setStudyYear1(semestersBean.current());
             //enrollment.setStudyYear2(semestersBean.next());
 
-            enrollmentsBean.add(enrollment);
+            enrollmentsBean.add(enrollment);*/
             return student;
         }
         catch(Exception e){
