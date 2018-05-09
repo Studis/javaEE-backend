@@ -7,6 +7,9 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.exams.BEEnrollmentCourse;
+import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
@@ -16,6 +19,8 @@ import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.entities.users.User;
+import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
+import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,9 +29,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Path("/courses")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,6 +42,12 @@ public class CoursesEndpoint {
 
     @Inject
     private EnrollmentCoursesBean enrollmentCoursesBean;
+
+    @Inject
+    private ExamEnrollmentBean examEnrollmentBean;
+
+    @Inject
+    private ExamsBean examsBean;
 
     @Inject
     @AuthenticatedUser
@@ -81,5 +90,64 @@ public class CoursesEndpoint {
     public Response getCourseEnrollments(@PathParam("id") int id){
         CourseExecution course = courseExecutionsBean.get(id);
         return Response.ok(course.getEnrollmentCourses()).build();
+    }
+
+    @GET
+    @Secured({Role.STUDENT})
+    @Path("me")
+    public Response getMyCourses(){ // Get courses that student is enrolled in
+        Map<Integer, BEEnrollmentCourse> beEnrollmentCourseIDEnrollmentCourseMap = new HashMap();
+        List<EnrollmentCourse> enrollmentCourses = enrollmentCoursesBean.get();
+        Map<Integer,EnrollmentCourse> myEnrollmentCourseIdEnrollmentCourseMap = new HashMap<>();
+        for (EnrollmentCourse enrollmentCourse: enrollmentCourses) { // Get enrollment courses for me
+            if (enrollmentCourse.getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) { // User has enrollment token for that course
+                myEnrollmentCourseIdEnrollmentCourseMap.put(enrollmentCourse.getId(),enrollmentCourse);
+                BEEnrollmentCourse beEnrollmentCourse = new BEEnrollmentCourse(); // new Business entity to set enrollment
+
+                beEnrollmentCourse.setEnrolled(false);
+                beEnrollmentCourse.setPassed(false);
+
+                beEnrollmentCourse.setExamEnrollment(null);
+                beEnrollmentCourse.setEnrollmentCourse(enrollmentCourse);
+                beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourse.getId()));
+
+                beEnrollmentCourseIDEnrollmentCourseMap.put(enrollmentCourse.getId(),beEnrollmentCourse);
+            }
+        }
+
+        for (ExamEnrollment examEnrollment: examEnrollmentBean.get()) {
+            if (examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) {
+                Integer enrollmentCourseId = examEnrollment.getEnrollment().getId(); // EnrollmentCourse id from exam
+                /**
+                 * User in enrolled in exam if entry exist in examEnrollment and there is no mark added
+                 */
+
+                if (myEnrollmentCourseIdEnrollmentCourseMap.containsKey(enrollmentCourseId)) {
+                    BEEnrollmentCourse beEnrollmentCourse = new BEEnrollmentCourse(); // new Business entity to set enrollment
+
+                    if (examEnrollment.getMark() != null && examEnrollment.getMark() > 5) {
+                        beEnrollmentCourse.setPassed(true);
+                    }
+                    if (examEnrollment.getMark() == null) {
+                        beEnrollmentCourse.setEnrolled(true);
+                        beEnrollmentCourse.setEnrollmentCourse(myEnrollmentCourseIdEnrollmentCourseMap.get(enrollmentCourseId));
+                        beEnrollmentCourse.setExamEnrollment(examEnrollment);
+
+                    }
+                    beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourseId));
+
+                    beEnrollmentCourseIDEnrollmentCourseMap.put(enrollmentCourseId,beEnrollmentCourse);
+
+
+
+                }
+            }
+        }
+
+        ArrayList<BEEnrollmentCourse> valuesList = new ArrayList<BEEnrollmentCourse>(beEnrollmentCourseIDEnrollmentCourseMap.values());
+
+
+
+        return Response.ok(valuesList).build();
     }
 }
