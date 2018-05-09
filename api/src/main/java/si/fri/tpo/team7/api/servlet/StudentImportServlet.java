@@ -63,9 +63,23 @@ public class StudentImportServlet extends HttpServlet {
     }
 
     @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        super.doOptions(request, response);
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, HEAD, DELETE");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+
+    }
+
+
+    @Override
     protected void doPost(HttpServletRequest request,
                                   HttpServletResponse response)
             throws ServletException, IOException {
+        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, HEAD, DELETE");
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
         response.setContentType("text/html;charset=UTF-8");
 
         final PrintWriter writer = response.getWriter();
