@@ -118,16 +118,18 @@ public class EnrollmentEndPoint {
         List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
         List<ExamEnrollment> myExamEnrollments = new ArrayList<>();
         for (ExamEnrollment examEnrollment: enrollmentList) {
-            CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
+            if (doNotShowArchivedEnrollments(examEnrollment)) {
+                CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
 
-            if (c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
-                    || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
-                    || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
-                myExamEnrollments.add(examEnrollment);
-            }
-            if (enrolledToExamForMyCourse != null) {
-                if (examEnrollment.getEnrollment().getCourseExecution().getId() == enrolledToExamForMyCourse) {
+                if (enrolledToExamForMyCourse == null && c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
+                        || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
+                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
                     myExamEnrollments.add(examEnrollment);
+                }
+                else if (enrolledToExamForMyCourse != null) {
+                    if (examEnrollment.getEnrollment().getCourseExecution().getId() == enrolledToExamForMyCourse) {
+                        myExamEnrollments.add(examEnrollment);
+                    }
                 }
             }
         }

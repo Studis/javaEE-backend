@@ -104,10 +104,8 @@ public class CoursesEndpoint {
                 myEnrollmentCourseIdEnrollmentCourseMap.put(enrollmentCourse.getId(),enrollmentCourse);
                 BEEnrollmentCourse beEnrollmentCourse = new BEEnrollmentCourse(); // new Business entity to set enrollment
 
-                beEnrollmentCourse.setEnrolled(false);
-                beEnrollmentCourse.setPassed(false);
 
-                beEnrollmentCourse.setExamEnrollment(null);
+
                 beEnrollmentCourse.setEnrollmentCourse(enrollmentCourse);
                 beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourse.getId()));
 
@@ -129,10 +127,11 @@ public class CoursesEndpoint {
                         beEnrollmentCourse.setPassed(true);
                     }
                     if (examEnrollment.getMark() == null) {
-                        beEnrollmentCourse.setEnrolled(true);
-                        beEnrollmentCourse.setExamEnrollment(examEnrollment);
+                        beEnrollmentCourse.setEnrolled(examEnrollment.getStatus() == null);
 
                     }
+                    beEnrollmentCourse.setExamEnrollment(examEnrollment);
+
                     beEnrollmentCourse.setEnrollmentCourse(myEnrollmentCourseIdEnrollmentCourseMap.get(enrollmentCourseId));
 
                     beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourseId));
