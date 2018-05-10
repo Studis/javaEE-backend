@@ -130,10 +130,11 @@ public class CoursesEndpoint {
                     }
                     if (examEnrollment.getMark() == null) {
                         beEnrollmentCourse.setEnrolled(true);
-                        beEnrollmentCourse.setEnrollmentCourse(myEnrollmentCourseIdEnrollmentCourseMap.get(enrollmentCourseId));
                         beEnrollmentCourse.setExamEnrollment(examEnrollment);
 
                     }
+                    beEnrollmentCourse.setEnrollmentCourse(myEnrollmentCourseIdEnrollmentCourseMap.get(enrollmentCourseId));
+
                     beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourseId));
 
                     beEnrollmentCourseIDEnrollmentCourseMap.put(enrollmentCourseId,beEnrollmentCourse);
