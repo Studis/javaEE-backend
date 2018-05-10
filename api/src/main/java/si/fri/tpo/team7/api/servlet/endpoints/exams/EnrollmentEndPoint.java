@@ -44,6 +44,13 @@ public class EnrollmentEndPoint {
 
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    @Path("{courseExecutionId}")
+    public Response getEnrollments(@PathParam("courseExecutionId") Integer courseExecutionId) {
+        return Response.ok(enrolledToExamForMyCourse(courseExecutionId)).build();
+    }
+
+    @GET
+    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getEnrollments() {
 
         if (authenticatedUser.getRole() == Role.STUDENT) { // Return all current enrollments to exams
@@ -52,7 +59,7 @@ public class EnrollmentEndPoint {
         } else if (authenticatedUser.getRole() == Role.CLERK) {
             return Response.ok(allEnrollments()).build();
         } else if (authenticatedUser.getRole() == Role.LECTURER) {
-            return Response.ok(enrolledToExamForMyCourse()).build();
+            return Response.ok(enrolledToExamForMyCourse(null)).build();
         }
         else {
             return Response.ok("Not implemented").build(); // Not implemented
@@ -107,16 +114,23 @@ public class EnrollmentEndPoint {
         return enrollmentList;
     }
 
-    public List<ExamEnrollment> enrolledToExamForMyCourse () {
+    public List<ExamEnrollment> enrolledToExamForMyCourse (Integer enrolledToExamForMyCourse) {
         List<ExamEnrollment> enrollmentList = examEnrollmentBean.get();
         List<ExamEnrollment> myExamEnrollments = new ArrayList<>();
         for (ExamEnrollment examEnrollment: enrollmentList) {
-            CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
+            if (doNotShowArchivedEnrollments(examEnrollment)) {
+                CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
 
-            if (c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
-                    || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
-                    || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
-                myExamEnrollments.add(examEnrollment);
+                if (enrolledToExamForMyCourse == null && c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
+                        || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
+                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
+                    myExamEnrollments.add(examEnrollment);
+                }
+                else if (enrolledToExamForMyCourse != null) {
+                    if (examEnrollment.getEnrollment().getCourseExecution().getId() == enrolledToExamForMyCourse) {
+                        myExamEnrollments.add(examEnrollment);
+                    }
+                }
             }
         }
         return myExamEnrollments;

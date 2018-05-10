@@ -21,7 +21,7 @@ public class NotFoundMapper implements ExceptionMapper<NotFoundException> {
         restError.setMessage(e.getMessage());
 
         return Response
-                .status(Response.Status.BAD_REQUEST)
+                .status(Response.Status.ACCEPTED)
                 .entity(restError)
                 .build();
     }
