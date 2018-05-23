@@ -35,4 +35,11 @@ public class ExamsBean extends EntityBean<Exam> {
         return (List<Exam>)q.getResultList();
     }
 
+    public List<Exam> getExamsForCourseExecution(Integer courseExecutionId) {
+        Query q = em.createQuery("SELECT distinct(e) from Exam e where e.courseExecution.id=:courseExecutionId");
+        q.setParameter("courseExecutionId",courseExecutionId);
+        return (List<Exam>)q.getResultList();
+    }
+
+
 }

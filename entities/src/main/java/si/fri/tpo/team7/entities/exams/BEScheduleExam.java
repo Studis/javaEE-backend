@@ -16,4 +16,9 @@ public class BEScheduleExam {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date scheduledAt;
+
+
+    private String location;
+
+    private String asking;
 }

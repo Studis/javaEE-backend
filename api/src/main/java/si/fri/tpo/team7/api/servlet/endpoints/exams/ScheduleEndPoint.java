@@ -54,7 +54,7 @@ public class ScheduleEndPoint {
     User authenticatedUser;
 
     @GET
-    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    @Secured({Role.STUDENT, Role.ADMIN, Role.LECTURER, Role.CLERK})
     /**
      * Get exams visible by particular role
      * */
@@ -65,11 +65,11 @@ public class ScheduleEndPoint {
         List<CourseExecution> courseExecutions = courseExecutionsBean.get();
         List<Integer> resultCourseExecutionsIds = new ArrayList<>();
 
-        if(authenticatedUser.getRole() == Role.LECTURER) {
+        if (authenticatedUser.getRole() == Role.LECTURER) {
             for (CourseExecution c : courseExecutions) {
                 if (c.getLecturer1().getId() == authenticatedUser.getId()
                         || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
-                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
+                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
                     resultCourseExecutionsIds.add(c.getId());
                 }
             }
@@ -79,19 +79,18 @@ public class ScheduleEndPoint {
                     resultExams.add(e);
                 }
             }
-        }
-        else if (authenticatedUser.getRole() == Role.CLERK || authenticatedUser.getRole() == Role.ADMIN) {
-           resultExams = exams;
+        } else if (authenticatedUser.getRole() == Role.CLERK || authenticatedUser.getRole() == Role.ADMIN) {
+            resultExams = exams;
         } else if (authenticatedUser.getRole() == Role.STUDENT) {
             Integer userId = authenticatedUser.getId();
             List<EnrollmentToken> enrollmentTokens = enrollmentTokensBean.get(); // get tokens of user
-            for (EnrollmentToken enrollmentToken: enrollmentTokens) {
+            for (EnrollmentToken enrollmentToken : enrollmentTokens) {
                 if (enrollmentToken.getStudent().getId() == userId) { // Get enrollments for that user
 
                     List<Enrollment> userEnrollments = new ArrayList<>(); // User enrollments
 
                     List<Enrollment> allEnrollments = enrollmentsBean.get(); // User enrollments
-                    for (Enrollment oneEnrollment: allEnrollments) {
+                    for (Enrollment oneEnrollment : allEnrollments) {
                         if (oneEnrollment.getToken().getId() == (enrollmentToken.getId())) {
                             userEnrollments.add(oneEnrollment);
                         }
@@ -102,13 +101,13 @@ public class ScheduleEndPoint {
                     List<EnrollmentCourse> userEnrollmentCourses = new ArrayList<>();
 
 
-                    for (EnrollmentCourse enrollmentCourse: enrollmentCourses) {
+                    for (EnrollmentCourse enrollmentCourse : enrollmentCourses) {
                         if (userEnrollments.contains(enrollmentCourse.getEnrollment())) {
                             userEnrollmentCourses.add(enrollmentCourse);
                         }
-                     }
+                    }
                     // Iterate overy user enrollments
-                    for (EnrollmentCourse userEnrollment: userEnrollmentCourses) {
+                    for (EnrollmentCourse userEnrollment : userEnrollmentCourses) {
 
                         // CourseExecution ce = enrollmentCoursesBean.get(userEnrollment.getId()).getCourseExecution();
 
@@ -125,6 +124,13 @@ public class ScheduleEndPoint {
 
         }
         return Response.ok(resultExams).build();
+    }
+
+    @GET
+    @Path("courseExecution/{courseExecution}")
+    public Response getScheduled(@PathParam("courseExecution") int id) {
+
+        return Response.ok(examsBean.getExamsForCourseExecution(id)).build();
     }
 
 
@@ -162,6 +168,8 @@ public class ScheduleEndPoint {
             exam.setScheduledAt(scheduledAt);
             exam.setPastImport(false);
             exam.setWritten(false);
+            exam.setLocation(beScheduleExam.getLocation());
+            exam.setAsking(beScheduleExam.getAsking());
             examsBean.add(exam);
             return Response.ok(exam).build();
         } catch (Exception e) {
