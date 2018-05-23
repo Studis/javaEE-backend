@@ -39,6 +39,7 @@ public class ExamSeeder extends Seeder {
     public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, boolean pastImport) {
         Exam e;
         Integer index = 0;
+        String[] locations = {"PA","P01","P02","P03","P04","P05","P06","P07","P08","P09","P10","P11","P12","P13","P14","P15","P16"};
         for (CourseExecution courseExecution: courseExecutions) {
             do {
                 calendar.add(Calendar.DATE, 1);
@@ -49,6 +50,8 @@ public class ExamSeeder extends Seeder {
                 e.setCourseExecution(courseExecution);
                 e.setScheduledAt(calendar.getTime());
                 e.setWritten(pastImport);
+                e.setAsking(courseExecution.getLecturer1().getName() + " " + courseExecution.getLecturer1().getSurname());
+                e.setLocation(locations[index%locations.length]);
             }
             while (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
                     calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || examsBean.add(e) == null);

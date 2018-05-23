@@ -13,9 +13,12 @@ import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
+import si.fri.tpo.team7.services.interceptors.ExamEnrollmentInterceptor;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.ws.rs.NotFoundException;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -56,31 +59,34 @@ public class ExamEnrollmentsSeeder extends Seeder {
 
                 if (student.getId() == enrollmentCourse.getEnrollment().getToken().getStudent().getId()) { // If student has token then he can enroll
                     for (Exam exam : examsBean.get()) {
-                        if (exam.getScheduledAt().after(new Date())) { // If exam is scheduled in the future
-                            Random rn = new Random();
-                            Integer max = 100;
-                            Integer min = 0;
-                            if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                        if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId() && enrollmentCourse.getCourseExecution().getId() == exam.getCourseExecution().getId()) { // Apply for the right exams and only once
+                            if (Instant.now().isBefore(exam.getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23, ChronoUnit.HOURS).plus(55, ChronoUnit.MINUTES).minus(ExamEnrollmentInterceptor.MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS))) { // If exam is scheduled in the future
+                                Random rn = new Random();
+                                Integer max = 100;
+                                Integer min = 0;
+                                if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                                    ExamEnrollment e = new ExamEnrollment();
+                                    e.setEnrollment(enrollmentCourse);
+                                    e.setExam(exam);
+                                    examEnrollmentBean.add(e);
+                                    break;
+                                }
+                            } else if (exam.getScheduledAt().toInstant().isBefore(Instant.now())) { // Past enrollments
+                                Random rn = new Random();
+                                Integer max = 100;
+                                Integer min = 0;
                                 ExamEnrollment e = new ExamEnrollment();
                                 e.setEnrollment(enrollmentCourse);
                                 e.setExam(exam);
-                                examEnrollmentBean.add(e);
-                                break;
-                            }
-                        } else { // Past enrollments
-                            Random rn = new Random();
-                            Integer max = 100;
-                            Integer min = 0;
-                            if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
-                                ExamEnrollment e = new ExamEnrollment();
-                                e.setEnrollment(enrollmentCourse);
-                                e.setExam(exam);
-                                Integer score = rn.nextInt(max - min + 1) + min;
-                                e.setScore(score);
-                                e.setMark(getMarkFromScore(score));
-                                e.setPastImport(true);
-                                examEnrollmentBean.add(e);
-                                break;
+                                if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
+                                    Integer score = rn.nextInt(max - min + 1) + min;
+                                    e.setScore(score);
+                                    e.setMark(getMarkFromScore(score));
+                                    e.setPastImport(true);
+                                    examEnrollmentBean.add(e);
+                                    break;
+                                }
+
                             }
                         }
                     }

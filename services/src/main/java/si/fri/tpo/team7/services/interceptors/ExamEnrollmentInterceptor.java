@@ -7,6 +7,8 @@ import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.users.LecturersBean;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
@@ -29,24 +31,22 @@ import java.util.logging.Logger;
 @Priority(Interceptor.Priority.PLATFORM_BEFORE)
 @EnrollToExam
 public class ExamEnrollmentInterceptor {
-    private final Integer MAX_DAYS_BEFORE_EXAM_APPLY = 2;
+    public static final Integer MAX_DAYS_BEFORE_EXAM_APPLY = 2; // Change globally
 
+    private Logger log = Logger.getLogger(ExamEnrollmentInterceptor.class.getName());
 
 
     @AroundInvoke
     public Object enrollToExam(InvocationContext context) throws Exception {
 
 
-
-
         String nameOfMethod = context.getMethod().getName();
         if (nameOfMethod == "add") {
             ExamEnrollment examEnrollment = (ExamEnrollment) context.getParameters()[0];
 
-            Instant now = Instant.now();
-            Instant latestExamApplicationDate =  examEnrollment.getExam().getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23,ChronoUnit.HOURS).plus(55,ChronoUnit.MINUTES).minus(MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS); // Truncate
+            Instant latestExamApplicationDate =  DateValidator.getLatestEnrollDismentDate(examEnrollment.getExam().getScheduledAt().toInstant());
 
-            if (now.isAfter(latestExamApplicationDate) && !examEnrollment.getExam().isPastImport()) { // Cannot enroll in exam after the application date is over
+            if (Instant.now().isAfter(latestExamApplicationDate) && !examEnrollment.isPastImport()) { // Cannot enroll in exam after the application date is over
                 throw new NotFoundException( "You can no longer enroll to this exam! Lattest application date was " + latestExamApplicationDate);
             }
 
@@ -56,20 +56,15 @@ public class ExamEnrollmentInterceptor {
 
             if (examEnrollment.getStatus() != null) throw new NotFoundException("You are currently not enrolled in this exam!");
 
-            Instant now = Instant.now();
-            Instant latestExamApplicationDate =  examEnrollment.getExam().getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23,ChronoUnit.HOURS).plus(55,ChronoUnit.MINUTES).minus(MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS); // Truncate
+            Instant latestExamDeApplicationDate =  DateValidator.getLatestEnrollDismentDate(examEnrollment.getExam().getScheduledAt().toInstant());
 
-            if (now.isAfter(latestExamApplicationDate)) { // Cannot enroll in exam after the application date is over
-                throw new NotFoundException( "You can no longer cancel disenroll from this exam! Latest cancellation date was " + latestExamApplicationDate);
+            if (Instant.now().isAfter(latestExamDeApplicationDate)) { // Cannot enroll in exam after the application date is over
+                throw new NotFoundException( "You can no longer cancel disenroll from this exam! Latest cancellation date was " + latestExamDeApplicationDate);
             }
 
         }
         return context.proceed();
 
-    }
-
-    public boolean sameCourseExecution(ExamEnrollment one, ExamEnrollment two) {
-        return one.getExam().getCourseExecution().getId() == two.getExam().getCourseExecution().getId();
     }
 
 

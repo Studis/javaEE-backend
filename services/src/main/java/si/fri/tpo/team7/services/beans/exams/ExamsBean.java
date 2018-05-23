@@ -22,11 +22,16 @@ public class ExamsBean extends EntityBean<Exam> {
     }
 
     // SELECT distinct(exam.id),exam.scheduledat from exam,enrollmentcourse where enrollmentcourse.courseexecution=exam.courseexecution
-    @Transactional
-    @SuppressWarnings("unchecked")
+
     public List<Exam> getAvailableExamsForEnrollmentCourseId(Integer enrollmentCourseId) {
         Query q = em.createQuery("SELECT distinct(e) from Exam e,EnrollmentCourse ec where ec.courseExecution.id=e.courseExecution.id and ec.id = :enrollmentCourseId");
         q.setParameter("enrollmentCourseId",enrollmentCourseId);
+        return (List<Exam>)q.getResultList();
+    }
+
+    public List<Exam> getExamsForUserId(Integer userId) {
+        Query q = em.createQuery("SELECT distinct(e) from Exam e,EnrollmentCourse ec where ec.courseExecution.id=e.courseExecution.id and ec.enrollment.token.student.id = :userId");
+        q.setParameter("userId",userId);
         return (List<Exam>)q.getResultList();
     }
 

@@ -31,13 +31,13 @@ public class ExamEnrollment extends BaseEntity {
     @JsonIgnore
     private boolean pastImport;
 
-    @JsonIgnore
+
     @Basic
     private String status;
 
 
     // UserId that has deleted exam enrollment
-    @JsonIgnore
+
     @Basic
     private Integer deletedBy;
     

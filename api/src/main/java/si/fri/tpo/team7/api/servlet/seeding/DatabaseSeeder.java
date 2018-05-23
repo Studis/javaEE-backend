@@ -16,6 +16,7 @@ import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.location.Residence;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -79,6 +82,18 @@ public class DatabaseSeeder extends HttpServlet{
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
 //        log.info("Seeder started running");
+        DateValidator dateValidator = new DateValidator();
+        Instant today = Instant.now();
+        Instant tomorrow = Instant.now().plus(1, ChronoUnit.DAYS);
+        log.info("Shoud be true: " + dateValidator.isAfter(tomorrow,today));
+        log.info("Shoud be -1: " + dateValidator.durationBetweenDatesInDays(tomorrow,today));
+        log.info("Shoud be 1: " + dateValidator.durationBetweenDatesInDays(today,tomorrow));
+        log.info("Shoud be 22.5.2018: " + dateValidator.subtractDays(today,1));
+        log.info("Shoud be 24.5.2018: " + dateValidator.addDays(today,1));
+        log.info("Shoud be 21.5.2018: "  + dateValidator.getLatestEnrollDismentDate(today));
+        log.info("Shoud be 23.5.2018: "  + dateValidator.trunateToDays(today));
+
+
         PrintWriter writer = new PrintWriter(new OutputStream() {
             @Override
             public void write(int b) throws IOException {
@@ -374,6 +389,12 @@ public class DatabaseSeeder extends HttpServlet{
                 enrollment.setCurriculum(c);
                 enrollment.setType(enrollmentTypesBean.get(5));
                 enrollment.setStudyType(studyTypesBean.get(1));
+
+
+//                if (student.getId() == 1) {
+//                    enrollment.setStudyType(studyTypesBean.get(3));
+//                }
+
                 enrollment.setStudyForm(studyFormsBean.get(1));
                 break;
         }

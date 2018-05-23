@@ -1,20 +1,19 @@
 package si.fri.tpo.team7.services.beans.exams;
 
-
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
-import si.fri.tpo.team7.services.annotations.ScheduleExam;
-import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
+import si.fri.tpo.team7.services.beans.validators.ExamEnrollmentValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -36,6 +35,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
         if (existingEnrollmentsMiddleWare(super.get(),obj)) {
             obj.setCreatedAt(new Date());
+            obj.setPastImport(false);
             em.persist(obj);
             em.flush();
             return obj;
@@ -48,15 +48,18 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
      *
      * @param examEnrollments - List of all exam enrollments
      * @param pending
-     * @return
+     * @param examEnrollments
+     * @return boolean
      * @throws NotFoundException
      */
     public boolean existingEnrollmentsMiddleWare(List<ExamEnrollment> examEnrollments, ExamEnrollment pending) throws NotFoundException {
         Integer examAttemptsInCurrentYear = 0;
         Integer totalExamAttempts = 0;
+        Map<ExamEnrollment,Integer> mapExamEnrollmentAttempts = new HashMap<>();
         for (ExamEnrollment examenrollment: examEnrollments) {
 
-            if (examenrollment.getStatus() != null) continue; // Do not count exam enrollment that was canceled (has set status to deleted) in the correct due date
+            if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that was disenrolled in time (has set status to deleted) in the correct due date
+
 
             Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
             Integer currentUserId = examenrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
@@ -67,40 +70,44 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
             Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
 
+
             if (pending.getEnrollment().getCourseExecution().getId() != pending.getExam().getCourseExecution().getId()) {
                 throw new NotFoundException("Exam term does not exist for given enrollment course!");
-
             }
+
+//            if (pendingUserId == currentUserId && pending.getExam().getCourseExecution().getId() == examenrollment.getExam().getCourseExecution().getId()) { // Here is the right course execution - TESTing
+//                throw new NotFoundException("Exam enrollment for exam " + pending.getEnrollment().getCourseExecution().getCourse().getName() + " already exist! for user " + pendingUserId);
+//            } // TESTING
 
             // If exam has not yet been written you cannot add mark to it
             if (((pending.getScore() != null) || (pending.getMark() != null)) && pending.getExam().getScheduledAt().after(new Date())) {
                 throw new NotFoundException("Exam has not yet been written, you cannot add marks or scores to future exams!");
             }
 
-            // If user is already enrolled in the exam with same course execution and has not received mark yet
-            if (userIsEnrolledToSameCourse && examenrollment.getMark() == null) {
-                throw new NotFoundException("You can't enroll before you receive final mark!");
-            }
+            if (ExamEnrollmentValidator.isSameUserEnrollment(examenrollment,pending) && ExamEnrollmentValidator.isExamForSameCourse(examenrollment,pending)) { // If it is enrollment for the same user
 
-            // If user is already enrolled in the exam with same course execution and has completed it
-            if (userIsEnrolledToSameCourse && examenrollment.getMark() > 5) {
-                throw new NotFoundException("You have already completed this exam!");
-            }
-
-            // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
-            if (userIsEnrolledToSameCourse && examenrollment.getExam().isWritten() && examenrollment.getExam().getId() != pending.getExam().getId()) {
-                Instant firstExam = examenrollment.getExam().getScheduledAt().toInstant();
-                Instant secondExam = pending.getExam().getScheduledAt().toInstant();
-
-                if (Duration.between(firstExam,secondExam).toDays() <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
-                    log.info(firstExam.toString() + " " + secondExam.toString());
+                log.info("Yes");
+                // If user is already enrolled in the exam with same course execution and has not received mark yet
+                if (!ExamEnrollmentValidator.markKnown(examenrollment)) {
+                    throw new NotFoundException("You can't enroll before you receive final mark!");
+                }
+                // If user is already enrolled in the exam with same course execution and has completed it
+                if (ExamEnrollmentValidator.didIPass(examenrollment)) {
+                    throw new NotFoundException("You have already completed this exam!");
+                }
+                if (examenrollment.getExam().getId() == pending.getExam().getId()) {
+                    throw new NotFoundException("Enrollment to this exam already exist!");
+                }
+                // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
+                // TODO: check if working
+                if (Math.abs(DateValidator.durationBetweenDatesInDays(examenrollment.getExam().getScheduledAt().toInstant(),
+                        pending.getExam().getScheduledAt().toInstant())) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
                     throw new NotFoundException( "Duration between attempts must be " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
                 }
             }
 
             Integer examenrollmentStudyYear = examenrollment.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
             Integer pendingStudyYear = pending.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
-
 
             // Total exam attempts in study year is 3
             if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
@@ -123,24 +130,22 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             }
 
             if (totalExamAttempts >= 3 && !pending.getPaid()) {
-                throw new NotFoundException("You need to pay for exam due to total attempt " + totalExamAttempts+1 +" in order to enroll!");
+                throw new NotFoundException("You will need to pay for exam due to total attempt " + totalExamAttempts+1);
             }
 
             Integer typeOfStudy = pending.getEnrollment().getEnrollment().getStudyType().getId();
 
             if (typeOfStudy == 3 && !pending.getPaid()) {
-                throw new NotFoundException("You need to pay for exams in order to enroll! Please settle the paynment!");
+                throw new NotFoundException("You will need to pay for exam!");
             }
 
         }
 
-
         return true;
-
     }
 
 
-        @Transactional
+    @Transactional
     public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s) { // deletedBy is set in endpoint
         ExamEnrollment obj = em.find(ExamEnrollment.class, id);
         if(obj == null) {
@@ -150,7 +155,6 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         s.setStatus("deleted");
         s.setId(id);
         return em.merge(s);
-
     }
 
     @Override
