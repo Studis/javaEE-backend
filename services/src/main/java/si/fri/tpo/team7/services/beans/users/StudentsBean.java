@@ -1,11 +1,10 @@
 package si.fri.tpo.team7.services.beans.users;
 
-import si.fri.tpo.team7.entities.curriculum.StudyYear;
-import si.fri.tpo.team7.entities.enrollments.*;
-import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.services.beans.curriculum.ProgramsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
@@ -63,62 +61,11 @@ public class StudentsBean {
             return null;
         }
 
-
         em.persist(s);
         em.flush();
         s.setUsername(generateUsername(s));
         s.setPassword(s.getUsername());
         s.setEnrollmentNumber(generateEnrollmentNum(s));
-
-        EnrollmentToken token = new EnrollmentToken();
-        token.setStatus(Status.NEW);
-        token.setStudyYear(em.find(StudyYear.class, 1));
-        token.setStudyForm(em.find(StudyForm.class, 1));
-        token.setStudyType(em.find(StudyType.class, 1));
-        token.setEnrollmentType(em.find(EnrollmentType.class,1));
-        token.setProgram(programsBean.get(1000475));//TODO add programm
-        token.setFreeChoice(false);
-        token.setStudent(s);
-
-
-        List<EnrollmentToken> tokens = new ArrayList<>();
-        tokens.add(token);
-        s.setEnrollmentTokens(tokens);
-        em.persist(s);
-        em.flush();
-        em.persist(token);
-        return s;
-    }
-    @Transactional
-    public Student addStudentWithProgram(Student s, int programCode) {
-        if(s == null){
-            return null;
-        }
-
-
-        em.persist(s);
-        em.flush();
-        s.setUsername(generateUsername(s));
-        s.setPassword(s.getUsername());
-        s.setEnrollmentNumber(generateEnrollmentNum(s));
-
-        EnrollmentToken token = new EnrollmentToken();
-        token.setStatus(Status.NEW);
-        token.setStudyYear(em.find(StudyYear.class, 1));
-        token.setStudyForm(em.find(StudyForm.class, 1));
-        token.setStudyType(em.find(StudyType.class, 1));
-        token.setEnrollmentType(em.find(EnrollmentType.class,1));
-        token.setProgram(programsBean.get(programCode));
-        token.setFreeChoice(false);
-        token.setStudent(s);
-
-
-        List<EnrollmentToken> tokens = new ArrayList<>();
-        tokens.add(token);
-        s.setEnrollmentTokens(tokens);
-        em.persist(s);
-        em.flush();
-        em.persist(token);
         return s;
     }
 

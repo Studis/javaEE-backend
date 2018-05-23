@@ -65,12 +65,10 @@ public class Student extends User {
         List<EnrollmentToken> enrollmentTokens = getEnrollmentTokens();
         ArrayList<Enrollment> enrollments = new ArrayList<>();
         for (EnrollmentToken token:enrollmentTokens) {
-            enrollments.add(token.getEnrollment());
+            enrollments.addAll(token.getEnrollments());
         }
         return enrollments;
     }
-
-
 
     public String toJson() {
         return "{" +
