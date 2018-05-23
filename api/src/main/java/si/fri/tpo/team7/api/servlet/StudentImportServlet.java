@@ -127,7 +127,7 @@ public class StudentImportServlet extends HttpServlet {
             int programCode = Integer.parseInt(line.substring(59, 67).trim());
             student.setEMail(line.substring(67, line.length()-1).trim());
 
-            studentsBean.addStudent(student);
+            studentsBean.addStudentWithProgram(student, programCode);
 
             /*EnrollmentToken token1 = new EnrollmentToken();
             token1.setStudent(student);
