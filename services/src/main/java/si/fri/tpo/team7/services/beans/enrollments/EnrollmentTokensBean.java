@@ -32,7 +32,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
     @Transactional
     public EnrollmentToken updateToken(int tokenId, EnrollmentToken enrollmentToken) {
         EnrollmentToken token = em.find(EnrollmentToken.class, tokenId);
-        if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.DELETED)){
+        if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE) ){
             throw new NotAllowedException("Editing this token is not allowed.");
         }
         token.setStatus(enrollmentToken.getStatus());
@@ -48,21 +48,17 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
     public void deleteToken(int tokenId) {
         EnrollmentToken token = em.find(EnrollmentToken.class, tokenId);
         if(token.getStatus() != null) {
-            if (token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.DELETED)) {
+            if (token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE) ) {
                 throw new NotAllowedException("Editing this token is not allowed.");
             }
         }
-
-        token.setStatus(Status.DELETED);
-        token.setUpdatedAt(new Date());
         em.remove(token);
-        //em.persist(token);
     }
 
     @Transactional
     public EnrollmentToken addNewToken(int studentId) {
         EnrollmentToken resultToken = new EnrollmentToken();
-        resultToken.setStatus(Status.ACTIVE);
+        resultToken.setStatus(Status.OPEN);
         resultToken.setCreatedAt(new Date());
 
         Student student = studentsBean.getStudent(studentId);
@@ -71,7 +67,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         EnrollmentToken lastToken = null;
         for (EnrollmentToken token: enrollmentTokens) {
             if (token.getStatus() != null) {
-                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.NEW) || token.getStatus().equals(Status.ACTIVE))
+                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE))
                     lastToken = token;
             }
         }
@@ -85,7 +81,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         resultToken.setEnrollmentType(lastToken.getEnrollmentType());
 
         //STUDY YEAR
-        if (lastToken.getStudyYear().getId() <= 2) { //TODO
+        if (lastToken.getStudyYear().getId() <= 2) {
             resultToken.setStudyYear(em.find(StudyYear.class, lastToken.getStudyYear().getId() + 1));
         } else {
             resultToken.setStudyYear(lastToken.getStudyYear());
@@ -98,7 +94,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         resultToken.setStudyType(lastToken.getStudyType());
 
         //FREE CHOICE
-        if (lastToken.getStudyYear().getId() == 2) {//TODO
+        if (lastToken.getStudyYear().getId() == 2) {
             resultToken.setFreeChoice(true);
         }
 
