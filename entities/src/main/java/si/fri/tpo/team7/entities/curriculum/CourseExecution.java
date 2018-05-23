@@ -53,4 +53,8 @@ public class CourseExecution extends BaseEntity {
     public boolean isWinter() {
         return winter;
     }
+
+    public int getEnrollmentsCount(){
+        return enrollmentCourses.size();
+    }
 }
