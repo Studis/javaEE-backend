@@ -75,7 +75,8 @@ public class Student extends User {
                 "\"name\": \"" + name + "\"," +
                 "\"surname\": \"" + surname + "\"," +
                 "\"email\": \"" + eMail + "\"," +
-                "\"username\": \"" + username + "\""
+                "\"username\": \"" + username + "\"," +
+                "\"enrollmentNumber\": \"" + enrollmentNumber + "\""
                 + "}";
     }
 }
