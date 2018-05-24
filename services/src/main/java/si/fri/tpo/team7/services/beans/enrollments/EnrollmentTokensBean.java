@@ -1,6 +1,9 @@
 package si.fri.tpo.team7.services.beans.enrollments;
 
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentType;
+import si.fri.tpo.team7.entities.enrollments.StudyForm;
+import si.fri.tpo.team7.entities.enrollments.StudyType;
 import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.EntityBean;
@@ -36,10 +39,10 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
             throw new NotAllowedException("Editing this token is not allowed.");
         }
         token.setStatus(enrollmentToken.getStatus());
-        token.setStudyType(enrollmentToken.getStudyType());
-        token.setStudyForm(enrollmentToken.getStudyForm());
-        token.setStudyYear(enrollmentToken.getStudyYear());
-        token.setEnrollmentType(enrollmentToken.getEnrollmentType());
+        token.setStudyType(em.find(StudyType.class,enrollmentToken.getStudyType().getId()));
+        token.setStudyForm(em.find(StudyForm.class, enrollmentToken.getStudyForm().getId()));
+        token.setStudyYear(em.find(StudyYear.class, enrollmentToken.getStudyYear().getId()));
+        token.setEnrollmentType(em.find(EnrollmentType.class,enrollmentToken.getEnrollmentType().getId()));
         token.setFreeChoice(enrollmentToken.isFreeChoice());
         em.persist(token);
         return token;
@@ -77,7 +80,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         //PROGRAM
         resultToken.setProgram(lastToken.getProgram());
 
-        //ENROLLMENT TYPE //TODO ponavlja
+        //ENROLLMENT TYPE
         resultToken.setEnrollmentType(lastToken.getEnrollmentType());
 
         //STUDY YEAR
@@ -94,9 +97,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         resultToken.setStudyType(lastToken.getStudyType());
 
         //FREE CHOICE
-        if (lastToken.getStudyYear().getId() == 2) {
-            resultToken.setFreeChoice(true);
-        }
+        resultToken.setFreeChoice(true);
 
         em.persist(resultToken);
         em.flush();

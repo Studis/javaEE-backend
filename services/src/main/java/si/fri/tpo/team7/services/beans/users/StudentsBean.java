@@ -76,7 +76,7 @@ public class StudentsBean {
         token.setStudyForm(em.find(StudyForm.class, 1));
         token.setStudyType(em.find(StudyType.class, 1));
         token.setEnrollmentType(em.find(EnrollmentType.class,1));
-        token.setProgram(programsBean.get(1000475));//TODO add programm
+        token.setProgram(programsBean.get(1000475));
         token.setFreeChoice(false);
         token.setStudent(s);
 
@@ -84,9 +84,9 @@ public class StudentsBean {
         List<EnrollmentToken> tokens = new ArrayList<>();
         tokens.add(token);
         s.setEnrollmentTokens(tokens);
+        em.persist(token);
         em.persist(s);
         em.flush();
-        em.persist(token);
         return s;
     }
     @Transactional
@@ -116,9 +116,9 @@ public class StudentsBean {
         List<EnrollmentToken> tokens = new ArrayList<>();
         tokens.add(token);
         s.setEnrollmentTokens(tokens);
+        em.persist(token);
         em.persist(s);
         em.flush();
-        em.persist(token);
         return s;
     }
 
