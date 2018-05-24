@@ -14,6 +14,7 @@ import javax.validation.constraints.Past;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -30,10 +31,13 @@ public class Student extends User {
     @Column(length = 13, unique = true)
     protected String emso;
 
-    protected LocalDate dateOfBirth;
+    protected Date dateOfBirth;
     protected String placeOfBirth;
     protected String gender;
+
+    //NATIONALITY = COUNTRY
     protected String nationality;
+    protected String region;
 
     protected String taxNumber;
     protected String phoneNumber;
