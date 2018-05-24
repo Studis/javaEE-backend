@@ -21,4 +21,11 @@ public class EnrollmentCourse extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="courseExecution", referencedColumnName = "id", nullable=false)
     private CourseExecution courseExecution;
+
+    @Override
+    public String toString() {
+        return "EnrollmentCourse{" +
+                "courseExecution=" + courseExecution +
+                '}';
+    }
 }
