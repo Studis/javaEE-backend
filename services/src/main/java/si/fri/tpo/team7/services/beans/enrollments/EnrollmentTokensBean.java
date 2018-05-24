@@ -33,6 +33,17 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
     }
 
     @Transactional
+    public  EnrollmentToken completeToken(int tokenId) {
+        EnrollmentToken token = em.find(EnrollmentToken.class, tokenId);
+        if(token.getStatus().equals(Status.ACTIVE) ){
+            token.setStatus(Status.COMPLETED);
+            em.persist(token);
+            return token;
+        } else
+            throw new NotAllowedException("Editing this token is not allowed.");
+    }
+
+    @Transactional
     public EnrollmentToken updateToken(int tokenId, EnrollmentToken enrollmentToken) {
         EnrollmentToken token = em.find(EnrollmentToken.class, tokenId);
         if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE) ){

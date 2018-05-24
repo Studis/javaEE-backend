@@ -33,6 +33,13 @@ public class EnrollmentTokenEndpoint {
         return Response.ok(token).build();
     }
 
+    @POST
+    @Path("{id}/complete")
+    public Response completeToken(@PathParam("id") int tokenId) {
+        EnrollmentToken token = enrollmentTokensBean.completeToken(tokenId);
+        return Response.ok(token).build();
+    }
+
     @PUT
     @Path("{id}")
     public Response updateToken(@PathParam("id") int tokenId, EnrollmentToken token) {

@@ -22,6 +22,7 @@ public class EnrollmentToken extends BaseEntity {
     private Student student;
 
     @OneToOne
+    @JsonIgnore
     private Enrollment enrollment;
 
     private Status status;

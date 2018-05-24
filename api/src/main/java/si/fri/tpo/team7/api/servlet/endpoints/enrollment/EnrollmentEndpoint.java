@@ -18,6 +18,12 @@ public class EnrollmentEndpoint {
     @Inject
     private EnrollmentsBean enrollmentsBean;
 
+    @GET
+    @Path("{id}")
+    public Response getDataForEnrollmentForm(@PathParam("id") int studentId){
+        return Response.ok(enrollmentsBean.getEnrollmentData(studentId)).build();
+    }
+
     @POST
     @Path("{id}")
     public Response enroll(@PathParam("id") int tokenId, EnrollmentResponse enrollmentResponse){

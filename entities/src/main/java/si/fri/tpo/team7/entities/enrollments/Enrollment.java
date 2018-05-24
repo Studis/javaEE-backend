@@ -16,6 +16,7 @@ import java.util.Set;
 public class Enrollment extends BaseEntity {
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="token")
     private EnrollmentToken token;
 
@@ -38,4 +39,15 @@ public class Enrollment extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
     private Set<EnrollmentCourse> courses;
+
+    @Override
+    public String toString() {
+        return "Enrollment{" +
+                "type=" + type +
+                ", studyType=" + studyType +
+                ", studyForm=" + studyForm +
+                ", curriculum=" + curriculum +
+                ", courses=" + courses +
+                '}';
+    }
 }

@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotAllowedException;
 import java.util.Calendar;
+import java.util.List;
 
 
 @ApplicationScoped
@@ -31,6 +32,42 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
     public EnrollmentsBean() {
         super(Enrollment.class);
+    }
+
+    public EnrollmentResponse getEnrollmentData( int studentId) {
+        Student student = studentsBean.getStudent(studentId);
+        List<EnrollmentToken> enrollmentTokens = student.getEnrollmentTokens();
+        EnrollmentToken lastToken = null;
+        for (EnrollmentToken token: enrollmentTokens) {
+            if (token.getStatus() != null) {
+                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE))
+                    lastToken = token;
+            }
+        }
+        if(lastToken == null)
+            throw new NotAllowedException("This user has no completed tokens!");
+
+        EnrollmentResponse enrollmentResponse = new EnrollmentResponse();
+        EnrollmentToken token = lastToken;
+        //STUDNET
+        enrollmentResponse.setStudent(token.getStudent());
+
+        //STUDY TYPE
+        enrollmentResponse.setStudyType(token.getStudyType());
+
+        //STUDY FORM
+        enrollmentResponse.setStudyForm(token.getStudyForm());
+
+        //ENROLLMENT TYPE
+        enrollmentResponse.setEnrollmentType(token.getEnrollmentType());
+
+        //PROGRAM
+        enrollmentResponse.setProgram(token.getProgram());
+
+        //STUDY YEAR
+        enrollmentResponse.setStudyYear(token.getStudyYear());
+
+        return enrollmentResponse;
     }
 
     @Transactional
@@ -144,7 +181,7 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         em.persist(temporaryResidence);
 
         for (EnrollmentToken t : student.getEnrollmentTokens()) {
-            if (t.getStatus().equals(Status.OPEN))
+            if (t.getStatus() != null && t.getStatus().equals(Status.OPEN))
                 enrollmentTokensBean.deleteToken(t.getId());
         }
 
