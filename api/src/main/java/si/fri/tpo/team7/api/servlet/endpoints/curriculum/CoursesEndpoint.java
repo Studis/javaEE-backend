@@ -104,7 +104,7 @@ public class CoursesEndpoint {
                 myEnrollmentCourseIdEnrollmentCourseMap.put(enrollmentCourse.getId(),enrollmentCourse);
                 BEEnrollmentCourse beEnrollmentCourse = new BEEnrollmentCourse(); // new Business entity to set enrollment
 
-
+                enrollmentCourse.setCourseExecution(courseExecutionsBean.get(enrollmentCourse.getCourseExecution().getId()));
 
                 beEnrollmentCourse.setEnrollmentCourse(enrollmentCourse);
                 beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourse.getId()));
