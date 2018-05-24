@@ -57,4 +57,8 @@ public class CourseExecution extends BaseEntity {
     public int getEnrollmentsCount(){
         return enrollmentCourses.size();
     }
+
+    public Year getYear() {
+        return null;
+    }
 }

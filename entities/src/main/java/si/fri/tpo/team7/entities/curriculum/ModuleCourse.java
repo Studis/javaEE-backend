@@ -15,4 +15,9 @@ public class ModuleCourse extends CourseExecution {
     @ManyToOne
     @JoinColumn(name="module", referencedColumnName = "id", nullable=false)
     private Module module;
+
+    @Override
+    public Year getYear() {
+        return module.getCurriculum().getYear();
+    }
 }

@@ -12,6 +12,4 @@ public class BEEnrollmentCourse {
     public ExamEnrollment examEnrollment;
     public EnrollmentCourse enrollmentCourse;
     public List<Exam> examsAvailable;
-    public boolean enrolled;
-    public boolean passed; // If exam is passed
 }
