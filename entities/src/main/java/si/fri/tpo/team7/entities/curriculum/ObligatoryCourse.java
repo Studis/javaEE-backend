@@ -15,4 +15,8 @@ public class ObligatoryCourse extends CourseExecution {
     @ManyToOne
     @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
     private Curriculum curriculum;
+    @Override
+    public Year getYear() {
+        return curriculum.getYear();
+    }
 }
