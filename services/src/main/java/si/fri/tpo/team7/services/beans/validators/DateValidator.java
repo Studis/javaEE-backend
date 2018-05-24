@@ -15,7 +15,7 @@ public class DateValidator {
     }
     // True if first is before second
     public static boolean isBefore(Instant one, Instant two) {
-        return one.isAfter(two);
+        return one.isBefore(two);
     }
     // Duration between dates 23.5.2018 and 24.5.2018 is 1
     public static Long durationBetweenDatesInDays(Instant first, Instant second) { // negative value if tomorrow, today
