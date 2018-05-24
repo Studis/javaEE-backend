@@ -152,13 +152,13 @@ public class DatabaseSeeder extends HttpServlet{
         writer.print("Adding programs ... ");
 
         uniProgram = new Program();
-        uniProgram.setId(1000475);
+        uniProgram.setId(1000468);
         uniProgram.setTitle("Računalništvo in informatika UNI");
         uniProgram.setEcts(180);
         programsBean.add(uniProgram);
 
         vsProgram = new Program();
-        vsProgram.setId(1000477);
+        vsProgram.setId(1000470);
         vsProgram.setTitle("Računalništvo in informatika VS");
         vsProgram.setEcts(180);
         programsBean.add(vsProgram);

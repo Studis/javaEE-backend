@@ -8,6 +8,7 @@ import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.exams.BEScheduleExam;
+import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
@@ -17,12 +18,14 @@ import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Instant;
 import java.util.*;
 
 @Path("/exams/scheduled")
@@ -54,7 +57,7 @@ public class ScheduleEndPoint {
     User authenticatedUser;
 
     @GET
-    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    @Secured({Role.STUDENT, Role.ADMIN, Role.LECTURER, Role.CLERK})
     /**
      * Get exams visible by particular role
      * */
@@ -65,11 +68,11 @@ public class ScheduleEndPoint {
         List<CourseExecution> courseExecutions = courseExecutionsBean.get();
         List<Integer> resultCourseExecutionsIds = new ArrayList<>();
 
-        if(authenticatedUser.getRole() == Role.LECTURER) {
+        if (authenticatedUser.getRole() == Role.LECTURER) {
             for (CourseExecution c : courseExecutions) {
                 if (c.getLecturer1().getId() == authenticatedUser.getId()
                         || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
-                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())){
+                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
                     resultCourseExecutionsIds.add(c.getId());
                 }
             }
@@ -79,19 +82,18 @@ public class ScheduleEndPoint {
                     resultExams.add(e);
                 }
             }
-        }
-        else if (authenticatedUser.getRole() == Role.CLERK || authenticatedUser.getRole() == Role.ADMIN) {
-           resultExams = exams;
+        } else if (authenticatedUser.getRole() == Role.CLERK || authenticatedUser.getRole() == Role.ADMIN) {
+            resultExams = exams;
         } else if (authenticatedUser.getRole() == Role.STUDENT) {
             Integer userId = authenticatedUser.getId();
             List<EnrollmentToken> enrollmentTokens = enrollmentTokensBean.get(); // get tokens of user
-            for (EnrollmentToken enrollmentToken: enrollmentTokens) {
+            for (EnrollmentToken enrollmentToken : enrollmentTokens) {
                 if (enrollmentToken.getStudent().getId() == userId) { // Get enrollments for that user
 
                     List<Enrollment> userEnrollments = new ArrayList<>(); // User enrollments
 
                     List<Enrollment> allEnrollments = enrollmentsBean.get(); // User enrollments
-                    for (Enrollment oneEnrollment: allEnrollments) {
+                    for (Enrollment oneEnrollment : allEnrollments) {
                         if (oneEnrollment.getToken().getId() == (enrollmentToken.getId())) {
                             userEnrollments.add(oneEnrollment);
                         }
@@ -102,13 +104,13 @@ public class ScheduleEndPoint {
                     List<EnrollmentCourse> userEnrollmentCourses = new ArrayList<>();
 
 
-                    for (EnrollmentCourse enrollmentCourse: enrollmentCourses) {
+                    for (EnrollmentCourse enrollmentCourse : enrollmentCourses) {
                         if (userEnrollments.contains(enrollmentCourse.getEnrollment())) {
                             userEnrollmentCourses.add(enrollmentCourse);
                         }
-                     }
+                    }
                     // Iterate overy user enrollments
-                    for (EnrollmentCourse userEnrollment: userEnrollmentCourses) {
+                    for (EnrollmentCourse userEnrollment : userEnrollmentCourses) {
 
                         // CourseExecution ce = enrollmentCoursesBean.get(userEnrollment.getId()).getCourseExecution();
 
@@ -125,6 +127,13 @@ public class ScheduleEndPoint {
 
         }
         return Response.ok(resultExams).build();
+    }
+
+    @GET
+    @Path("courseExecution/{courseExecution}")
+    public Response getScheduled(@PathParam("courseExecution") int id) {
+
+        return Response.ok(examsBean.getExamsForCourseExecution(id)).build();
     }
 
 
@@ -161,9 +170,29 @@ public class ScheduleEndPoint {
             exam.setCourseExecution(courseExecution);
             exam.setScheduledAt(scheduledAt);
             exam.setPastImport(false);
-            exam.setWritten(false);
+            exam.setWritten(DateValidator.isBefore(scheduledAt.toInstant(), Instant.now()));
+            exam.setLocation(beScheduleExam.getLocation());
+            exam.setAsking(beScheduleExam.getAsking());
             examsBean.add(exam);
             return Response.ok(exam).build();
+        } catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
+    @DELETE
+    @Path("erase/{examId}")
+    @Secured({Role.LECTURER, Role.CLERK})
+    public  Response deleteExam(@PathParam("examId") Integer examId) {
+        try {
+
+            Boolean exams = examsBean.deleteExamsForExamId(examId);
+
+            if (!exams) {
+                throw new NotFoundException("Exams cannot be deleted due to enrolled users");
+            }
+
+            return Response.ok(exams).build();
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }
