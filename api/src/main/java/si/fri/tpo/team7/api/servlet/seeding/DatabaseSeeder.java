@@ -82,16 +82,16 @@ public class DatabaseSeeder extends HttpServlet{
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
 //        log.info("Seeder started running");
-        DateValidator dateValidator = new DateValidator();
-        Instant today = Instant.now();
-        Instant tomorrow = Instant.now().plus(1, ChronoUnit.DAYS);
-        log.info("Shoud be true: " + dateValidator.isAfter(tomorrow,today));
-        log.info("Shoud be -1: " + dateValidator.durationBetweenDatesInDays(tomorrow,today));
-        log.info("Shoud be 1: " + dateValidator.durationBetweenDatesInDays(today,tomorrow));
-        log.info("Shoud be 22.5.2018: " + dateValidator.subtractDays(today,1));
-        log.info("Shoud be 24.5.2018: " + dateValidator.addDays(today,1));
-        log.info("Shoud be 21.5.2018: "  + dateValidator.getLatestEnrollDismentDate(today));
-        log.info("Shoud be 23.5.2018: "  + dateValidator.trunateToDays(today));
+//        DateValidator dateValidator = new DateValidator();
+//        Instant today = Instant.now();
+//        Instant tomorrow = Instant.now().plus(1, ChronoUnit.DAYS);
+//        log.info("Shoud be true: " + dateValidator.isAfter(tomorrow,today));
+//        log.info("Shoud be -1: " + dateValidator.durationBetweenDatesInDays(tomorrow,today));
+//        log.info("Shoud be 1: " + dateValidator.durationBetweenDatesInDays(today,tomorrow));
+//        log.info("Shoud be 22.5.2018: " + dateValidator.subtractDays(today,1));
+//        log.info("Shoud be 24.5.2018: " + dateValidator.addDays(today,1));
+//        log.info("Shoud be 21.5.2018: "  + dateValidator.getLatestEnrollDismentDate(today));
+//        log.info("Shoud be 23.5.2018: "  + dateValidator.trunateToDays(today));
 
 
         PrintWriter writer = new PrintWriter(new OutputStream() {

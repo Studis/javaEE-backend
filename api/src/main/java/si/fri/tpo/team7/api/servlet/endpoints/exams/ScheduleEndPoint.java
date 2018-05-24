@@ -10,6 +10,7 @@ import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.exams.BEScheduleExam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
+import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Path("/exams/scheduled")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -34,6 +36,7 @@ import java.util.*;
 @ApplicationScoped
 public class ScheduleEndPoint {
 
+    private Logger log = Logger.getLogger(ScheduleExam.class.getName());
     @Inject
     private CourseExecutionsBean courseExecutionsBean;
 
@@ -171,6 +174,7 @@ public class ScheduleEndPoint {
             exam.setScheduledAt(scheduledAt);
             exam.setPastImport(false);
             exam.setWritten(DateValidator.isBefore(scheduledAt.toInstant(), Instant.now()));
+            log.info(scheduledAt.toInstant().toString() + " isBefore " + Instant.now());
             exam.setLocation(beScheduleExam.getLocation());
             exam.setAsking(beScheduleExam.getAsking());
             examsBean.add(exam);
