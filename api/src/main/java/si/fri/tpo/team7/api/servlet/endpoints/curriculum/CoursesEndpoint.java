@@ -9,6 +9,7 @@ import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.exams.BEEnrollmentCourse;
+import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
@@ -123,18 +124,27 @@ public class CoursesEndpoint {
                 if (myEnrollmentCourseIdEnrollmentCourseMap.containsKey(enrollmentCourseId)) {
                     BEEnrollmentCourse beEnrollmentCourse = new BEEnrollmentCourse(); // new Business entity to set enrollment
 
-                    if (examEnrollment.getMark() != null && examEnrollment.getMark() > 5) {
-                        beEnrollmentCourse.setPassed(true);
-                    }
-                    if (examEnrollment.getMark() == null) {
-                        beEnrollmentCourse.setEnrolled(examEnrollment.getStatus() == null);
 
-                    }
                     beEnrollmentCourse.setExamEnrollment(examEnrollment);
 
                     beEnrollmentCourse.setEnrollmentCourse(myEnrollmentCourseIdEnrollmentCourseMap.get(enrollmentCourseId));
 
-                    beEnrollmentCourse.setExamsAvailable(examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourseId));
+
+                    List<Exam> exams = examsBean.getAvailableExamsForEnrollmentCourseId(enrollmentCourseId);
+                    for (Exam exam: exams) {
+                        if (examEnrollment.getExam().getId() ==  exam.getId()) {
+//                            if (examEnrollment.getMark() != null && examEnrollment.getMark() > 5) {
+//                                beEnrollmentCourse.setPassed(true);
+//                            }
+//                            if (examEnrollment.getMark() == null) {
+//                                exam.setEnrolled(examEnrollment.getStatus() == null);
+//                            }
+                            exam.setExamEnrollment(examEnrollment);
+                        }
+                    }
+                    beEnrollmentCourse.setExamsAvailable(exams);
+
+
 
                     beEnrollmentCourseIDEnrollmentCourseMap.put(enrollmentCourseId,beEnrollmentCourse);
 

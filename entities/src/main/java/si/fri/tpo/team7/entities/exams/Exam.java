@@ -34,4 +34,8 @@ public class Exam extends BaseEntity {
     private String location;
 
     private String asking;
+
+    @Transient
+    private ExamEnrollment examEnrollment; // Transiend field for BEEnrollmentCourse entity
+
 }
