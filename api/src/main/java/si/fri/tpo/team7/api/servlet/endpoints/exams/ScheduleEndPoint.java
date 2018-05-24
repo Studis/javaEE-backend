@@ -8,6 +8,7 @@ import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.exams.BEScheduleExam;
+import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
@@ -17,12 +18,14 @@ import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Instant;
 import java.util.*;
 
 @Path("/exams/scheduled")
@@ -167,11 +170,29 @@ public class ScheduleEndPoint {
             exam.setCourseExecution(courseExecution);
             exam.setScheduledAt(scheduledAt);
             exam.setPastImport(false);
-            exam.setWritten(false);
+            exam.setWritten(DateValidator.isBefore(scheduledAt.toInstant(), Instant.now()));
             exam.setLocation(beScheduleExam.getLocation());
             exam.setAsking(beScheduleExam.getAsking());
             examsBean.add(exam);
             return Response.ok(exam).build();
+        } catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
+        }
+    }
+
+    @DELETE
+    @Path("erase/{examId}")
+    @Secured({Role.LECTURER, Role.CLERK})
+    public  Response deleteExam(@PathParam("examId") Integer examId) {
+        try {
+
+            Boolean exams = examsBean.deleteExamsForExamId(examId);
+
+            if (!exams) {
+                throw new NotFoundException("Exams cannot be deleted due to enrolled users");
+            }
+
+            return Response.ok(exams).build();
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }

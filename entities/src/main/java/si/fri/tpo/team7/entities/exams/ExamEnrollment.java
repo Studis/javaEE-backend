@@ -35,6 +35,8 @@ public class ExamEnrollment extends BaseEntity {
     @Basic
     private String status;
 
+    private Boolean deleteConfirmed;
+
 
     // UserId that has deleted exam enrollment
 

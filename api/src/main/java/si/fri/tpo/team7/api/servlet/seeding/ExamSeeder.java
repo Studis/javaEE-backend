@@ -6,7 +6,9 @@ import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +51,7 @@ public class ExamSeeder extends Seeder {
                 e.setPastImport(pastImport);
                 e.setCourseExecution(courseExecution);
                 e.setScheduledAt(calendar.getTime());
-                e.setWritten(pastImport);
+                e.setWritten(DateValidator.isBefore(calendar.getTime().toInstant(), Instant.now()));
                 e.setAsking(courseExecution.getLecturer1().getName() + " " + courseExecution.getLecturer1().getSurname());
                 e.setLocation(locations[index%locations.length]);
             }
