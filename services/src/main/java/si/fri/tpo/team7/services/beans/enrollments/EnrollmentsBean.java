@@ -1,6 +1,9 @@
 package si.fri.tpo.team7.services.beans.enrollments;
 
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
+import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.Year;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.location.Residence;
@@ -15,8 +18,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotAllowedException;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 
 @ApplicationScoped
@@ -81,12 +83,23 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         enrollment.setToken(token);
 
         //COURSES
-        //enrollment.setCourses(enrollmentResponse.getCourses());
+        /*Set<EnrollmentCourse> courses = new HashSet();
+        for (CourseExecution courseExecution:enrollmentResponse.getCourses()) {
+            CourseExecution ce = em.find(CourseExecution.class, courseExecution.getId());
+            EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
+            enrollmentCourse.setCourseExecution(ce);
+            enrollmentCourse.setEnrollment(enrollment);
+            courses.add(enrollmentCourse);
+            em.persist(enrollmentCourse);
+        }
+        em.flush();
+        enrollment.setCourses(courses);*/
 
         //PROGRAM, STUDY YEAR, YEAR => CIRRICULUM
-        enrollment.setCurriculum(curriculumsBean.get(enrollmentResponse.getProgram(),
+        Curriculum c = curriculumsBean.get(enrollmentResponse.getProgram(),
                 em.find(Year.class, Calendar.getInstance().get(Calendar.YEAR)),
-                enrollmentResponse.getStudyYear()));
+                enrollmentResponse.getStudyYear());
+        enrollment.setCurriculum(c);
 
 
         //STUDY TYPE

@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.services.dtos;
 
 import lombok.Data;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.curriculum.Program;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -24,6 +25,6 @@ public class EnrollmentResponse {
     private Program program;
     private StudyYear studyYear;
 
-    private Set<EnrollmentCourse> courses;
+    private Set<CourseExecution> courses;
 
 }
