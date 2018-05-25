@@ -8,6 +8,8 @@ import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.time.Instant;
 import java.util.Date;
 
@@ -37,6 +39,8 @@ public class Exam extends BaseEntity {
 
     @Transient
     private ExamEnrollment examEnrollment; // Transiend field for BEEnrollmentCourse entity
+
+    private int examTerm;
 
     private Integer deletionRequestedByUserId;
 

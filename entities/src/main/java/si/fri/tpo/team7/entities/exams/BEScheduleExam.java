@@ -21,4 +21,6 @@ public class BEScheduleExam {
     private String location;
 
     private String asking;
+
+    private int examTerm;
 }

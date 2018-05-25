@@ -31,14 +31,14 @@ public class ExamSeeder extends Seeder {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date()); // Now use today date.
         calendar.set(2018,Calendar.JANUARY,22); // Zimsko izpitno obdobje
-        seedExamSchedule(calendar,courseExecutions, true);
+        seedExamSchedule(calendar,courseExecutions, 1,true);
         calendar.set(2018,Calendar.JULY,11); // Spomladansko izpitno obdobje
-        seedExamSchedule(calendar,courseExecutions, false);
+        seedExamSchedule(calendar,courseExecutions, 2,false);
         calendar.set(2018,Calendar.AUGUST,20); // Jesensko izpitno obdobje
-        seedExamSchedule(calendar,courseExecutions,false);
+        seedExamSchedule(calendar,courseExecutions,3, false);
     }
 
-    public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, boolean pastImport) {
+    public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, int examTerm, boolean pastImport) {
         Exam e;
         Integer index = 0;
         String[] locations = {"PA","P01","P02","P03","P04","P05","P06","P07","P08","P09","P10","P11","P12","P13","P14","P15","P16"};
@@ -54,6 +54,7 @@ public class ExamSeeder extends Seeder {
                 e.setWritten(DateValidator.isBefore(calendar.getTime().toInstant(), Instant.now()));
                 e.setAsking(courseExecution.getLecturer1().getName() + " " + courseExecution.getLecturer1().getSurname());
                 e.setLocation(locations[index%locations.length]);
+                e.setExamTerm(examTerm);
             }
             while (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
                     calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || examsBean.add(e) == null);

@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.entities.exams;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
@@ -36,6 +37,11 @@ public class ExamEnrollment extends BaseEntity {
     private String status;
 
     private Boolean deleteConfirmed;
+
+
+    private int totalExamAttempts;
+
+    private int returnedExamAttempts;
 
 
     // UserId that has deleted exam enrollment

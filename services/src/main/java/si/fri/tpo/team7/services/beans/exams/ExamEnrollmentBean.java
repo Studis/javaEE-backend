@@ -36,6 +36,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         if (existingEnrollmentsMiddleWare(super.get(),obj)) {
             obj.setCreatedAt(new Date());
             obj.setPastImport(false);
+            obj.setTotalExamAttempts(obj.getTotalExamAttempts()+1);
             em.persist(obj);
             em.flush();
             return obj;

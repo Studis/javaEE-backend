@@ -179,6 +179,7 @@ public class ScheduleEndPoint {
             exam.setCourseExecution(courseExecution);
             exam.setScheduledAt(scheduledAt);
             exam.setPastImport(false);
+            exam.setExamTerm(beScheduleExam.getExamTerm());
             exam.setWritten(DateValidator.isBefore(scheduledAt.toInstant(), Instant.now()));
             log.info(scheduledAt.toInstant().toString() + " isBefore " + Instant.now());
             exam.setLocation(beScheduleExam.getLocation());
