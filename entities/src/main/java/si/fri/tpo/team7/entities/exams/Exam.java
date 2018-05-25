@@ -38,4 +38,6 @@ public class Exam extends BaseEntity {
     @Transient
     private ExamEnrollment examEnrollment; // Transiend field for BEEnrollmentCourse entity
 
+    private Integer deletionRequestedByUserId;
+
 }

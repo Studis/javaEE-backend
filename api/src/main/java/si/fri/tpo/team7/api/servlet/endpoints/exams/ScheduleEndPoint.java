@@ -9,6 +9,7 @@ import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.exams.BEScheduleExam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
@@ -19,10 +20,12 @@ import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -54,6 +57,9 @@ public class ScheduleEndPoint {
 
     @Inject
     private ExamsBean examsBean;
+
+    @Inject
+    private StudentsBean studentsBean;
 
     @Inject
     @AuthenticatedUser
@@ -190,13 +196,24 @@ public class ScheduleEndPoint {
     public  Response deleteExam(@PathParam("examId") Integer examId) {
         try {
 
-            Boolean exams = examsBean.deleteExamsForExamId(examId);
+            Exam current = examsBean.get(examId);
+            current.setDeletionRequestedByUserId(authenticatedUser.getId());
+            current = examsBean.update(examId, current);
+            List<Integer> studentIds = examsBean.deleteExamsForExamId(examId);
+            // This array is not correctly populated!
+            if (studentIds == null || studentIds.size() == 0) throw new NotFoundException("Successfully deleted exam!");
 
-            if (!exams) {
-                throw new NotFoundException("Exams cannot be deleted due to enrolled users");
+            String enrolledUsers = ": ";
+            for(Integer studentId : studentIds) {
+                enrolledUsers += studentsBean.getStudent(studentId).toString() + ", ";
             }
 
-            return Response.ok(exams).build();
+            if (studentIds.size() > 0) {
+                // throw new NotFoundException("Exams cannot be deleted due to enrolled users: " + enrolledUsers);
+                throw new NotFoundException(("Exams cannot be deleted due to enrolled users: " + enrolledUsers));
+
+            }
+            return Response.ok("Successfully deleted exam!").build();
         } catch (Exception e) {
             throw new NotFoundException(e.getMessage());
         }

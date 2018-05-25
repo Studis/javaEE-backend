@@ -1,15 +1,21 @@
 package si.fri.tpo.team7.services.beans.exams;
 
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
+import si.fri.tpo.team7.services.beans.validators.ExamValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import javax.ws.rs.NotFoundException;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +53,7 @@ public class ExamsBean extends EntityBean<Exam> {
 
 
     @Transactional
-    public Boolean deleteExamsForExamId(Integer examId) {
+    public List<Integer> deleteExamsForExamId(Integer examId) {
 
 
         Query q = em.createQuery("SELECT en from ExamEnrollment en where en.exam.id=:examId");
@@ -55,18 +61,25 @@ public class ExamsBean extends EntityBean<Exam> {
         List<ExamEnrollment> examEnrollments = (List<ExamEnrollment>) q.getResultList();
         if (examEnrollments.size() == 0) {
             this.remove(examId);
-            return true;
+            return null;
         }
+        List<Integer> studentIds = new ArrayList<>();
         for (ExamEnrollment en : examEnrollments) {
+            if (DateValidator.isBefore(en.getExam().getScheduledAt().toInstant(), Instant.now())) {
+                throw new NotFoundException("You can't delete exam terms in the past that were written!");
+            }
             if (en.getDeleteConfirmed()) {
 
             } else {
-                return false;
+                studentIds.add(en.getEnrollment().getEnrollment().getToken().getStudent().getId());
             }
+        }
+        if (studentIds.size() > 0) {
+            return studentIds;
         }
         this.remove(examId);
 
-        return true;
+        return null;
     }
 
 }
