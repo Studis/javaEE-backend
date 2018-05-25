@@ -1,6 +1,8 @@
 package si.fri.tpo.team7.entities.enrollments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
@@ -8,6 +10,8 @@ import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.StudyYear;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -15,9 +19,8 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "courses")
 public class Enrollment extends BaseEntity {
 
-    @ManyToOne
+    @OneToOne
     @JsonIgnore
-    @JoinColumn(name="token")
     private EnrollmentToken token;
 
     @ManyToOne
@@ -36,9 +39,8 @@ public class Enrollment extends BaseEntity {
     @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
     private Curriculum curriculum;
 
-    @JsonIgnore
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
-    private Set<EnrollmentCourse> courses;
+    private List<EnrollmentCourse> courses;
 
     @Override
     public String toString() {

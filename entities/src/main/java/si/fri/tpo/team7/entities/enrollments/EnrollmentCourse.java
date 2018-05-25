@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 public class EnrollmentCourse extends BaseEntity {
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="enrollment", referencedColumnName = "id", nullable=false)
     private Enrollment enrollment;
 

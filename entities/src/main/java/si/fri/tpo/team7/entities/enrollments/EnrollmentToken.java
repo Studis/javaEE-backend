@@ -1,6 +1,8 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
@@ -10,6 +12,7 @@ import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Data

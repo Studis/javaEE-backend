@@ -82,18 +82,7 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         Enrollment enrollment = new Enrollment();
         enrollment.setToken(token);
 
-        //COURSES
-        /*Set<EnrollmentCourse> courses = new HashSet();
-        for (CourseExecution courseExecution:enrollmentResponse.getCourses()) {
-            CourseExecution ce = em.find(CourseExecution.class, courseExecution.getId());
-            EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
-            enrollmentCourse.setCourseExecution(ce);
-            enrollmentCourse.setEnrollment(enrollment);
-            courses.add(enrollmentCourse);
-            em.persist(enrollmentCourse);
-        }
-        em.flush();
-        enrollment.setCourses(courses);*/
+
 
         //PROGRAM, STUDY YEAR, YEAR => CIRRICULUM
         Curriculum c = curriculumsBean.get(enrollmentResponse.getProgram(),
@@ -115,6 +104,21 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
 
         token.setEnrollment(enrollment);
+        em.persist(enrollment);
+
+        //COURSES
+        List<EnrollmentCourse> courses = new ArrayList<>();
+        for (CourseExecution courseExecution:enrollmentResponse.getCourses()) {
+            CourseExecution ce = em.find(CourseExecution.class, courseExecution.getId());
+            EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
+            enrollmentCourse.setCourseExecution(ce);
+            enrollmentCourse.setEnrollment(enrollment);
+            em.persist(enrollmentCourse);
+            em.flush();
+            courses.add(enrollmentCourse);
+        }
+        enrollment.setCourses(courses);
+
         em.persist(enrollment);
 
 
@@ -198,6 +202,6 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
                 enrollmentTokensBean.deleteToken(t.getId());
         }
 
-        return new Enrollment();//todo return enrollment when u fix json stack overflow
+        return enrollment;//todo return enrollment when u fix json stack overflow
     }
 }
