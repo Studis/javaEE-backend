@@ -63,12 +63,23 @@ public class StudentsBean {
             return null;
         }
 
-
         em.persist(s);
         em.flush();
+
         s.setUsername(generateUsername(s));
         s.setPassword(s.getUsername());
         s.setEnrollmentNumber(generateEnrollmentNum(s));
+
+        em.persist(s);
+        em.flush();
+
+        return s;
+    }
+
+    @Transactional
+    public Student addStudentNew(Student s){
+        s = addStudent(s);
+        if(s == null) return null;
 
         EnrollmentToken token = new EnrollmentToken();
         token.setStatus(Status.NEW);
@@ -89,6 +100,7 @@ public class StudentsBean {
         em.flush();
         return s;
     }
+
     @Transactional
     public Student addStudentWithProgram(Student s, int programCode) {
         if(s == null){

@@ -1,7 +1,7 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
-import si.fri.tpo.team7.entities.enrollments.StudyType;
+import si.fri.tpo.team7.entities.enrollments.*;
+import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
@@ -10,8 +10,6 @@ import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.services.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.services.beans.users.*;
 import si.fri.tpo.team7.entities.curriculum.*;
-import si.fri.tpo.team7.entities.enrollments.Enrollment;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Lecturer;
 import si.fri.tpo.team7.entities.location.Residence;
@@ -383,6 +381,21 @@ public class DatabaseSeeder extends HttpServlet{
 
         EnrollmentToken token = new EnrollmentToken();
         token.setStudent(student);
+        token.setStudyYear(studyYearsBean.get(studyYear));
+        token.setStudyForm(studyFormsBean.get(1));
+        token.setStudyType(studyTypesBean.get(1));
+        token.setStatus(Status.COMPLETED);
+        token.setProgram(uniProgram);
+        switch(studyYear){
+            case 1:
+                token.setEnrollmentType(enrollmentTypesBean.get(1));
+                break;
+            case 2:
+            case 3:
+                token.setEnrollmentType(enrollmentTypesBean.get(5));
+                break;
+        }
+
         enrollmentTokensBean.add(token);
 
         Enrollment enrollment = new Enrollment();
@@ -400,7 +413,6 @@ public class DatabaseSeeder extends HttpServlet{
                 enrollment.setCurriculum(c);
                 enrollment.setType(enrollmentTypesBean.get(5));
                 enrollment.setStudyType(studyTypesBean.get(1));
-
 
 //                if (student.getId() == 1) {
 //                    enrollment.setStudyType(studyTypesBean.get(3));

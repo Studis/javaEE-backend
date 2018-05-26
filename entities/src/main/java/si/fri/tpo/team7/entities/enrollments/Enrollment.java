@@ -38,6 +38,9 @@ public class Enrollment extends BaseEntity {
     @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
     private Curriculum curriculum;
 
+    @Column(name="confirmations")
+    private int Confirmations;
+
     @OneToMany(cascade=CascadeType.ALL, mappedBy="enrollment")
     private List<EnrollmentCourse> courses;
 

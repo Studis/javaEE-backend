@@ -43,7 +43,7 @@ public class StudentEndpoint {
 
     @POST
     public  Response addStudent(Student student){
-        Student s = studentsBean.addStudent(student);
+        Student s = studentsBean.addStudentNew(student);
         return Response.status(Response.Status.CREATED).entity(s).build();
     }
 

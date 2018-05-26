@@ -24,7 +24,7 @@ public class EnrollmentToken extends BaseEntity {
     @JoinColumn(name="student", referencedColumnName = "id", nullable=false)
     private Student student;
 
-    @OneToOne
+    @OneToOne(mappedBy = "token")
     @JsonIgnore
     private Enrollment enrollment;
 
@@ -32,19 +32,24 @@ public class EnrollmentToken extends BaseEntity {
 
     private boolean freeChoice;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="study_form")
     private StudyForm studyForm;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="study_type")
     private StudyType studyType;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="enrollment_type")
     private EnrollmentType enrollmentType;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="study_year")
     private StudyYear studyYear;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name="program")
     private Program program;
 
     @Override
