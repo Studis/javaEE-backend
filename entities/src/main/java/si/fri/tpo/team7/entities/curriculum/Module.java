@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ public class Module extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
     private List<ModuleCourse> courses;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
     private Curriculum curriculum;

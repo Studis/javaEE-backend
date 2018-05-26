@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 @DiscriminatorValue(value = "ProfessionalOptional")
 public class ProfessionalOptionalCourse extends CourseExecution {
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "professionalOptionalCourses", fetch = FetchType.EAGER)
     protected List<Curriculum> curriculums;
 
