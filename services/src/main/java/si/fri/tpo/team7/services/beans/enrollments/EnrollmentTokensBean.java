@@ -8,8 +8,14 @@ import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
+import si.fri.tpo.team7.services.beans.users.StudentsBean;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.NotAllowedException;
+import java.util.Date;
+import java.util.List;
 
 @ApplicationScoped
 public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {

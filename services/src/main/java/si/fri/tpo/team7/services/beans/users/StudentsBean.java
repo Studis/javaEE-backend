@@ -1,10 +1,11 @@
 package si.fri.tpo.team7.services.beans.users;
 
+import si.fri.tpo.team7.entities.curriculum.StudyYear;
+import si.fri.tpo.team7.entities.enrollments.*;
+import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.services.beans.curriculum.ProgramsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentTokensBean;
 import si.fri.tpo.team7.entities.curriculum.Program;
-import si.fri.tpo.team7.entities.enrollments.Enrollment;
-import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;

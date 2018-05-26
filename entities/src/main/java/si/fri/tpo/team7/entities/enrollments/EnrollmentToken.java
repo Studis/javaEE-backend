@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.curriculum.Program;
+import si.fri.tpo.team7.entities.curriculum.StudyYear;
+import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.*;
