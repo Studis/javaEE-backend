@@ -15,10 +15,18 @@ import javax.persistence.ManyToOne;
 public class EnrollmentCourse extends BaseEntity {
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="enrollment", referencedColumnName = "id", nullable=false)
     private Enrollment enrollment;
 
     @ManyToOne
     @JoinColumn(name="courseExecution", referencedColumnName = "id", nullable=false)
     private CourseExecution courseExecution;
+
+    @Override
+    public String toString() {
+        return "EnrollmentCourse{" +
+                "courseExecution=" + courseExecution +
+                '}';
+    }
 }

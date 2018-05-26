@@ -32,7 +32,11 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -144,8 +148,8 @@ public class DatabaseSeeder extends HttpServlet{
         AddStudents(writer);
         AddAdmin(writer);
 
-        new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
-        new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean).Seed(writer);
+       new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
+       new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean).Seed(writer);
     }
 
     private void AddPrograms(PrintWriter writer){
@@ -344,6 +348,13 @@ public class DatabaseSeeder extends HttpServlet{
             student.setTemporary(AddResidence());
             student.setPermanent(AddResidence());
             student.setPhoneNumber(AddPhoneNumber());
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("dd/MM/yyyy").parse("12/05/2015");
+                student.setDateOfBirth(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             studentsBean.addStudent(student);
 
 

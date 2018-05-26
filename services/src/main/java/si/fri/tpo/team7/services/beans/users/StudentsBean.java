@@ -61,11 +61,62 @@ public class StudentsBean {
             return null;
         }
 
+
         em.persist(s);
         em.flush();
         s.setUsername(generateUsername(s));
         s.setPassword(s.getUsername());
         s.setEnrollmentNumber(generateEnrollmentNum(s));
+
+        EnrollmentToken token = new EnrollmentToken();
+        token.setStatus(Status.NEW);
+        token.setStudyYear(em.find(StudyYear.class, 1));
+        token.setStudyForm(em.find(StudyForm.class, 1));
+        token.setStudyType(em.find(StudyType.class, 1));
+        token.setEnrollmentType(em.find(EnrollmentType.class,1));
+        token.setProgram(programsBean.get(1000475));
+        token.setFreeChoice(false);
+        token.setStudent(s);
+
+
+        List<EnrollmentToken> tokens = new ArrayList<>();
+        tokens.add(token);
+        s.setEnrollmentTokens(tokens);
+        em.persist(token);
+        em.persist(s);
+        em.flush();
+        return s;
+    }
+    @Transactional
+    public Student addStudentWithProgram(Student s, int programCode) {
+        if(s == null){
+            return null;
+        }
+
+
+        em.persist(s);
+        em.flush();
+        s.setUsername(generateUsername(s));
+        s.setPassword(s.getUsername());
+        s.setEnrollmentNumber(generateEnrollmentNum(s));
+
+        EnrollmentToken token = new EnrollmentToken();
+        token.setStatus(Status.NEW);
+        token.setStudyYear(em.find(StudyYear.class, 1));
+        token.setStudyForm(em.find(StudyForm.class, 1));
+        token.setStudyType(em.find(StudyType.class, 1));
+        token.setEnrollmentType(em.find(EnrollmentType.class,1));
+        token.setProgram(programsBean.get(programCode));
+        token.setFreeChoice(false);
+        token.setStudent(s);
+
+
+        List<EnrollmentToken> tokens = new ArrayList<>();
+        tokens.add(token);
+        s.setEnrollmentTokens(tokens);
+        em.persist(token);
+        em.persist(s);
+        em.flush();
         return s;
     }
 

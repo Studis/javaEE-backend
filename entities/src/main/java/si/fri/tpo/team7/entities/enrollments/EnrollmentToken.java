@@ -1,12 +1,15 @@
 package si.fri.tpo.team7.entities.enrollments;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.users.Student;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -18,7 +21,39 @@ public class EnrollmentToken extends BaseEntity {
     @JoinColumn(name="student", referencedColumnName = "id", nullable=false)
     private Student student;
 
+    @OneToOne
     @JsonIgnore
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="token")
-    private Set<Enrollment> enrollments;
+    private Enrollment enrollment;
+
+    private Status status;
+
+    private boolean freeChoice;
+
+    @OneToOne
+    private StudyForm studyForm;
+
+    @OneToOne
+    private StudyType studyType;
+
+    @OneToOne
+    private EnrollmentType enrollmentType;
+
+    @OneToOne
+    private StudyYear studyYear;
+
+    @OneToOne
+    private Program program;
+
+    @Override
+    public String toString() {
+        return "EnrollmentToken{" +
+                "status=" + status +
+                ", freeChoice=" + freeChoice +
+                ", studyForm=" + studyForm +
+                ", studyType=" + studyType +
+                ", enrollmentType=" + enrollmentType +
+                ", studyYear=" + studyYear +
+                ", program=" + program +
+                '}';
+    }
 }
