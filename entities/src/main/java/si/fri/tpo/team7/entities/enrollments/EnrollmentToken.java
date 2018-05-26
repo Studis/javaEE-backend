@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = "enrollments")
+@EqualsAndHashCode(exclude = "enrollment")
 public class EnrollmentToken extends BaseEntity {
 
     @ManyToOne

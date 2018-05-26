@@ -90,7 +90,11 @@ public class CoursesEndpoint {
     @Path("{id}/enrollments")
     public Response getCourseEnrollments(@PathParam("id") int id){
         CourseExecution course = courseExecutionsBean.get(id);
-        return Response.ok(course.getEnrollmentCourses()).build();
+        ArrayList<Enrollment> enrollments = new ArrayList<>();
+        for (EnrollmentCourse ec:course.getEnrollmentCourses()) {
+            enrollments.add(ec.getEnrollment());
+        }
+        return Response.ok(enrollments).build();
     }
 
     @GET

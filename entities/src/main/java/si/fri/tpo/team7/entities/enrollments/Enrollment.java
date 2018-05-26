@@ -16,11 +16,10 @@ import java.util.Set;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = "courses")
+@EqualsAndHashCode(exclude = {"courses", "token"})
 public class Enrollment extends BaseEntity {
 
     @OneToOne
-    @JsonIgnore
     private EnrollmentToken token;
 
     @ManyToOne
