@@ -1,11 +1,13 @@
 package si.fri.tpo.team7.entities.curriculum;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @DiscriminatorValue(value = "ProfessionalOptional")
 public class ProfessionalOptionalCourse extends CourseExecution {

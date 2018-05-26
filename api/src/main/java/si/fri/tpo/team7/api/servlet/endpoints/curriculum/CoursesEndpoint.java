@@ -58,6 +58,11 @@ public class CoursesEndpoint {
     @Secured({Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response getCourses(){
         List<CourseExecution> courses = courseExecutionsBean.get();
+
+        for(int i = 0; i < courses.size(); i++){
+            courses.set(i, courseExecutionsBean.get(courses.get(i).getId()));
+        }
+
         List<CourseExecution> resultCourses = new ArrayList<>();
         if(authenticatedUser.getRole() == Role.LECTURER) {
             for (CourseExecution c : courses) {

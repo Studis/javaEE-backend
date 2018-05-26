@@ -370,6 +370,17 @@ public class DatabaseSeeder extends HttpServlet{
                 case 2:
                     EnrollInYear(student, 2017, 1);
                     EnrollInYear(student, 2018, 2);
+
+                    EnrollmentToken token = new EnrollmentToken();
+                    token.setStudent(student);
+                    token.setStudyYear(studyYearsBean.get(3));
+                    token.setStudyForm(studyFormsBean.get(1));
+                    token.setStudyType(studyTypesBean.get(1));
+                    token.setStatus(Status.NEW);
+                    token.setProgram(uniProgram);
+                    token.setEnrollmentType(enrollmentTypesBean.get(5));
+
+                    enrollmentTokensBean.add(token);
                     break;
             }
         }
