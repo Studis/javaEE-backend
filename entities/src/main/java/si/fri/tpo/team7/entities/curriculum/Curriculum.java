@@ -2,6 +2,7 @@ package si.fri.tpo.team7.entities.curriculum;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
@@ -36,11 +37,11 @@ public class Curriculum extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
     private List<Enrollment> enrollments;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
     private List<ObligatoryCourse> obligatoryCourses;
 
-    @JsonIgnore
+    @JsonManagedReference
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -51,7 +52,7 @@ public class Curriculum extends BaseEntity {
     )
     private List<ProfessionalOptionalCourse> professionalOptionalCourses;
 
-    @JsonIgnore
+    @JsonManagedReference
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -62,7 +63,7 @@ public class Curriculum extends BaseEntity {
     )
     private List<GeneralOptionalCourse> generalOptionalCourses;
 
-    @JsonIgnore
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
     private List<Module> modules;
 }

@@ -36,40 +36,13 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         super(Enrollment.class);
     }
 
-    public EnrollmentResponse getEnrollmentData( int studentId) {
-        Student student = studentsBean.getStudent(studentId);
-        List<EnrollmentToken> enrollmentTokens = student.getEnrollmentTokens();
-        EnrollmentToken lastToken = null;
-        for (EnrollmentToken token: enrollmentTokens) {
-            if (token.getStatus() != null) {
-                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE))
-                    lastToken = token;
-            }
-        }
-        if(lastToken == null)
-            throw new NotAllowedException("This user has no completed tokens!");
+    public Curriculum getCurriculumForToken( int tokenId) {
+        EnrollmentToken token =enrollmentTokensBean.get(tokenId);
 
-        EnrollmentResponse enrollmentResponse = new EnrollmentResponse();
-        EnrollmentToken token = lastToken;
-        //STUDNET
-        enrollmentResponse.setStudent(token.getStudent());
-
-        //STUDY TYPE
-        enrollmentResponse.setStudyType(token.getStudyType());
-
-        //STUDY FORM
-        enrollmentResponse.setStudyForm(token.getStudyForm());
-
-        //ENROLLMENT TYPE
-        enrollmentResponse.setEnrollmentType(token.getEnrollmentType());
-
-        //PROGRAM
-        enrollmentResponse.setProgram(token.getProgram());
-
-        //STUDY YEAR
-        enrollmentResponse.setStudyYear(token.getStudyYear());
-
-        return enrollmentResponse;
+        Curriculum c = curriculumsBean.get(token.getProgram(),
+                em.find(Year.class, Calendar.getInstance().get(Calendar.YEAR)),
+                token.getStudyYear());
+        return c;
     }
 
     @Transactional
@@ -108,8 +81,8 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
         //COURSES
         List<EnrollmentCourse> courses = new ArrayList<>();
-        for (CourseExecution courseExecution:enrollmentResponse.getCourses()) {
-            CourseExecution ce = em.find(CourseExecution.class, courseExecution.getId());
+        for (int courseExecutionId:enrollmentResponse.getCourses()) {
+            CourseExecution ce = em.find(CourseExecution.class, courseExecutionId);
             EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
             enrollmentCourse.setCourseExecution(ce);
             enrollmentCourse.setEnrollment(enrollment);
@@ -118,7 +91,6 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
             courses.add(enrollmentCourse);
         }
         enrollment.setCourses(courses);
-
         em.persist(enrollment);
 
 
