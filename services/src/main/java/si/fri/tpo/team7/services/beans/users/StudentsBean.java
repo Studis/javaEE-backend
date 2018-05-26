@@ -122,9 +122,13 @@ public class StudentsBean {
         return s;
     }
 
+    public String replaceSumniki(String s) {
+        return s.replace("č", "c").replace("ž", "z").replace("š", "s");
+    }
+
     private String generateUsername(Student s) {
-        String firstLetter = s.getName().substring(0,1).toLowerCase();
-        String secondLetter = s.getSurname().substring(0,1).toLowerCase();
+        String firstLetter = replaceSumniki(s.getName().substring(0,1).toLowerCase());
+        String secondLetter = replaceSumniki(s.getSurname().substring(0,1).toLowerCase());
         String id = Integer.toString(s.getId());
 
         int count = id.length();
