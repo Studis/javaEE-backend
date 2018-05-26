@@ -1,6 +1,5 @@
 package si.fri.tpo.team7.entities.curriculum;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.DiscriminatorValue;
@@ -13,7 +12,6 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue(value = "Obligatory")
 public class ObligatoryCourse extends CourseExecution {
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="curriculum", referencedColumnName = "id", nullable=false)
     private Curriculum curriculum;

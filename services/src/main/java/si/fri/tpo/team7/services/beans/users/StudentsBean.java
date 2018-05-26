@@ -87,7 +87,7 @@ public class StudentsBean {
         token.setStudyForm(em.find(StudyForm.class, 1));
         token.setStudyType(em.find(StudyType.class, 1));
         token.setEnrollmentType(em.find(EnrollmentType.class,1));
-        token.setProgram(programsBean.get(1000468));
+        token.setProgram(programsBean.get(1000470));
         token.setFreeChoice(false);
         token.setStudent(s);
 

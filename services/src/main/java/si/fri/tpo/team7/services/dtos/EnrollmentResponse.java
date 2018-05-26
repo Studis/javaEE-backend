@@ -25,6 +25,6 @@ public class EnrollmentResponse {
     private Program program;
     private StudyYear studyYear;
 
-    private int[] courses;
+    private Set<CourseExecution> courses;
 
 }

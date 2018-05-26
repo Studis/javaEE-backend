@@ -1,6 +1,5 @@
 package si.fri.tpo.team7.entities.curriculum;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +12,6 @@ import java.util.List;
 @DiscriminatorValue(value = "GeneralOptional")
 public class GeneralOptionalCourse extends CourseExecution {
 
-    @JsonBackReference
     @ManyToMany(mappedBy = "generalOptionalCourses", fetch = FetchType.EAGER)
     protected List<Curriculum> curriculums;
 
