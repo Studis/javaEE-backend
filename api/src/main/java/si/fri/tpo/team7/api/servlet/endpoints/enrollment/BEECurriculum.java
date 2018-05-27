@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class BEECurriculum {
-    private List<Module> modules;
+    private List<ModuleCourse> moduleCourses;
     private List<GeneralOptionalCourse> generalOptionalCourses;
     private List<ProfessionalOptionalCourse> professionalOptionalCourses;
     private List<ObligatoryCourse> obligatoryCourses;

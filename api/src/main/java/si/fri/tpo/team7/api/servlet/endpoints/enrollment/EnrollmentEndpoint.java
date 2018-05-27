@@ -1,6 +1,8 @@
 package si.fri.tpo.team7.api.servlet.endpoints.enrollment;
 
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
+import si.fri.tpo.team7.entities.curriculum.Module;
+import si.fri.tpo.team7.entities.curriculum.ModuleCourse;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
 
@@ -9,6 +11,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/enrollments")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -33,7 +37,18 @@ public class EnrollmentEndpoint {
         bee.setCurriculum(curriculumForToken);
         bee.setGeneralOptionalCourses(curriculumForToken.getGeneralOptionalCourses());
         bee.setProfessionalOptionalCourses(curriculumForToken.getProfessionalOptionalCourses());
-        bee.setModules(curriculumForToken.getModules());
+        List<Module> moduleCourseList = curriculumForToken.getModules();
+        List<ModuleCourse> moduleCourses = new ArrayList<>();
+        for (Module m : moduleCourseList) {
+            if (m.getCurriculum().getId() == curriculumForToken.getId()) {
+                for (ModuleCourse mm : m.getCourses()) {
+                    moduleCourses.add(mm);
+                }
+            }
+        }
+
+
+        bee.setModuleCourses(moduleCourses);
         bee.setObligatoryCourses(curriculumForToken.getObligatoryCourses());
         bee.setYear(curriculumForToken.getYear());
         return Response.ok(bee).build();
