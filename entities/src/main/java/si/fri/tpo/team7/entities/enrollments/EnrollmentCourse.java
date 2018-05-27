@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
+import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,6 +22,10 @@ public class EnrollmentCourse extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="courseExecution", referencedColumnName = "id", nullable=false)
     private CourseExecution courseExecution;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enrollment")
+    private List<ExamEnrollment> examEnrollments;
 
     @Override
     public String toString() {
