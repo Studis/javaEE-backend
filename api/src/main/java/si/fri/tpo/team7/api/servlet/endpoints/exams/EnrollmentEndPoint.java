@@ -7,12 +7,15 @@ import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.BEEnrollmentExam;
+import si.fri.tpo.team7.entities.exams.BEExamResults;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
+import si.fri.tpo.team7.services.beans.validators.ExamValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,14 +23,18 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.awt.image.RescaleOp;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("/exams/enrollments")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class EnrollmentEndPoint {
+    Logger log = Logger.getLogger(EnrollmentEndPoint.class.getName());
 
     @Inject
     @AuthenticatedUser
@@ -47,6 +54,61 @@ public class EnrollmentEndPoint {
     @Path("{courseExecutionId}")
     public Response getEnrollments(@PathParam("courseExecutionId") Integer courseExecutionId) {
         return Response.ok(enrolledToExamForMyCourse(courseExecutionId)).build();
+    }
+
+
+    @PUT
+    @Path("{examEnrollmentId}")
+    @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
+    public Response updateEnrollment(@PathParam("examEnrollmentId") int examEnrollmentId, BEExamResults examResults) {
+        ExamEnrollment nov = examEnrollmentBean.get(examEnrollmentId);
+
+        if (nov != null) {
+            if (nov.getExam() == null) throw new NotFoundException("Exam not found for this enrollment!");
+            nov.setExam(examsBean.get(nov.getExam().getId()));
+
+            Integer score = examResults.getScore();
+            if (score!= null) {
+                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
+                    throw new NotFoundException("You cannot add results before exam is written!");
+                }
+                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
+                    throw new NotFoundException("You can't change exam score after more than 31 days!");
+                }
+                if (score < 0 || score > 100) throw new NotFoundException("Score must be between 0 and 100");
+                nov.setScore(score);
+            }
+            Integer mark = examResults.getMark();
+            if (mark != null) {
+                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
+                    throw new NotFoundException("You cannot add mark before exam is written!");
+                }
+                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
+                    throw new NotFoundException("You can't change exam results after more than 31 days!");
+                }
+                if (mark < 1 || mark > 10) throw new NotFoundException("Mark must be between 1 and 10");
+                nov.setMark(mark);
+
+            }
+            if (nov.getStatus() == null && examResults.getCancelEnrollment() != null) {
+                if (DateValidator.isBefore(nov.getExam().getScheduledAt().toInstant(),
+                        Instant.now())) {
+                    throw new NotFoundException("You can no longer delete exam application! Exam was already written!");
+
+                } else {
+                    nov = examEnrollmentBean.cancelEnrollment(examEnrollmentId,nov,authenticatedUser.getId());
+
+                }
+            }
+
+
+        } else {
+            throw new NotFoundException("Exam enrollment with such id does not exist!");
+        }
+
+
+
+        return Response.ok(examEnrollmentBean.update(examEnrollmentId,nov)).build();
     }
 
     @GET

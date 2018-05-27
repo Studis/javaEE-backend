@@ -26,7 +26,6 @@ public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createdAt;
 
-    @JsonIgnore
     @Temporal(TemporalType.TIMESTAMP)
     protected Date updatedAt;
 

@@ -147,15 +147,16 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
 
     @Transactional
-    public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s) { // deletedBy is set in endpoint
+    public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s,Integer deletedBy) { // deletedBy is set in endpoint
         ExamEnrollment obj = em.find(ExamEnrollment.class, id);
         if(obj == null) {
             throw new NotFoundException(ExamEnrollment.class.getName() + " " + id + " not found.");
         }
-        s.setUpdatedAt(new Date());
-        s.setStatus("deleted");
-        s.setId(id);
-        return em.merge(s);
+        obj.setUpdatedAt(new Date());
+        obj.setStatus("deleted");
+        obj.setId(id);
+        obj.setDeletedBy(deletedBy);
+        return em.merge(obj);
     }
 
     @Override
