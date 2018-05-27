@@ -21,9 +21,10 @@ public class CourseExecutionsBean extends EntityBean<CourseExecution> {
         List resultList = q.getResultList();
         List<ObligatoryCourse> obligatoryCourses = new ArrayList<>();
         for(int i = 0; i < resultList.size(); i++) {
-            obligatoryCourses.add((ObligatoryCourse) ((Object[])resultList.get(i))[0]);
-
+            ObligatoryCourse o = (ObligatoryCourse) ((Object[])resultList.get(i))[0];
+            if (o.getCurriculum().getId() == curriculum.getId()) obligatoryCourses.add(o);
         }
+
          return obligatoryCourses;
 
     }

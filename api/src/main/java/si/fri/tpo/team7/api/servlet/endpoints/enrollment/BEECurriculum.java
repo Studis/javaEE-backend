@@ -13,4 +13,5 @@ public class BEECurriculum {
     private List<ProfessionalOptionalCourse> professionalOptionalCourses;
     private List<ObligatoryCourse> obligatoryCourses;
     Curriculum curriculum;
+    Year year;
 }

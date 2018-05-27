@@ -29,6 +29,7 @@ public class EnrollmentEndpoint {
         bee.setProfessionalOptionalCourses(curriculumForToken.getProfessionalOptionalCourses());
         bee.setModules(curriculumForToken.getModules());
         bee.setObligatoryCourses(curriculumForToken.getObligatoryCourses());
+        bee.setYear(curriculumForToken.getYear());
         return Response.ok(bee).build();
     }
 
