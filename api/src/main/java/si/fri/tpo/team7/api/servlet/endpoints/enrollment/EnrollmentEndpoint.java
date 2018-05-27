@@ -20,6 +20,12 @@ public class EnrollmentEndpoint {
     private EnrollmentsBean enrollmentsBean;
 
     @GET
+    @Path("get/{id}")
+    public Response getEnrollment(@PathParam("id") int id){
+        return Response.ok(enrollmentsBean.get(id)).build();
+    }
+
+    @GET
     @Path("{id}")
     public Response getCurriculumForToken(@PathParam("id") int tokenId){
         BEECurriculum bee = new BEECurriculum();
