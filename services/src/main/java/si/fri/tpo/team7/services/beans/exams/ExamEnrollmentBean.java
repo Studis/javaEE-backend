@@ -1,5 +1,7 @@
 package si.fri.tpo.team7.services.beans.exams;
 
+import si.fri.tpo.team7.entities.curriculum.Year;
+import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
@@ -10,10 +12,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -33,15 +32,36 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             return null;
         }
 
+        // Inncrement exam attempts
+        obj.setTotalExamAttempts(obj.getTotalExamAttempts()+1);
+
+        if (obj.getEnrollment().getEnrollment().getType().getId() == 2) { // Ponavljanje letnika
+            obj.setReturnedExamAttempts();
+        }
+
         if (existingEnrollmentsMiddleWare(super.get(),obj)) {
             obj.setCreatedAt(new Date());
             obj.setPastImport(false);
-            obj.setTotalExamAttempts(obj.getTotalExamAttempts()+1);
             em.persist(obj);
             em.flush();
             return obj;
         }
         return null;
+    }
+
+    public List<ExamEnrollment> getExamEnrollmentNumberForYear(ExamEnrollment pending, Year year) {
+        List<ExamEnrollment> examEnrollments = super.get();
+        List<ExamEnrollment> getted = new ArrayList<>();
+        Integer userId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
+        for(ExamEnrollment examEnrollment: examEnrollments) {
+            if (ExamEnrollmentValidator.isExamForSameCourse(pending,examEnrollment)
+                    && ExamEnrollmentValidator.isSameUserEnrollment(pending,examEnrollment)) {
+                if (examEnrollment.getEnrollment().getEnrollment().getCurriculum().getYear().getId() == year.getId()) {
+                    getted.add(examEnrollment);
+                }
+            }
+        }
+        return getted;
     }
 
 
@@ -57,17 +77,28 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         Integer examAttemptsInCurrentYear = 0;
         Integer totalExamAttempts = 0;
         Map<ExamEnrollment,Integer> mapExamEnrollmentAttempts = new HashMap<>();
+
+        Integer trenutnoPolaganje = pending.getTotalExamAttempts() - pending.getReturnedExamAttempts(); // enrollmentAttemptNumber
+
+        try {
+            ExamEnrollmentValidator.shouldPay(pending);
+        }catch (Exception e) {
+            throw new NotFoundException(e.getMessage());
+        }
+
+
+        Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
+
+        Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
+
+
         for (ExamEnrollment examenrollment: examEnrollments) {
 
             if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that was disenrolled in time (has set status to deleted) in the correct due date
 
-
-            Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
             Integer currentUserId = examenrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
 
-            Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
             Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId();
-
 
             Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
 
@@ -100,7 +131,6 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
                     throw new NotFoundException("Enrollment to this exam already exist!");
                 }
                 // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
-                // TODO: check if working
                 if (Math.abs(DateValidator.durationBetweenDatesInDays(examenrollment.getExam().getScheduledAt().toInstant(),
                         pending.getExam().getScheduledAt().toInstant())) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
                     throw new NotFoundException( "Duration between attempts must be " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
@@ -110,19 +140,15 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             Integer examenrollmentStudyYear = examenrollment.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
             Integer pendingStudyYear = pending.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
 
+
             // Total exam attempts in study year is 3
             if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
                 examAttemptsInCurrentYear++;
             }
 
-            // Total exam attempts max is 6
-            if (userIsEnrolledToSameCourse) {
-                totalExamAttempts++;
-            }
-
             // If user has already written exam 6 times then he is not allowed to write it again
-            if (totalExamAttempts == 6) {
-                throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
+            if (trenutnoPolaganje > 6) {
+                throw new NotFoundException("This would be your " + pending.getTotalExamAttempts() + " - " + pending.getReturnedExamAttempts() + " attempt and so you are not allowed to enroll again!");
             }
 
             // If user has already written exam 3 times in the current study year then he is not allowed to write it again
@@ -130,7 +156,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
                 throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again this year");
             }
 
-            if (totalExamAttempts >= 3 && !pending.getPaid()) {
+            if (trenutnoPolaganje > 3 && !pending.getPaid()) {
                 throw new NotFoundException("You will need to pay for exam due to total attempt " + totalExamAttempts+1);
             }
 
