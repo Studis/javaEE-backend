@@ -1,8 +1,6 @@
 package si.fri.tpo.team7.entities.enrollments;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
@@ -16,6 +14,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @EqualsAndHashCode(exclude = {"courses", "token"})
 public class Enrollment extends BaseEntity {
 
