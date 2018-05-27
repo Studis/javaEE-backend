@@ -12,6 +12,7 @@ import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CurriculumsBean;
+import si.fri.tpo.team7.services.beans.users.MunicipalitiesBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
 
@@ -35,6 +36,9 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
     @Inject
     private StudentsBean studentsBean;
+
+    @Inject
+    private MunicipalitiesBean municipalitiesBean;
 
     public EnrollmentsBean() {
         super(Enrollment.class);
@@ -72,7 +76,7 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
 
     @Transactional
-    public Enrollment enroll(int tokenId, EnrollmentResponse enrollmentResponse) {
+    public void enroll(int tokenId, EnrollmentResponse enrollmentResponse) {
         EnrollmentToken token = enrollmentTokensBean.get(tokenId);
         token.setStatus(Status.ACTIVE);
 
@@ -107,8 +111,8 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
         //COURSES
         List<EnrollmentCourse> courses = new ArrayList<>();
-        for (CourseExecution courseExecution:enrollmentResponse.getCourses()) {
-            CourseExecution ce = em.find(CourseExecution.class, courseExecution.getId());
+        for (int courseExecution:enrollmentResponse.getCourses()) {
+            CourseExecution ce = em.find(CourseExecution.class, courseExecution);
             EnrollmentCourse enrollmentCourse = new EnrollmentCourse();
             enrollmentCourse.setCourseExecution(ce);
             enrollmentCourse.setEnrollment(enrollment);
@@ -174,12 +178,12 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         //COUNTRY
         permanentResidence.setCountry(permanentResidenceRequest.getCountry());
         //MUNICIPALITY
-        permanentResidence.setMunicipality(permanentResidenceRequest.getMunicipality());
+        permanentResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(permanentResidenceRequest.getMunicipality().getName()));
         //POSTAL NUMBER
         permanentResidence.setPostalNumber(permanentResidenceRequest.getPostalNumber());
         //ADDRESS
         permanentResidence.setPlaceOfResidence(permanentResidenceRequest.getPlaceOfResidence());
-        em.persist(permanentResidence);
+        em.merge(permanentResidence);
 
 
         //Temporary RESIDENCE
@@ -189,18 +193,18 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         //COUNTRY
         temporaryResidence.setCountry(temporaryResidenceRequest.getCountry());
         //MUNICIPALITY
-        temporaryResidence.setMunicipality(temporaryResidenceRequest.getMunicipality());
+        temporaryResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(temporaryResidenceRequest.getMunicipality().getName()));
         //POSTAL NUMBER
         temporaryResidence.setPostalNumber(temporaryResidenceRequest.getPostalNumber());
         //ADDRESS
         temporaryResidence.setPlaceOfResidence(temporaryResidenceRequest.getPlaceOfResidence());
-        em.persist(temporaryResidence);
+        em.merge(temporaryResidence);
 
         for (EnrollmentToken t : student.getEnrollmentTokens()) {
             if (t.getStatus() != null && t.getStatus().equals(Status.OPEN))
                 enrollmentTokensBean.deleteToken(t.getId());
         }
 
-        return enrollment;//todo return enrollment when u fix json stack overflow
+        return;//todo return enrollment when u fix json stack overflow
     }
 }
