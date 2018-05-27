@@ -7,7 +7,9 @@ import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @ApplicationScoped
 public class CurriculumsBean extends EntityBean<Curriculum>{
@@ -24,5 +26,10 @@ public class CurriculumsBean extends EntityBean<Curriculum>{
                 .getSingleResult();
         em.refresh(obj);
         return (Curriculum) obj;
+    }
+
+    @Transactional
+    public void loadCourses(CourseExecutionsBean courseExecutionsBean, Curriculum  curriculum) {
+        curriculum.setObligatoryCourses(courseExecutionsBean.getObligatoryCourses(curriculum));
     }
 }

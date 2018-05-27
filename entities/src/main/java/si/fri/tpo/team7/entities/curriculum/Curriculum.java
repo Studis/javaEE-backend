@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 
+
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -65,4 +67,6 @@ public class Curriculum extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "curriculum")
     private List<Module> modules;
+
+
 }

@@ -10,6 +10,7 @@ import si.fri.tpo.team7.entities.location.Residence;
 import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CurriculumsBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
@@ -30,6 +31,9 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
     private EnrollmentTokensBean enrollmentTokensBean;
 
     @Inject
+    private CourseExecutionsBean courseExecutionsBean;
+
+    @Inject
     private StudentsBean studentsBean;
 
     public EnrollmentsBean() {
@@ -37,40 +41,35 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
     }
 
     public EnrollmentResponse getEnrollmentData( int studentId) {
-        Student student = studentsBean.getStudent(studentId);
-        List<EnrollmentToken> enrollmentTokens = student.getEnrollmentTokens();
-        EnrollmentToken lastToken = null;
-        for (EnrollmentToken token: enrollmentTokens) {
-            if (token.getStatus() != null) {
-                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE))
-                    lastToken = token;
-            }
-        }
-        if(lastToken == null)
-            throw new NotAllowedException("This user has no completed tokens!");
-
-        EnrollmentResponse enrollmentResponse = new EnrollmentResponse();
-        EnrollmentToken token = lastToken;
-        //STUDNET
-        enrollmentResponse.setStudent(token.getStudent());
-
-        //STUDY TYPE
-        enrollmentResponse.setStudyType(token.getStudyType());
-
-        //STUDY FORM
-        enrollmentResponse.setStudyForm(token.getStudyForm());
-
-        //ENROLLMENT TYPE
-        enrollmentResponse.setEnrollmentType(token.getEnrollmentType());
-
-        //PROGRAM
-        enrollmentResponse.setProgram(token.getProgram());
-
-        //STUDY YEAR
-        enrollmentResponse.setStudyYear(token.getStudyYear());
-
-        return enrollmentResponse;
+//        Student student = studentsBean.getStudent(studentId);
+//        List<EnrollmentToken> enrollmentTokens = student.getEnrollmentTokens();
+//        EnrollmentToken lastToken = null;
+//        for (EnrollmentToken token: enrollmentTokens) {
+//            if (token.getStatus() != null) {
+//                if(token.getStatus().equals(Status.COMPLETED) || token.getStatus().equals(Status.ACTIVE))
+//                    lastToken = token;
+//            }
+//        }
+//        if(lastToken == null)
+//            throw new NotAllowedException("This user has no completed tokens!");
+//
+//        Curriculum c = curriculumsBean.get(token.getProgram(),
+//                em.find(Year.class, Calendar.getInstance().get(Calendar.YEAR)),
+//                token.getStudyYear());
+//        curriculumsBean.loadCourses(courseExecutionsBean,c);
+//        return c;
+        return null;
     }
+    public Curriculum getCurriculumForToken( int tokenId) {
+        EnrollmentToken token = enrollmentTokensBean.get(tokenId);
+
+        Curriculum c = curriculumsBean.get(token.getProgram(),
+                em.find(Year.class, Calendar.getInstance().get(Calendar.YEAR)),
+                token.getStudyYear());
+        curriculumsBean.loadCourses(courseExecutionsBean,c);
+        return c;
+    }
+
 
     @Transactional
     public Enrollment enroll(int tokenId, EnrollmentResponse enrollmentResponse) {

@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.endpoints.enrollment;
 
+import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
 
@@ -18,11 +19,18 @@ public class EnrollmentEndpoint {
     @Inject
     private EnrollmentsBean enrollmentsBean;
 
-    /*@GET
+    @GET
     @Path("{id}")
-    public Response getDataForEnrollmentForm(@PathParam("id") int studentId){
-        return Response.ok(enrollmentsBean.getEnrollmentData(studentId)).build();
-    }*/
+    public Response getCurriculumForToken(@PathParam("id") int tokenId){
+        BEECurriculum bee = new BEECurriculum();
+        Curriculum curriculumForToken = enrollmentsBean.getCurriculumForToken(tokenId);
+        bee.setCurriculum(curriculumForToken);
+        bee.setGeneralOptionalCourses(curriculumForToken.getGeneralOptionalCourses());
+        bee.setProfessionalOptionalCourses(curriculumForToken.getProfessionalOptionalCourses());
+        bee.setModules(curriculumForToken.getModules());
+        bee.setObligatoryCourses(curriculumForToken.getObligatoryCourses());
+        return Response.ok(bee).build();
+    }
 
     @POST
     @Path("{id}")
@@ -30,3 +38,5 @@ public class EnrollmentEndpoint {
         return Response.ok( enrollmentsBean.enroll(tokenId, enrollmentResponse)).build();
     }
 }
+
+
