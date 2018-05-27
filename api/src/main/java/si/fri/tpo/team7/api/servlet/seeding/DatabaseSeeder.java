@@ -511,4 +511,8 @@ public class DatabaseSeeder extends HttpServlet{
         String suffix = Integer.toString(r.nextInt(899999) + 100000);
         return prefixes[r.nextInt(prefixes.length)] + suffix;
     }
+
+    private void addSquad(){
+
+    }
 }

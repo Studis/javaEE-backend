@@ -57,7 +57,8 @@ public class EnrollmentEndpoint {
     @POST
     @Path("{id}")
     public Response enroll(@PathParam("id") int tokenId, EnrollmentResponse enrollmentResponse){
-        return Response.ok( enrollmentsBean.enroll(tokenId, enrollmentResponse)).build();
+        enrollmentsBean.enroll(tokenId, enrollmentResponse);
+        return Response.ok( ).build();
     }
 }
 
