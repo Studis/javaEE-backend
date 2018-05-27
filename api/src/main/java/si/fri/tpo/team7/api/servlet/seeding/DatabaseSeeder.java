@@ -346,9 +346,12 @@ public class DatabaseSeeder extends HttpServlet{
             student.setTemporary(AddResidence());
             student.setPermanent(AddResidence());
             student.setPhoneNumber(AddPhoneNumber());
+            student.setNationality("Slovenija");
+            student.setPlaceOfBirth(new String[]{"Ljubljana", "Izola", "Jesenice", "Kranj", "Novo mesto", "Maribor"}[r.nextInt(6)]);
             Date date = null;
             try {
-                date = new SimpleDateFormat("dd/MM/yyyy").parse("12/05/2015");
+                String dateString = (r.nextInt(28)+1)+"/"+(r.nextInt(12)+1)+"/"+(r.nextInt(50)+1950);
+                date = new SimpleDateFormat("dd/MM/yyyy").parse(dateString);
                 student.setDateOfBirth(date);
             } catch (ParseException e) {
                 e.printStackTrace();
