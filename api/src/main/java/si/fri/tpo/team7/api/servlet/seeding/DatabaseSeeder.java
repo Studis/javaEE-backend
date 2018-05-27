@@ -379,7 +379,7 @@ public class DatabaseSeeder extends HttpServlet{
                     token.setStudyYear(studyYearsBean.get(3));
                     token.setStudyForm(studyFormsBean.get(1));
                     token.setStudyType(studyTypesBean.get(1));
-                    token.setStatus(Status.NEW);
+                    token.setStatus(Status.OPEN);
                     token.setProgram(uniProgram);
                     token.setEnrollmentType(enrollmentTypesBean.get(5));
 
