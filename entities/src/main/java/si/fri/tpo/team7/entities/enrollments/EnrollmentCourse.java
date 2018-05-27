@@ -15,7 +15,6 @@ import java.util.List;
 public class EnrollmentCourse extends BaseEntity {
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name="enrollment", referencedColumnName = "id", nullable=false)
     private Enrollment enrollment;
 
