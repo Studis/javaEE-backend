@@ -1,8 +1,11 @@
 package si.fri.tpo.team7.api.servlet.endpoints.enrollment;
 
+import si.fri.tpo.team7.api.servlet.annotations.Secured;
 import si.fri.tpo.team7.entities.curriculum.Curriculum;
 import si.fri.tpo.team7.entities.curriculum.Module;
 import si.fri.tpo.team7.entities.curriculum.ModuleCourse;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
 
@@ -58,6 +61,16 @@ public class EnrollmentEndpoint {
     @Path("{id}")
     public Response enroll(@PathParam("id") int tokenId, EnrollmentResponse enrollmentResponse){
         enrollmentsBean.enroll(tokenId, enrollmentResponse);
+        return Response.ok( ).build();
+    }
+
+    @POST
+    @Secured({Role.CLERK})
+    @Path("{id}/confirm")
+    public Response confirm(@PathParam("id") int enrollmentId){
+        Enrollment enrollment = enrollmentsBean.get(enrollmentId);
+        enrollment.setConfirmed(true);
+        enrollmentsBean.update(enrollmentId, enrollment);
         return Response.ok( ).build();
     }
 }
