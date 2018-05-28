@@ -72,7 +72,7 @@ public class DatabaseSeeder extends HttpServlet{
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan, LukaCehovin,
-            NavrikaBovcon, NinaBostic, AndrejBauer;
+            NavrikaBovcon, NinaBostic, AndrejBauer, TomazDobravec, MatjazKukar, MojcaCiglaric, PeterPeer, IgorSkraba, RomanDrnovsek, JanezDemsar, SandiKlavžar;
 
     private Clerk DanicaKotnik;
 
@@ -203,6 +203,18 @@ public class DatabaseSeeder extends HttpServlet{
         NinaBostic = AddLecturer("Nina", "Bostič Bishop", 42);
         AndrejBauer = AddLecturer("Andrej", "Bauer", 42);
 
+        //VSS
+        TomazDobravec = AddLecturer("Tomaž", "Dobravec", 123);
+        MatjazKukar = AddLecturer("Matjaž", "Kukar", 123);
+        //jurisicjeze
+        MojcaCiglaric = AddLecturer("Mojca", "Ciglarič", 123);
+        PeterPeer = AddLecturer("Peter", "Peer", 123);
+        IgorSkraba = AddLecturer("Igor", "Škraba", 123);
+        //skocajjeze
+        RomanDrnovsek = AddLecturer("Roman", "Drnovšek", 123);
+        JanezDemsar = AddLecturer("Janez", "Demsar", 123);
+        SandiKlavžar = AddLecturer("Sandi", "Klavžar", 123);
+
         writer.println("Done");
     }
 
@@ -254,6 +266,19 @@ public class DatabaseSeeder extends HttpServlet{
         addObligatory(cur, ZoranBosnic, 63209, false);
         addObligatory(cur, BojanOrel, 63207, false);
         addObligatory(cur, DejanLavbic, 63215, false);
+
+        cur = new Curriculum(); cur.setProgram(vsProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(1)); curriculumsBean.add(cur);
+        addObligatory(cur, IgorSkraba, 63703, true);
+        addObligatory(cur, DanijelSkocaj, 63701, true);
+        addObligatory(cur, RomanDrnovsek, 63704, true);
+        addObligatory(cur, JanezDemsar, 63702, true);
+        addObligatory(cur, SandiKlavžar, 63705, true);
+
+        addObligatory(cur, TomazDobravec, 63706, false);
+        addObligatory(cur, MatjazKukar, 63707, false);
+        addObligatory(cur, AleksandarJurisic, 63710, false);
+        addObligatory(cur, MojcaCiglaric, 63708, false);
+        addObligatory(cur, PeterPeer, 63709, false);
 
         cur = new Curriculum(); cur.setProgram(uniProgram); cur.setYear(y); cur.setStudyYear(studyYearsBean.get(2)); curriculumsBean.add(cur);
         Curriculum cur2 = cur;
