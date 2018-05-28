@@ -62,6 +62,7 @@ public class EnrollmentEndPoint {
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
     public Response updateEnrollment(@PathParam("examEnrollmentId") int examEnrollmentId, BEExamResults examResults) {
         ExamEnrollment nov = examEnrollmentBean.get(examEnrollmentId);
+        if (examResults==null) throw new NotFoundException("Malformed request!");
 
         if (nov != null) {
             if (nov.getExam() == null) throw new NotFoundException("Exam not found for this enrollment!");

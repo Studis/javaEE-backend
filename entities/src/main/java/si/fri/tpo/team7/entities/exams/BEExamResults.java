@@ -13,7 +13,6 @@ public class BEExamResults {
 
     private Integer score;
 
-    private Integer deletedBy;
 
     private Boolean cancelEnrollment;
 }

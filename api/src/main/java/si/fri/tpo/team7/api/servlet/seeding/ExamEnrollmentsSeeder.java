@@ -80,8 +80,11 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                 e.setExam(exam);
                                 if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
                                     Integer score = rn.nextInt(max - min + 1) + min;
-                                    e.setScore(score);
-                                    e.setMark(getMarkFromScore(score));
+                                    if (exam.getId() != 76) { // Aps kononenko 2018-05-21 { }
+                                        e.setScore(score);
+                                        e.setMark(getMarkFromScore(score));
+                                    }
+
                                     e.setPastImport(true);
                                     examEnrollmentBean.add(e);
                                     break;
