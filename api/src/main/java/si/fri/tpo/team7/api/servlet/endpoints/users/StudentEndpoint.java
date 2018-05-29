@@ -77,6 +77,7 @@ public class StudentEndpoint {
     @Secured({Role.STUDENT, Role.ADMIN, Role.LECTURER, Role.CLERK})
     @Path("me")
     public Response getMe(){
-        return Response.ok("{\"id\":\""+authenticatedUser.getId()+"\", \"role\": \""+authenticatedUser.getRole()+"\"}").build();
+
+        return Response.ok("{\"id\":\""+authenticatedUser.getId()+"\", \"role\": \""+authenticatedUser.getRole()+"\", \"fullName\": \""+authenticatedUser.getName() + " " + authenticatedUser.getSurname()+"\"}").build();
     }
 }
