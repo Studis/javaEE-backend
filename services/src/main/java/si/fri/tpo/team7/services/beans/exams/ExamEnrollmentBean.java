@@ -1,6 +1,7 @@
 package si.fri.tpo.team7.services.beans.exams;
 
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
@@ -87,7 +88,6 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
             if (ExamEnrollmentValidator.isSameUserEnrollment(examenrollment,pending) && ExamEnrollmentValidator.isExamForSameCourse(examenrollment,pending)) { // If it is enrollment for the same user
 
-                log.info("Yes");
                 // If user is already enrolled in the exam with same course execution and has not received mark yet
                 if (!pending.isPastImport() && !ExamEnrollmentValidator.markKnown(examenrollment)) {
                     throw new NotFoundException("You can't enroll before you receive final mark!");
@@ -147,7 +147,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
 
     @Transactional
-    public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s,Integer deletedBy) { // deletedBy is set in endpoint
+    public ExamEnrollment cancelEnrollment(int id, ExamEnrollment s,User deletedBy) { // deletedBy is set in endpoint
         ExamEnrollment obj = em.find(ExamEnrollment.class, id);
         if(obj == null) {
             throw new NotFoundException(ExamEnrollment.class.getName() + " " + id + " not found.");
@@ -155,7 +155,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         obj.setUpdatedAt(new Date());
         obj.setStatus("deleted");
         obj.setId(id);
-        obj.setDeletedBy(deletedBy);
+        obj.setDeletedBy(deletedBy.getId());
         return em.merge(obj);
     }
 

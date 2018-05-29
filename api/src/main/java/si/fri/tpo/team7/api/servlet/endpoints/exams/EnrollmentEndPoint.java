@@ -92,14 +92,14 @@ public class EnrollmentEndPoint {
 
             }
             if (nov.getStatus() == null && examResults.getCancelEnrollment() != null) {
-                if (DateValidator.isBefore(nov.getExam().getScheduledAt().toInstant(),
-                        Instant.now())) {
-                    throw new NotFoundException("You can no longer delete exam application! Exam was already written!");
+//                if (DateValidator.isBefore(nov.getExam().getScheduledAt().toInstant(),
+//                        Instant.now())) {
+//                    throw new NotFoundException("You can no longer delete exam application! Exam was already written!");
+//
+//                } else {
+                    nov = examEnrollmentBean.cancelEnrollment(examEnrollmentId,nov,authenticatedUser);
 
-                } else {
-                    nov = examEnrollmentBean.cancelEnrollment(examEnrollmentId,nov,authenticatedUser.getId());
-
-                }
+//                }
             }
 
 

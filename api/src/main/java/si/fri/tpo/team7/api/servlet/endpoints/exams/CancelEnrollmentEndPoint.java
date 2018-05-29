@@ -45,19 +45,19 @@ public class CancelEnrollmentEndPoint {
 
             if (authenticatedUser.getRole() == Role.STUDENT) { // Return all current enrollments to exams
                 ExamEnrollment examEnrollment = isMyEnrollment(beExamCancelEnrollment.getExamEnrollmentId());
-                examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser.getId());
+                examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser);
                 return Response.ok(examEnrollment).build();
             } else if (authenticatedUser.getRole() == Role.CLERK) { // TODO: finnish, not part of this userStory
                 ExamEnrollment examEnrollment = getCorrectExamEnrollment(beExamCancelEnrollment.getExamEnrollmentId());
                 if (examEnrollment != null) {
-                    examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser.getId());
+                    examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser);
                 }
-                examEnrollmentBean.cancelEnrollment(examEnrollment.getId(),examEnrollment,authenticatedUser.getId());
+                examEnrollmentBean.cancelEnrollment(examEnrollment.getId(),examEnrollment,authenticatedUser);
                 return Response.ok(examEnrollment).build();
             } else if (authenticatedUser.getRole() == Role.LECTURER) { // TODO: finnish, not part of this userStory
                 ExamEnrollment examEnrollment = isExamEnrollmentOfMyCourse(beExamCancelEnrollment.getExamEnrollmentId());
                 if (examEnrollment != null) {
-                    examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser.getId());
+                    examEnrollmentBean.cancelEnrollment(examEnrollment.getId(), examEnrollment,authenticatedUser);
                 }
                 return Response.ok(examEnrollment).build();
             } else {

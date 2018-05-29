@@ -2,7 +2,9 @@ package si.fri.tpo.team7.services.interceptors;
 
 
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
+import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
@@ -53,13 +55,19 @@ public class ExamEnrollmentInterceptor {
 
         } else if(nameOfMethod == "cancelEnrollment") {
             ExamEnrollment examEnrollment = (ExamEnrollment) context.getParameters()[1];
+            User user = (User) context.getParameters()[2];
 
-            if (examEnrollment.getStatus() != null) throw new NotFoundException("You are currently not enrolled in this exam!");
+            if (examEnrollment.getStatus() != null)
+                throw new NotFoundException("You are currently not enrolled in this exam!");
+            
+            if (user.getRole() == Role.STUDENT) {
 
-            Instant latestExamDeApplicationDate =  DateValidator.getLatestEnrollDismentDate(examEnrollment.getExam().getScheduledAt().toInstant());
 
-            if (Instant.now().isAfter(latestExamDeApplicationDate)) { // Cannot enroll in exam after the application date is over
-                throw new NotFoundException( "You can no longer cancel disenroll from this exam! Latest cancellation date was " + latestExamDeApplicationDate);
+                Instant latestExamDeApplicationDate = DateValidator.getLatestEnrollDismentDate(examEnrollment.getExam().getScheduledAt().toInstant());
+
+                if (Instant.now().isAfter(latestExamDeApplicationDate)) { // Cannot enroll in exam after the application date is over
+                    throw new NotFoundException("You can no longer cancel disenroll from this exam! Latest cancellation date was " + latestExamDeApplicationDate);
+                }
             }
 
         }
