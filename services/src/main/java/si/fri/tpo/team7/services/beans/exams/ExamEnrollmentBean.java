@@ -89,7 +89,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
                 log.info("Yes");
                 // If user is already enrolled in the exam with same course execution and has not received mark yet
-                if (!ExamEnrollmentValidator.markKnown(examenrollment)) {
+                if (!pending.isPastImport() && !ExamEnrollmentValidator.markKnown(examenrollment)) {
                     throw new NotFoundException("You can't enroll before you receive final mark!");
                 }
                 // If user is already enrolled in the exam with same course execution and has completed it
