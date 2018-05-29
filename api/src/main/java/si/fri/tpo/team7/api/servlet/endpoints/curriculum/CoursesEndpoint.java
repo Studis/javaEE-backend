@@ -124,8 +124,8 @@ public class CoursesEndpoint {
         }
 
         for (ExamEnrollment examEnrollment: examEnrollmentBean.get()) {
-            if (examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) {
-                Integer enrollmentCourseId = examEnrollment.getEnrollment().getId(); // EnrollmentCourse id from exam
+            if (examEnrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) {
+                Integer enrollmentCourseId = examEnrollment.getEnrollmentCourse().getId(); // EnrollmentCourse id from exam
                 /**
                  * User in enrolled in exam if entry exist in examEnrollment and there is no mark added
                  */

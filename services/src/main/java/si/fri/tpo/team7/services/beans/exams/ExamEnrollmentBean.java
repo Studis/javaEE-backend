@@ -62,8 +62,8 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that was disenrolled in time (has set status to deleted) in the correct due date
 
 
-            Integer pendingUserId = pending.getEnrollment().getEnrollment().getToken().getStudent().getId();
-            Integer currentUserId = examenrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
+            Integer pendingUserId = pending.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId();
+            Integer currentUserId = examenrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId();
 
             Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
             Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId();
@@ -72,7 +72,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
 
 
-            if (pending.getEnrollment().getCourseExecution().getId() != pending.getExam().getCourseExecution().getId()) {
+            if (pending.getEnrollmentCourse().getCourseExecution().getId() != pending.getExam().getCourseExecution().getId()) {
                 throw new NotFoundException("Exam term does not exist for given enrollment course!");
             }
 
@@ -93,22 +93,22 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
                     throw new NotFoundException("You can't enroll before you receive final mark!");
                 }
                 // If user is already enrolled in the exam with same course execution and has completed it
-                if (ExamEnrollmentValidator.didIPass(examenrollment)) {
+                if (!pending.isPastImport() && ExamEnrollmentValidator.didIPass(examenrollment)) {
                     throw new NotFoundException("You have already completed this exam!");
                 }
-                if (examenrollment.getExam().getId() == pending.getExam().getId()) {
+                if (!pending.isPastImport() && examenrollment.getExam().getId() == pending.getExam().getId()) {
                     throw new NotFoundException("Enrollment to this exam already exist!");
                 }
                 // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
                 // TODO: check if working
-                if (Math.abs(DateValidator.durationBetweenDatesInDays(examenrollment.getExam().getScheduledAt().toInstant(),
+                if (!pending.isPastImport() && Math.abs(DateValidator.durationBetweenDatesInDays(examenrollment.getExam().getScheduledAt().toInstant(),
                         pending.getExam().getScheduledAt().toInstant())) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
                     throw new NotFoundException( "Duration between attempts must be " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
                 }
             }
 
-            Integer examenrollmentStudyYear = examenrollment.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
-            Integer pendingStudyYear = pending.getEnrollment().getEnrollment().getCurriculum().getStudyYear().getId();
+            Integer examenrollmentStudyYear = examenrollment.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
+            Integer pendingStudyYear = pending.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
 
             // Total exam attempts in study year is 3
             if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
@@ -126,15 +126,15 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             }
 
             // If user has already written exam 3 times in the current study year then he is not allowed to write it again
-            if (examAttemptsInCurrentYear == 3) {
+            if (!pending.isPastImport() && examAttemptsInCurrentYear == 3) {
                 throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again this year");
             }
 
-            if (totalExamAttempts >= 3 && !pending.getPaid()) {
+            if (!pending.isPastImport() && totalExamAttempts >= 3 && !pending.getPaid()) {
                 throw new NotFoundException("You will need to pay for exam due to total attempt " + totalExamAttempts+1);
             }
 
-            Integer typeOfStudy = pending.getEnrollment().getEnrollment().getStudyType().getId();
+            Integer typeOfStudy = pending.getEnrollmentCourse().getEnrollment().getStudyType().getId();
 
             if (typeOfStudy == 3 && !pending.getPaid()) {
                 throw new NotFoundException("You will need to pay for exam!");

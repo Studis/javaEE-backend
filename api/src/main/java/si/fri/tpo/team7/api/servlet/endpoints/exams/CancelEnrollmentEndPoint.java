@@ -67,7 +67,7 @@ public class CancelEnrollmentEndPoint {
 
     public ExamEnrollment isMyEnrollment (int examEnrollmentId) {
         ExamEnrollment examEnrollment = getCorrectExamEnrollment(examEnrollmentId);
-        if (examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) {
+        if (examEnrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId() == authenticatedUser.getId()) {
             return examEnrollment;
         }
         throw new NotFoundException("You do not have permission to cancel this enrollment!!");
@@ -75,9 +75,9 @@ public class CancelEnrollmentEndPoint {
 
     public ExamEnrollment isExamEnrollmentOfMyCourse (int examEnrollmentId) {
         ExamEnrollment examEnrollment = getCorrectExamEnrollment(examEnrollmentId);
-        if (examEnrollment.getEnrollment().getCourseExecution().getLecturer1().getId() == authenticatedUser.getId()
-                || examEnrollment.getEnrollment().getCourseExecution().getLecturer2().getId() == authenticatedUser.getId()
-                || examEnrollment.getEnrollment().getCourseExecution().getLecturer3().getId() == authenticatedUser.getId()) {
+        if (examEnrollment.getEnrollmentCourse().getCourseExecution().getLecturer1().getId() == authenticatedUser.getId()
+                || examEnrollment.getEnrollmentCourse().getCourseExecution().getLecturer2().getId() == authenticatedUser.getId()
+                || examEnrollment.getEnrollmentCourse().getCourseExecution().getLecturer3().getId() == authenticatedUser.getId()) {
             return examEnrollment;
         }
         throw new NotFoundException("You do not have permission to cancel this enrollment!");

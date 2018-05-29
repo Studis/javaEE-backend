@@ -9,7 +9,7 @@ public class ExamEnrollmentValidator {
         return examEnrollment.getStatus() != null;
     }
     public static boolean isExamForSameCourse (ExamEnrollment a, ExamEnrollment b) {
-        return a.getEnrollment().getCourseExecution().getId() == b.getExam().getCourseExecution().getId();
+        return a.getEnrollmentCourse().getCourseExecution().getId() == b.getExam().getCourseExecution().getId();
     }
     public static boolean scoreKnown (ExamEnrollment a) {
         return a.getScore() != null;
@@ -24,6 +24,6 @@ public class ExamEnrollmentValidator {
         return a.getMark() != null && a.getMark() > 5;
     }
     public static boolean isSameUserEnrollment (ExamEnrollment a, ExamEnrollment b) { // If enrollments are for the token that belongs to the same user, TODO: if no token then should be payed!!!
-        return (a.getEnrollment().getEnrollment().getToken().getStudent().getId() == b.getEnrollment().getEnrollment().getToken().getStudent().getId());
+        return (a.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId() == b.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId());
     }
 }

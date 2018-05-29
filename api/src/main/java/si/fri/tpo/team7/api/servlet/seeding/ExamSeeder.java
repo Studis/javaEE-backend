@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExamSeeder extends Seeder {
     ExamsBean examsBean;
@@ -26,7 +27,10 @@ public class ExamSeeder extends Seeder {
     @Override
     protected void SeedContent() {
         Exam e;
-        List<CourseExecution> courseExecutions = courseExecutionsBean.get();
+        List<CourseExecution> courseExecutions = courseExecutionsBean.get()
+                .stream()
+                .filter(c -> c.getYear() != null && c.getYear().getId() == 2017)
+                .collect(Collectors.toList());
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date()); // Now use today date.
@@ -36,6 +40,18 @@ public class ExamSeeder extends Seeder {
         seedExamSchedule(calendar,courseExecutions, 2,false);
         calendar.set(2018,Calendar.AUGUST,20); // Jesensko izpitno obdobje
         seedExamSchedule(calendar,courseExecutions,3, false);
+
+        courseExecutions = courseExecutionsBean.get()
+                .stream()
+                .filter(c -> c.getYear() != null && c.getYear().getId() == 2016)
+                .collect(Collectors.toList());
+
+        calendar.set(2017,Calendar.JANUARY,22); // Zimsko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 1,true);
+        calendar.set(2017,Calendar.JULY,11); // Spomladansko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 2,true);
+        calendar.set(2017,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, true);
     }
 
     public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, int examTerm, boolean pastImport) {
@@ -46,7 +62,7 @@ public class ExamSeeder extends Seeder {
             do {
                 calendar.add(Calendar.DATE, 1);
                 calendar.add(Calendar.HOUR_OF_DAY, index % 6);
-                calendar.add(calendar.SECOND, 43);
+                calendar.add(Calendar.SECOND, 43);
                 e = new Exam();
                 e.setPastImport(pastImport);
                 e.setCourseExecution(courseExecution);

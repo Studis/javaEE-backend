@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
+import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 
 import javax.persistence.*;
@@ -16,8 +17,8 @@ public class ExamEnrollment extends BaseEntity {
     private Exam exam;
 
     @ManyToOne
-    @JoinColumn(name="enrollments")
-    private EnrollmentCourse enrollment;
+    @JoinColumn(name="enrollmentCourse", referencedColumnName = "id", nullable=false)
+    private EnrollmentCourse enrollmentCourse;
 
     @Column(name="mark")
     private Integer mark;
@@ -48,5 +49,9 @@ public class ExamEnrollment extends BaseEntity {
 
     @Basic
     private Integer deletedBy;
+
+    public boolean getPassed(){
+        return mark != null && mark > 5;
+    }
     
 }

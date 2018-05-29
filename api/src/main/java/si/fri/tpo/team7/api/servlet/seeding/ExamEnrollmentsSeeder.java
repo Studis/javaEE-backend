@@ -48,6 +48,13 @@ public class ExamEnrollmentsSeeder extends Seeder {
         calendar.set(2018,Calendar.JULY,11); // Spomladansko izpitno obdobje
         seedExamEnrollments(calendar,exams,courseExecutions, false);
 
+        calendar.set(2017,Calendar.JANUARY,22); // Zimsko izpitno obdobje
+        seedExamEnrollments(calendar,exams,courseExecutions, false);
+        calendar.set(2017,Calendar.JULY,11); // Spomladansko izpitno obdobje
+        seedExamEnrollments(calendar,exams,courseExecutions, false);
+        calendar.set(2017,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+        seedExamEnrollments(calendar,exams,courseExecutions, false);
+
     }
 
     public void seedExamEnrollments (Calendar calendar, List<Exam> exams, List<ExamEnrollment> examEnrollments, boolean pastImport) {
@@ -56,17 +63,17 @@ public class ExamEnrollmentsSeeder extends Seeder {
         List<ExamEnrollment> examEnrollmentsAll = examEnrollmentBean.get();
         for (Student student: students) {
             for (EnrollmentCourse enrollmentCourse: enrollmentCoursesBean.get()) {
-
                 if (student.getId() == enrollmentCourse.getEnrollment().getToken().getStudent().getId()) { // If student has token then he can enroll
-                    for (Exam exam : examsBean.get()) {
-                        if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId() && enrollmentCourse.getCourseExecution().getId() == exam.getCourseExecution().getId()) { // Apply for the right exams and only once
+                    for (Exam exam : enrollmentCourse.getCourseExecution().getExams()) {
+                        if (       exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()
+                                && enrollmentCourse.getCourseExecution().getId() == exam.getCourseExecution().getId()) { // Apply for the right exams and only once
                             if (Instant.now().isBefore(exam.getScheduledAt().toInstant().truncatedTo(ChronoUnit.DAYS).plus(23, ChronoUnit.HOURS).plus(55, ChronoUnit.MINUTES).minus(ExamEnrollmentInterceptor.MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS))) { // If exam is scheduled in the future
                                 Random rn = new Random();
                                 Integer max = 100;
                                 Integer min = 0;
                                 if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
                                     ExamEnrollment e = new ExamEnrollment();
-                                    e.setEnrollment(enrollmentCourse);
+                                    e.setEnrollmentCourse(enrollmentCourse);
                                     e.setExam(exam);
                                     examEnrollmentBean.add(e);
                                     break;
@@ -76,7 +83,7 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                 Integer max = 100;
                                 Integer min = 0;
                                 ExamEnrollment e = new ExamEnrollment();
-                                e.setEnrollment(enrollmentCourse);
+                                e.setEnrollmentCourse(enrollmentCourse);
                                 e.setExam(exam);
                                 if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
                                     Integer score = rn.nextInt(max - min + 1) + min;

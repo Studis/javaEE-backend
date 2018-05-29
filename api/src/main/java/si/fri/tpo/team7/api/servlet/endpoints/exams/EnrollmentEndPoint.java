@@ -148,16 +148,16 @@ public class EnrollmentEndPoint {
             Integer userEnrollmentCourseId = enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()).getEnrollment().getToken().getStudent().getId();
             if (userEnrollmentCourseId != authenticatedUser.getId()) throw new NotFoundException("You are not enrolled in this course");
 
-            examEnrollment.setEnrollment(enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()));
+            examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(beEnrollmentExam.getEnrollmentCourseId()));
             examEnrollment.setPaid(false); // examEnrollment.setPaid(beEnrollmentExam.getPaid());
 
 
             // TODO: just 2 TESTING code
-            if (examEnrollment.getEnrollment().getCourseExecution().getId() != examEnrollment.getExam().getCourseExecution().getId()) {
+            if (examEnrollment.getEnrollmentCourse().getCourseExecution().getId() != examEnrollment.getExam().getCourseExecution().getId()) {
                 throw new NotFoundException("Exam is not for the same course execution!");
             }
 
-            if (examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId() != authenticatedUser.getId()) {
+            if (examEnrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId() != authenticatedUser.getId()) {
                 throw new NotFoundException("Oopps you to enroll other people than yourself!");
             }
 
@@ -175,7 +175,7 @@ public class EnrollmentEndPoint {
         List<ExamEnrollment> userEnrollments = new ArrayList<>();
         for (ExamEnrollment examEnrollment:enrollmentList) {
             if (doNotShowArchivedEnrollments(examEnrollment)) {
-                Integer userId = examEnrollment.getEnrollment().getEnrollment().getToken().getStudent().getId();
+                Integer userId = examEnrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId();
                 if (userId == authenticatedUser.getId()) {
                     // if (examEnrollment.getMark() == null) { // He has not received mark for that enrollment
                         userEnrollments.add(examEnrollment);
@@ -196,7 +196,7 @@ public class EnrollmentEndPoint {
         List<ExamEnrollment> myExamEnrollments = new ArrayList<>();
         for (ExamEnrollment examEnrollment: enrollmentList) {
             if (true || doNotShowArchivedEnrollments(examEnrollment)) {
-                CourseExecution c = examEnrollment.getEnrollment().getCourseExecution();
+                CourseExecution c = examEnrollment.getEnrollmentCourse().getCourseExecution();
 
                 if (enrolledToExamForMyCourse == null && c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
                         || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
@@ -204,7 +204,7 @@ public class EnrollmentEndPoint {
                     myExamEnrollments.add(examEnrollment);
                 }
                 else if (enrolledToExamForMyCourse != null) {
-                    if (examEnrollment.getEnrollment().getCourseExecution().getId() == enrolledToExamForMyCourse) {
+                    if (examEnrollment.getEnrollmentCourse().getCourseExecution().getId() == enrolledToExamForMyCourse) {
                         myExamEnrollments.add(examEnrollment);
                     }
                 }

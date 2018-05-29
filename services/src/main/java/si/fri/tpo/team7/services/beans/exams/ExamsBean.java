@@ -71,7 +71,7 @@ public class ExamsBean extends EntityBean<Exam> {
             if (en.getDeleteConfirmed()) {
 
             } else {
-                studentIds.add(en.getEnrollment().getEnrollment().getToken().getStudent().getId());
+                studentIds.add(en.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId());
             }
         }
         if (studentIds.size() > 0) {

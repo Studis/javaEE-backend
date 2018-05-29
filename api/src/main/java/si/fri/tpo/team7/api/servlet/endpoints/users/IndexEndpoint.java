@@ -59,16 +59,27 @@ public class IndexEndpoint {
             BEEEnrollment beee = new BEEEnrollment();
             beee.setEnrollment(e);
             ArrayList<BEEIndex> indices = new ArrayList<>();
-
+            int ects = 0;
+            float average = 0;
+            int count = 0;
             List<EnrollmentCourse> courses = e.getCourses();
             for (EnrollmentCourse ec: courses) {
-                List<ExamEnrollment> examEnrollments = ec.getExamEnrollments();
+                if(ec.getPassed()){
+                    ects += ec.getCourseExecution().getCourse().getEcts();
+                }
+                Integer mark = ec.getMark();
+                if(mark != null){
+                    count++;
+                    average += (float)mark;
+                }
 
+                List<ExamEnrollment> examEnrollments = ec.getExamEnrollments();
+                examEnrollments = examEnrollments.stream()
+                        .filter(p -> p.getMark() != null)
+                        .sorted(Comparator.comparing(o -> o.getExam().getScheduledAt()))
+                        .collect(Collectors.toList());
                 if(examEnrollments.size() > 0) {
-                    examEnrollments = examEnrollments.stream()
-                            .filter(p -> p.getMark() != null)
-                            .sorted(Comparator.comparing(o -> o.getExam().getScheduledAt()))
-                            .collect(Collectors.toList());
+
                     if (all) {
                         for (ExamEnrollment ee:examEnrollments) {
                             BEEIndex index = new BEEIndex();
@@ -90,6 +101,8 @@ public class IndexEndpoint {
                     indices.add(index);
                 }
             }
+            beee.setAverage(average/count);
+            beee.setEcts(ects);
             beee.setIndex(indices);
             beeEnrollments.add(beee);
         }
@@ -102,6 +115,8 @@ public class IndexEndpoint {
 class BEEEnrollment{
     Enrollment enrollment;
     List<BEEIndex> index;
+    int ects;
+    float average;
 }
 
 @Data

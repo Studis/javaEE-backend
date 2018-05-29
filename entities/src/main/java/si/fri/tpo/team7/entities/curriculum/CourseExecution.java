@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
+import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.users.Lecturer;
 
 import javax.persistence.*;
@@ -41,6 +42,10 @@ public class CourseExecution extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseExecution")
     private List<EnrollmentCourse> enrollmentCourses;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseExecution")
+    private List<Exam> exams;
 
     public Set<Lecturer> getLecturers(){
         Set<Lecturer> set = new HashSet<>();
