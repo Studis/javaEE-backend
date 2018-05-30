@@ -40,6 +40,10 @@ public class ExamSeeder extends Seeder {
         seedExamSchedule(calendar,courseExecutions, 2,false);
         calendar.set(2018,Calendar.AUGUST,20); // Jesensko izpitno obdobje
         seedExamSchedule(calendar,courseExecutions,3, false);
+        calendar.set(2018,Calendar.AUGUST,21); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, false);
+        calendar.set(2018,Calendar.OCTOBER,21); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, false);
 
         courseExecutions = courseExecutionsBean.get()
                 .stream()

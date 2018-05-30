@@ -71,9 +71,6 @@ public class ExamEnrollment extends BaseEntity {
         return count;
     }
 
-
-
-
     @JsonGetter
     public int RealTotal() {
         Integer sum = 0;
