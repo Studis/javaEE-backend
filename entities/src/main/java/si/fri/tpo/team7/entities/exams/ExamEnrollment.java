@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
+import si.fri.tpo.team7.entities.curriculum.Year;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 
@@ -65,10 +66,26 @@ public class ExamEnrollment extends BaseEntity {
         }
         else return this.totalExamAttempts;
     }
+
     @JsonGetter
     public int getTotalAttempts() {
-        int count =(int)enrollmentCourse.getExamEnrollments().stream().filter(p -> p.getExam().getScheduledAt().before(exam.getScheduledAt())).count()+1;
-        return count;
+        return (int)enrollmentCourse
+                .getExamEnrollments()
+                .stream()
+                .filter(p -> p.getExam().getScheduledAt().before(exam.getScheduledAt()))
+                .count()+1;
+    }
+
+    @Transient
+    public int attemptsInYear;
+
+    public int getAttemptsInYear(Year year){
+        return (int) enrollmentCourse
+                .getExamEnrollments()
+                .stream()
+                .filter(p -> year.isInYear(p.getExam().getScheduledAt()))
+                .filter(p -> p.getExam().getScheduledAt().before(exam.getScheduledAt()))
+                .count()+1;
     }
 
     @JsonGetter

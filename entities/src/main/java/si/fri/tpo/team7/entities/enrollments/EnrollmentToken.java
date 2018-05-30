@@ -54,7 +54,7 @@ public class EnrollmentToken extends BaseEntity {
 
     @Override
     public String toString() {
-        return "EnrollmentToken{" +
+        return "{" +
                 "status=" + status +
                 ", freeChoice=" + freeChoice +
                 ", studyForm=" + studyForm +

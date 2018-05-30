@@ -144,8 +144,9 @@ public class DatabaseSeeder extends HttpServlet{
         AddStudents(writer);
         AddAdmin(writer);
 
-       new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
-       new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean).Seed(writer);
+        ExamSeeder examSeeder = new ExamSeeder(examsBean, courseExecutionsBean);
+       examSeeder.Seed(writer);
+       new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean, examSeeder, enrollmentsBean).Seed(writer);
     }
 
     private void AddPrograms(PrintWriter writer){
@@ -498,7 +499,7 @@ public class DatabaseSeeder extends HttpServlet{
                     .filter(e -> e.getType().getId() != 2)
                     .max(Comparator.comparing(p -> p.getCurriculum().getYear().getId())).orElse(null);
 
-            List<CourseExecution> collect = min.getCourses().stream()
+            List<CourseExecution> collect = enrollmentsBean.get(min.getId()).getCourses().stream()
                     .map(ce -> ce.getCourseExecution()).collect(Collectors.toList());
 
             Enroll(enrollment, collect);

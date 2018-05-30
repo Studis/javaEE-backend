@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.curriculum;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,4 +26,10 @@ public class Program extends Register {
 
     @Column(name = "title")
     private String title;
+
+    @JsonGetter
+    @Override
+    public String toString(){
+        return title;
+    }
 }

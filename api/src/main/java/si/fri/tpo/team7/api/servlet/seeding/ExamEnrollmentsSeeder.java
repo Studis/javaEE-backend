@@ -2,12 +2,14 @@ package si.fri.tpo.team7.api.servlet.seeding;
 
 
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.curriculum.Course;
@@ -22,25 +24,29 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ExamEnrollmentsSeeder extends Seeder {
+    private final ExamSeeder examSeeder;
     ExamsBean examsBean;
     ExamEnrollmentBean examEnrollmentBean;
     EnrollmentCoursesBean enrollmentCoursesBean;
     StudentsBean studentsBean;
+    EnrollmentsBean enrollmentsBean;
+
 
     private Logger log = Logger.getLogger(ExamEnrollmentsSeeder.class.getName());
-    public ExamEnrollmentsSeeder(ExamsBean examsBean, ExamEnrollmentBean examEnrollmentBean, EnrollmentCoursesBean enrollmentCoursesBean, StudentsBean studentsBean) {
+    public ExamEnrollmentsSeeder(ExamsBean examsBean, ExamEnrollmentBean examEnrollmentBean,
+                                 EnrollmentCoursesBean enrollmentCoursesBean, StudentsBean studentsBean,
+                                 ExamSeeder examSeeder, EnrollmentsBean enrollmentsBean) {
         super("exam enrollments");
         this.examsBean = examsBean;
         this.examEnrollmentBean = examEnrollmentBean;
         this.enrollmentCoursesBean = enrollmentCoursesBean;
         this.studentsBean = studentsBean;
+        this.examSeeder = examSeeder;
+        this.enrollmentsBean = enrollmentsBean;
     }
 
     @Override
@@ -48,14 +54,35 @@ public class ExamEnrollmentsSeeder extends Seeder {
         List<Student> students = studentsBean.getStudents();
 
         for (Student student: students) {
+            for(Enrollment e : student.getEnrollments()){
+                final Enrollment eee = enrollmentsBean.get(e.getId());
+                for (EnrollmentCourse ec: eee.getCourses()) {
+                    List<Exam> exams = ec.getCourseExecution().getExams();
+                    if(eee.getType().getId() == 2
+                            && exams.stream().noneMatch(ex -> eee.getCurriculum().getYear().isInYear(ex.getScheduledAt()))){
 
-            for (EnrollmentCourse enrollmentCourse: enrollmentCoursesBean.get()) {
-                if (student.getId() == enrollmentCourse.getEnrollment().getToken().getStudent().getId()) { // If student has token then he can enroll
-                    for (Exam exam : enrollmentCourse.getCourseExecution().getExams()) {
+                        ArrayList<CourseExecution> courseExecutions = new ArrayList<>();
+                        courseExecutions.add(ec.getCourseExecution());
+
+                        int year = eee.getCurriculum().getYear().endDate().getYear()+1900;
+
+                        exams = new ArrayList<>();
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(new Date()); // Now use today date.
+                        calendar.set(year,Calendar.JANUARY,22); // Zimsko izpitno obdobje
+                        exams.addAll(examSeeder.seedExamSchedule(calendar,courseExecutions, 1,true));
+                        calendar.set(year,Calendar.JULY,11); // Spomladansko izpitno obdobje
+                        exams.addAll(examSeeder.seedExamSchedule(calendar,courseExecutions, 2,true));
+                        calendar.set(year,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+                        exams.addAll(examSeeder.seedExamSchedule(calendar,courseExecutions,3, true));
+                    }
+
+                    for (Exam exam : exams) {
                         if (student.getId() != 1 || true) {
-                            ExamEnrollment e = new ExamEnrollment();
-                            e.setEnrollmentCourse(enrollmentCourse);
-                            e.setExam(exam);
+                            ExamEnrollment ee = new ExamEnrollment();
+                            ee.setEnrollmentCourse(ec);
+                            ee.setExam(exam);
                             if (Instant.now()
                                     .isBefore(
                                             exam.getScheduledAt()
@@ -66,9 +93,9 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                                     .minus(ExamEnrollmentInterceptor.MAX_DAYS_BEFORE_EXAM_APPLY, ChronoUnit.DAYS)
                                     )
                                     ) { // If exam is scheduled in the future
-                                if (exam.getCourseExecution().getId() == enrollmentCourse.getCourseExecution().getId()) {
-                                    e.setPastImport(true);
-                                    examEnrollmentBean.add(e);
+                                if (exam.getCourseExecution().getId() == ec.getCourseExecution().getId()) {
+                                    ee.setPastImport(true);
+                                    examEnrollmentBean.add(ee);
                                     //break;
                                 }
                             } else if (exam.getScheduledAt().toInstant().isBefore(Instant.now())) { // Past enrollments
@@ -77,12 +104,12 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                 Integer min = 0;
                                 Integer score = rn.nextInt(max - min + 1) + min;
                                 if (exam.getId() != 76) { // Aps kononenko 2018-05-21 { }
-                                    e.setScore(score);
-                                    e.setMark(getMarkFromScore(score));
+                                    ee.setScore(score);
+                                    ee.setMark(getMarkFromScore(score));
                                 }
 
-                                e.setPastImport(true);
-                                examEnrollmentBean.add(e);
+                                ee.setPastImport(true);
+                                examEnrollmentBean.add(ee);
                                 //break;
                             }
                         }
@@ -103,7 +130,7 @@ public class ExamEnrollmentsSeeder extends Seeder {
 //                            makeStudentWrite(franc,30,1);
 //                            makeStudentWrite(franc,51,2);
 
-                            log.info("Year" + Integer.valueOf(exam.getScheduledAt().toInstant().toString().substring(0,4)));
+                            log.info("Year" + Integer.valueOf(exam.getScheduledAt().toInstant().toString().substring(0, 4)));
 //                            if (Integer.valueOf(exam.getScheduledAt().toInstant().toString().substring(0,4))== 2015) { // Past enrollments
 //
 //                                makeStudentWrite(franc,30,1);
@@ -218,13 +245,11 @@ public class ExamEnrollmentsSeeder extends Seeder {
 //                                }
 
 
-                                //break;
+                            //break;
 //                            }
 
                         }
                     }
-
-
                 }
             }
         }

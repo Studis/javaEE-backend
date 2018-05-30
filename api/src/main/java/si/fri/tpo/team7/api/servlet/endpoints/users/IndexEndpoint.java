@@ -9,6 +9,7 @@ import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 
@@ -31,6 +32,9 @@ public class IndexEndpoint {
 
     @Inject
     StudentsBean studentsBean;
+
+    @Inject
+    EnrollmentCoursesBean enrollmentCoursesBean;
 
     @Inject
     EnrollmentsBean enrollmentsBean;
@@ -66,11 +70,8 @@ public class IndexEndpoint {
             for (EnrollmentCourse ec: courses) {
                 if(ec.getPassed()){
                     ects += ec.getCourseExecution().getCourse().getEcts();
-                }
-                Integer mark = ec.getMark();
-                if(mark != null){
                     count++;
-                    average += (float)mark;
+                    average += (float)ec.getMark();
                 }
 
                 List<ExamEnrollment> examEnrollments = ec.getExamEnrollments();
@@ -82,6 +83,7 @@ public class IndexEndpoint {
 
                     if (all) {
                         for (ExamEnrollment ee:examEnrollments) {
+                            ee.setAttemptsInYear(ee.getAttemptsInYear(e.getCurriculum().getYear()));
                             BEEIndex index = new BEEIndex();
                             index.setCourseExecution(ec.getCourseExecution());
                             index.setExamEnrollment(ee);
@@ -91,7 +93,9 @@ public class IndexEndpoint {
                     else{
                         BEEIndex index = new BEEIndex();
                         index.setCourseExecution(ec.getCourseExecution());
-                        index.setExamEnrollment(examEnrollments.get(examEnrollments.size()-1));
+                        ExamEnrollment ee = examEnrollments.get(examEnrollments.size() - 1);
+                        ee.setAttemptsInYear(ee.getAttemptsInYear(e.getCurriculum().getYear()));
+                        index.setExamEnrollment(ee);
                         indices.add(index);
                     }
                 }
