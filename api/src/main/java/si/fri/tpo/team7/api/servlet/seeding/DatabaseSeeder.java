@@ -33,11 +33,9 @@ import java.time.temporal.ChronoUnit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @WebServlet("/seed")
 @ApplicationScoped
@@ -147,8 +145,9 @@ public class DatabaseSeeder extends HttpServlet{
         AddStudents(writer);
         AddAdmin(writer);
 
-       new ExamSeeder(examsBean, courseExecutionsBean).Seed(writer);
-       new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean).Seed(writer);
+        ExamSeeder examSeeder = new ExamSeeder(examsBean, courseExecutionsBean);
+       examSeeder.Seed(writer);
+       new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean, examSeeder, enrollmentsBean).Seed(writer);
     }
 
     private void AddPrograms(PrintWriter writer){
@@ -391,7 +390,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     private void AddStudents(PrintWriter writer){
         writer.print("Adding students ... ");
-        Integer reduceSeeder = 25;
+        Integer reduceSeeder = 50;
         for(int i = 0; i < surnames.length/reduceSeeder; i++){
             Student student = new Student();
             student.setName(names[i]);
@@ -411,39 +410,96 @@ public class DatabaseSeeder extends HttpServlet{
             }
             studentsBean.addStudent(student);
 
+            if (i == 0) {
+                /*
+                 * Franc Župančič UNI
+                 * 1. letnik
+                 * Pavzer
+                 * 1. letnik Ponavlja
+                 * 2.letnik
+                 * Ima žeton za 3. letnik
+                 */
+                EnrollInYear(student, 2015, 1,1); // 2015/2016 je bil vpisan v 1.letnik
+                // 2016/2017 je bil pavzer, je naredil  ta čas 1/2 izpitov
+                EnrollInYear(student, 2017, 1,2); // 2017/2018 je ponavlja
+                EnrollInYear(student, 2018, 2,1); // 2018/2019 je redno vpisan
 
-            switch(i%3) {
-                case 0:
-                    EnrollInYear(student, 2015, 1);
-                    EnrollInYear(student, 2016, 2);
-                    EnrollInYear(student, 2017, 3);
-                    break;
-                case 1:
-                    EnrollInYear(student, 2016, 1);
-                    EnrollInYear(student, 2017, 2);
-                    EnrollInYear(student, 2018, 3);
-                    break;
-                case 2:
-                    EnrollInYear(student, 2017, 1);
-                    EnrollInYear(student, 2018, 2);
+            } else if (i == 1) {
+                /*
+                 * Janez Švejk VSS
+                 * 1.letnik
+                 */
+                EnrollInYear(student, 2016, 1,1);
+                EnrollmentToken token = new EnrollmentToken();
+                token.setStudent(student);
+                token.setStudyYear(studyYearsBean.get(2));
+                token.setStudyForm(studyFormsBean.get(1));
+                token.setStudyType(studyTypesBean.get(1));
+                token.setStatus(Status.OPEN);
+                token.setProgram(vsProgram);
+                token.setEnrollmentType(enrollmentTypesBean.get(5));
 
-                    EnrollmentToken token = new EnrollmentToken();
-                    token.setStudent(student);
-                    token.setStudyYear(studyYearsBean.get(3));
-                    token.setStudyForm(studyFormsBean.get(1));
-                    token.setStudyType(studyTypesBean.get(1));
-                    token.setStatus(Status.OPEN);
-                    token.setProgram(uniProgram);
-                    token.setEnrollmentType(enrollmentTypesBean.get(5));
+            } /*else if (i == 2) {
 
-                    enrollmentTokensBean.add(token);
-                    break;
+                //Ivan Horvat
+                //1.letnik
+                //2.letnik
+                //2.letnik
+                //Se lahko vpiše v 3. letnik
+
+                EnrollInYear(student, 2015, 1,1);
+                EnrollInYear(student, 2016, 1,2);
+                // Kot nevpisani študent dela izpite, da se potem lahko vpiše v drugi letnik
+//                EnrollInYear(student, 2017, 2);
+
+
+                EnrollmentToken token = new EnrollmentToken();
+                token.setStudent(student);
+                token.setStudyYear(studyYearsBean.get(2));
+                token.setStudyForm(studyFormsBean.get(1));
+                token.setStudyType(studyTypesBean.get(1));
+                token.setStatus(Status.OPEN);
+                token.setProgram(uniProgram);
+                token.setEnrollmentType(enrollmentTypesBean.get(1));
+
+                enrollmentTokensBean.add(token);
+
+            }*/
+            else{
+                switch(i%3) {
+                    case 0:
+                        EnrollInYear(student, 2015, 1, 1);
+                        EnrollInYear(student, 2016, 2, 5);
+                        EnrollInYear(student, 2017, 3, 5);
+                        break;
+                    case 1:
+                        EnrollInYear(student, 2016, 1, 1);
+                        EnrollInYear(student, 2017, 2, 5);
+                        EnrollInYear(student, 2018, 3, 5);
+                        break;
+                    case 2:
+                        EnrollInYear(student, 2017, 1, 1);
+                        EnrollInYear(student, 2018, 2, 5);
+
+                        EnrollmentToken token = new EnrollmentToken();
+                        token.setStudent(student);
+                        token.setStudyYear(studyYearsBean.get(3));
+                        token.setStudyForm(studyFormsBean.get(1));
+                        token.setStudyType(studyTypesBean.get(1));
+                        token.setStatus(Status.OPEN);
+                        token.setProgram(uniProgram);
+                        token.setEnrollmentType(enrollmentTypesBean.get(5));
+
+                        enrollmentTokensBean.add(token);
+                        break;
+
+                }
             }
         }
         writer.println("Done");
     }
 
-    private void EnrollInYear(Student student, int year, int studyYear){
+    private void EnrollInYear(Student student, int year, int studyYear, int enrollmentType){
         Curriculum c = curriculumsBean.get(uniProgram, yearsBean.get(year), studyYearsBean.get(studyYear));
 
         EnrollmentToken token = new EnrollmentToken();
@@ -453,61 +509,47 @@ public class DatabaseSeeder extends HttpServlet{
         token.setStudyType(studyTypesBean.get(1));
         token.setStatus(Status.COMPLETED);
         token.setProgram(uniProgram);
-        switch(studyYear){
-            case 1:
-                token.setEnrollmentType(enrollmentTypesBean.get(1));
-                break;
-            case 2:
-            case 3:
-                token.setEnrollmentType(enrollmentTypesBean.get(5));
-                break;
-        }
-
+        token.setEnrollmentType(enrollmentTypesBean.get(enrollmentType));
         enrollmentTokensBean.add(token);
 
         Enrollment enrollment = new Enrollment();
         enrollment.setToken(token);
         enrollment.setCurriculum(c);
         enrollment.setConfirmed(true);
-
-        switch(studyYear){
-            case 1:
-                enrollment.setType(enrollmentTypesBean.get(1));
-                enrollment.setStudyType(studyTypesBean.get(1));
-                enrollment.setStudyForm(studyFormsBean.get(1));
-                break;
-            case 2:
-            case 3:
-                enrollment.setCurriculum(c);
-                enrollment.setType(enrollmentTypesBean.get(5));
-                enrollment.setStudyType(studyTypesBean.get(1));
-
-//                if (student.getId() == 1) {
-//                    enrollment.setStudyType(studyTypesBean.get(3));
-//                }
-
-                enrollment.setStudyForm(studyFormsBean.get(1));
-                break;
-        }
-
+        enrollment.setStudyType(studyTypesBean.get(1));
+        enrollment.setStudyForm(studyFormsBean.get(1));
+        enrollment.setType(enrollmentTypesBean.get(enrollmentType));
         enrollmentsBean.add(enrollment);
-        switch(studyYear){
-            case 1:
-                Enroll(enrollment, c.getObligatoryCourses());
-                break;
-            case 2:
-                Enroll(enrollment, c.getObligatoryCourses());
-                Enroll(enrollment, c.getGeneralOptionalCourses());
-                Enroll(enrollment, c.getProfessionalOptionalCourses());
-                break;
-            case 3:
-                Enroll(enrollment, c.getObligatoryCourses());
-                Enroll(enrollment, c.getGeneralOptionalCourses());
-                Enroll(enrollment, c.getProfessionalOptionalCourses());
-                for(Module m : c.getModules()){
-                    Enroll(enrollment, m.getCourses());
-                }
-                break;
+
+        if (enrollmentType == 2) {
+            student = studentsBean.getStudent(student.getId());
+            Enrollment min = student.getEnrollments().stream()
+                    .filter(e -> e.getType().getId() != 2)
+                    .max(Comparator.comparing(p -> p.getCurriculum().getYear().getId())).orElse(null);
+
+            List<CourseExecution> collect = enrollmentsBean.get(min.getId()).getCourses().stream()
+                    .map(ce -> ce.getCourseExecution()).collect(Collectors.toList());
+
+            Enroll(enrollment, collect);
+        } else {
+            switch(studyYear){
+                case 1:
+                    Enroll(enrollment, c.getObligatoryCourses());
+                    break;
+                case 2:
+                    Enroll(enrollment, c.getObligatoryCourses());
+                    Enroll(enrollment, c.getGeneralOptionalCourses());
+                    Enroll(enrollment, c.getProfessionalOptionalCourses());
+                    break;
+                case 3:
+                    Enroll(enrollment, c.getObligatoryCourses());
+                    Enroll(enrollment, c.getGeneralOptionalCourses());
+                    Enroll(enrollment, c.getProfessionalOptionalCourses());
+                    for(Module m : c.getModules()){
+                        Enroll(enrollment, m.getCourses());
+                    }
+                    break;
+            }
         }
     }
 

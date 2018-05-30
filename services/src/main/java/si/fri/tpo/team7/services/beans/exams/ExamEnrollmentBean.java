@@ -1,14 +1,17 @@
 package si.fri.tpo.team7.services.beans.exams;
 
+import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
+import si.fri.tpo.team7.services.beans.validators.DateValidator;
 import si.fri.tpo.team7.services.beans.validators.ExamEnrollmentValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
+import java.time.Instant;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -49,6 +52,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
     public ExamEnrollment existingEnrollmentsMiddleWare(List<ExamEnrollment> examEnrollments, ExamEnrollment pending) throws NotFoundException {
 
+
         // DEFINITIONS  (^_^) ******************************************************************************************************************************************************************************
 
         Map<Integer,Integer> mapCourseIdToAttempts = new HashMap<>();
@@ -77,9 +81,9 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             if (ExamEnrollmentValidator.isSameUserEnrollment(examenrollment,pending) && ExamEnrollmentValidator.isExamForSameCourse(examenrollment,pending)) { // If it is enrollment for the same user
 
                 // If user is already enrolled in the exam with same course execution and has not received mark yet
-                if (!pending.isPastImport() && !ExamEnrollmentValidator.markKnown(examenrollment)) {
-                    throw new NotFoundException("You can't enroll before you receive final mark for last attempts!");
-                }
+//                if (!pending.isPastImport() && !ExamEnrollmentValidator.markKnown(examenrollment)) {
+//                    throw new NotFoundException("You can't enroll before you receive final mark for last attempts!");
+//                }
 
                 // If user is already enrolled in the exam with same course execution and has completed it
                 if (!pending.isPastImport() && ExamEnrollmentValidator.didIPass(examenrollment)) {
@@ -87,13 +91,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
                             ExamEnrollmentValidator.getCourseTitle(examenrollment) + ", you recived " + examenrollment.getMark());
                 }
 
-                // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days! TODO: check
-                if (!pending.isPastImport()
-                        && ExamEnrollmentValidator.durationBetweenExamEnrollmentsInDays(examenrollment,pending) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
-                    throw new NotFoundException( "Duration between attempts " + ExamEnrollmentValidator.getExamScheduled(examenrollment)
-                            + " and " + ExamEnrollmentValidator.getExamScheduled(pending)
-                            +  " must be at least " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
-                }
+
 
         /*
             END BEAUTIFUL CODE
@@ -218,6 +216,43 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 //            throw new NotFoundException("You can't write exam more than 3 times in study year!");
         }
 
+//        ExamEnrollment previos = examEnrollments.stream() // TODO: This does not work!!!!!
+//                .min(Comparator.comparing(p -> p.getExam().getScheduledAt().toInstant()
+//                        .isBefore(pending.getExam().getScheduledAt().toInstant())
+//                        && p.getExam().getId() != pending.getExam().getId()
+//                && p.getMark() != null && p.getMark() == 5)).orElse(null);
+
+        Long minDur = Long.MAX_VALUE;
+        ExamEnrollment thatEnrollment = null;
+        for (ExamEnrollment examEnrollment : examEnrollments) {
+                if (ExamEnrollmentValidator.markKnown(examEnrollment) &&
+                        ExamEnrollmentValidator.isSameUserEnrollment(examEnrollment,pending)
+                        && ExamEnrollmentValidator.isExamForSameCourse(examEnrollment,pending)) {
+                    Long tmpDur = ExamEnrollmentValidator.durationBetweenExamEnrollmentsInDays(pending,examEnrollment);
+                    if (tmpDur < minDur) {
+                        minDur = tmpDur;
+                        thatEnrollment = examEnrollment;
+                    }
+                }
+            }
+        if (!pending.isPastImport() && minDur < DURATION_BETWEEN_EXAM_ATTEMPTS) { // It is working
+            throw new NotFoundException( "Duration between attempts " + ExamEnrollmentValidator.getExamScheduled(thatEnrollment)
+                    + " and " + ExamEnrollmentValidator.getExamScheduled(pending)
+                    +  " must be at least " +  DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
+        }
+
+
+
+        // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days! TODO: check
+//        if (previos != null) log.info("Duration between attempts " + ExamEnrollmentValidator.getExamScheduled(previos)
+//                + " and " + ExamEnrollmentValidator.getExamScheduled(pending)
+//                +  " must be at least " +  ExamEnrollmentValidator.durationBetweenExamEnrollmentsInDays(previos,pending)+ " days!");
+//        if (!pending.isPastImport() && previos != null
+//                && ExamEnrollmentValidator.durationBetweenExamEnrollmentsInDays(previos,pending) <= 93) {
+//            throw new NotFoundException( "Duration between attempts " + ExamEnrollmentValidator.getExamScheduled(previos)
+//                    + " and " + ExamEnrollmentValidator.getExamScheduled(pending)
+//                    +  " must be at least " +  93+ " days!");
+//        }
 
 
 

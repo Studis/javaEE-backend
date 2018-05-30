@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -61,6 +62,12 @@ public class Student extends User {
     @Override
     public Role getRole() {
         return Role.STUDENT;
+    }
+
+    @JsonGetter
+    @Override
+    public String toString(){
+        return id+" "+name+" "+surname;
     }
 
 

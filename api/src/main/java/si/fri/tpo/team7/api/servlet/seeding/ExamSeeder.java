@@ -2,13 +2,12 @@ package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
-import si.fri.tpo.team7.services.beans.curriculum.CoursesBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
-import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +38,10 @@ public class ExamSeeder extends Seeder {
         calendar.set(2018,Calendar.JULY,11); // Spomladansko izpitno obdobje
         seedExamSchedule(calendar,courseExecutions, 2,false);
         calendar.set(2018,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, false);
+        calendar.set(2018,Calendar.AUGUST,21); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, false);
+        calendar.set(2018,Calendar.OCTOBER,21); // Jesensko izpitno obdobje
         seedExamSchedule(calendar,courseExecutions,3, false);
 
         courseExecutions = courseExecutionsBean.get()
@@ -78,8 +81,9 @@ public class ExamSeeder extends Seeder {
         seedExamSchedule(calendar,courseExecutions,3, true);
     }
 
-    public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, int examTerm, boolean pastImport) {
+    public ArrayList<Exam> seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, int examTerm, boolean pastImport) {
         Exam e;
+        ArrayList<Exam> exams = new ArrayList<>();
         Integer index = 0;
         String[] locations = {"PA","P01","P02","P03","P04","P05","P06","P07","P08","P09","P10","P11","P12","P13","P14","P15","P16"};
         for (CourseExecution courseExecution: courseExecutions) {
@@ -95,10 +99,13 @@ public class ExamSeeder extends Seeder {
                 e.setAsking(courseExecution.getLecturer1().getName() + " " + courseExecution.getLecturer1().getSurname());
                 e.setLocation(locations[index%locations.length]);
                 e.setExamTerm(examTerm);
+
             }
             while (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
                     calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || examsBean.add(e) == null);
+            exams.add(e);
             index++;
         }
+        return exams;
     }
 }
