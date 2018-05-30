@@ -55,13 +55,47 @@ public class CoursesSeeder extends Seeder {
 
         //Module courses
 
+        //umetna inteligenca
         c = new Course(); c.setName("Inteligentni sistemi"); c.setId(63266); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Umetno zaznavanje"); c.setId(63267); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Razvoj inteligentnih sistemov"); c.setId(63268); c.setEcts(6); coursesBean.add(c);
 
+        //medisjke tehnologije
         c = new Course(); c.setName("Multimedijski sistemi"); c.setId(63270); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Računalniška grafika in tehnologija iger"); c.setId(63269); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Osnove oblikovanja"); c.setId(63271); c.setEcts(6); coursesBean.add(c);
+
+        //informacijski sistemi
+        c = new Course(); c.setName("Tehnologija upravljanja podatkov"); c.setId(63226); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Razvoj informacijskih sistemov"); c.setId(63252); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Planiranje in upravljanje informatike"); c.setId(63253); c.setEcts(6); coursesBean.add(c);
+
+        //obvladovanje informatike
+        c = new Course(); c.setName("Elektronsko poslovanje"); c.setId(63249); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Uvod v odkrivanje znanj iz podatkov"); c.setId(63251); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Organizacija in management"); c.setId(63250); c.setEcts(6); coursesBean.add(c);
+
+        //razvoj programske opreme
+        c = new Course(); c.setName("Postopki razvoja programske opreme"); c.setId(63254); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Spletno programiranje"); c.setId(63255); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Tehnologija programske opreme"); c.setId( 63256); c.setEcts(6); coursesBean.add(c);
+
+        //raračunalniška omrežja
+        c = new Course(); c.setName("Komunikacijski protokoli"); c.setId(63258); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Modeliranje računalniških omrežij"); c.setId(63257); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Brezžična in mobilna omrežja"); c.setId(63259); c.setEcts(6); coursesBean.add(c);
+
+        //računalniški sistemi
+        c = new Course(); c.setName("Zanesljivost in zmogljivost računalniških sistemov"); c.setId(63262); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Porazdeljeni sistemi"); c.setId(63261); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Digitalno načrtovanje"); c.setId(63260); c.setEcts(6); coursesBean.add(c);
+
+        //algoritmi in sistemski programi
+        //c = new Course(); c.setName("Analiza algoritmov in hevristično reševanje problemov"); c.setId(63270); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Sistemska programska oprema"); c.setId(63264); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Prevajalniki"); c.setId(63265); c.setEcts(6); coursesBean.add(c);
+
+
 
         //VSS
         c = new Course(); c.setName("Programiranje 2"); c.setId(63706); c.setEcts(6); coursesBean.add(c);

@@ -72,7 +72,8 @@ public class DatabaseSeeder extends HttpServlet{
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
             BojanOrel, DarjaPeljhan, JakaLindic, MatejaDrnovsek, PaulBorutKersevan, MatejKristan, LukaCehovin,
-            NavrikaBovcon, NinaBostic, AndrejBauer, TomazDobravec, MatjazKukar, MojcaCiglaric, PeterPeer, IgorSkraba, RomanDrnovsek, JanezDemsar, SandiKlavžar;
+            NavrikaBovcon, NinaBostic, AndrejBauer, TomazDobravec, MatjazKukar, MojcaCiglaric, PeterPeer, IgorSkraba, RomanDrnovsek, JanezDemsar, SandiKlavžar,
+            MihaMraz, BratkoMatjazJuric, BlazZupan, DenisTrcek, RokRupnik;
 
     private Clerk DanicaKotnik;
 
@@ -202,6 +203,11 @@ public class DatabaseSeeder extends HttpServlet{
         NavrikaBovcon = AddLecturer("Navrika", "Bovcon", 42);
         NinaBostic = AddLecturer("Nina", "Bostič Bishop", 42);
         AndrejBauer = AddLecturer("Andrej", "Bauer", 42);
+        MihaMraz = AddLecturer("Miha", "Mraz", 42);
+        BratkoMatjazJuric = AddLecturer("Bratko Matjaž", "Jurič", 42);
+        BlazZupan = AddLecturer("Blaž", "Zupan", 42);
+        DenisTrcek = AddLecturer("Denis", "Trček", 42);
+        RokRupnik = AddLecturer("Rok", "Rupnik", 42);
 
         //VSS
         TomazDobravec = AddLecturer("Tomaž", "Dobravec", 123);
@@ -338,16 +344,38 @@ public class DatabaseSeeder extends HttpServlet{
         mc = new ModuleCourse(); mc.setLecturer1(NavrikaBovcon); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
         m = AddModule("Informacijski sistemi", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(MatjazKukar); mc.setModule(m); mc.setCourse(coursesBean.get(63226)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(MarkoBajec); mc.setModule(m); mc.setCourse(coursesBean.get(63252)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(RokRupnik); mc.setModule(m); mc.setCourse(coursesBean.get(63253)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
-        m = AddModule("Algoritmi in sistemski programi", cur);
 
         m = AddModule("Obvladovanje informatike", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(DenisTrcek); mc.setModule(m); mc.setCourse(coursesBean.get(63249)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(BlazZupan); mc.setModule(m); mc.setCourse(coursesBean.get(63251)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(TomazHovelja); mc.setModule(m); mc.setCourse(coursesBean.get(63250)); mc.setWinter(false); courseExecutionsBean.add(mc);
+
 
         m = AddModule("Razvoj programske opreme", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(BratkoMatjazJuric); mc.setModule(m); mc.setCourse(coursesBean.get(63254)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(DejanLavbic); mc.setModule(m); mc.setCourse(coursesBean.get(63255)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(ViljanMahnic); mc.setModule(m); mc.setCourse(coursesBean.get(63256)); mc.setWinter(false); courseExecutionsBean.add(mc);
+
 
         m = AddModule("Računalniška omrežja", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(MojcaCiglaric); mc.setModule(m); mc.setCourse(coursesBean.get(63258)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(UrosLotric); mc.setModule(m); mc.setCourse(coursesBean.get(63257)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(NikolajZimic); mc.setModule(m); mc.setCourse(coursesBean.get(63259)); mc.setWinter(false); courseExecutionsBean.add(mc);
+
 
         m = AddModule("Računalniški sistemi", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(MihaMraz); mc.setModule(m); mc.setCourse(coursesBean.get(63262)); mc.setWinter(false); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(UrosLotric); mc.setModule(m); mc.setCourse(coursesBean.get(63261)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(PatricioBulic); mc.setModule(m); mc.setCourse(coursesBean.get(63260)); mc.setWinter(true); courseExecutionsBean.add(mc);
+
+        m = AddModule("Algoritmi in sistemski programi", cur);
+        mc = new ModuleCourse(); mc.setLecturer1(BostjanSlivnik); mc.setModule(m); mc.setCourse(coursesBean.get(63265)); mc.setWinter(false); courseExecutionsBean.add(mc);
+        mc = new ModuleCourse(); mc.setLecturer1(TomazDobravec); mc.setModule(m); mc.setCourse(coursesBean.get(63264)); mc.setWinter(true); courseExecutionsBean.add(mc);
+        //todomc = new ModuleCourse(); mc.setLecturer1(); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
         writer.println("Done");
     }
