@@ -9,6 +9,9 @@ import si.fri.tpo.team7.entities.Register;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -29,5 +32,21 @@ public class Year extends Register {
     @Override
     public String toString(){
         return id+"/"+(id+1);
+    }
+
+    public Date startDate(){
+        Calendar c = Calendar.getInstance();
+        c.set(id+1, 9, 30);
+        return c.getTime();
+    }
+
+    public Date endDate(){
+        Calendar c = Calendar.getInstance();
+        c.set(id, 10, 1);
+        return c.getTime();
+    }
+
+    public boolean isInYear(Date date){
+        return date.after(startDate()) && date.before(endDate());
     }
 }

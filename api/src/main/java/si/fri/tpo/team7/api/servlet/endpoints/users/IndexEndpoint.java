@@ -66,11 +66,8 @@ public class IndexEndpoint {
             for (EnrollmentCourse ec: courses) {
                 if(ec.getPassed()){
                     ects += ec.getCourseExecution().getCourse().getEcts();
-                }
-                Integer mark = ec.getMark();
-                if(mark != null){
                     count++;
-                    average += (float)mark;
+                    average += (float)ec.getMark();
                 }
 
                 List<ExamEnrollment> examEnrollments = ec.getExamEnrollments();
