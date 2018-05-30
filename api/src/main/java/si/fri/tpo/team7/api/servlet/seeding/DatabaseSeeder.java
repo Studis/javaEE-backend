@@ -363,7 +363,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     private void AddStudents(PrintWriter writer){
         writer.print("Adding students ... ");
-        Integer reduceSeeder = 25;
+        Integer reduceSeeder = 50;
         for(int i = 0; i < surnames.length/reduceSeeder; i++){
             Student student = new Student();
             student.setName(names[i]);
@@ -383,39 +383,71 @@ public class DatabaseSeeder extends HttpServlet{
             }
             studentsBean.addStudent(student);
 
+            if (i == 0) {
+                /*
+                 * Franc Župančič UNI
+                 * 1. letnik
+                 * Pavzer
+                 * 1. letnik Ponavlja
+                 * 2.letnik
+                 * Ima žeton za 3. letnik
+                 */
+                EnrollInYear(student, 2015, 1,1); // 2015/2016 je bil vpisan v 1.letnik
+                // 2016/2017 je bil pavzer, je naredil  ta čas 1/2 izpitov
+                EnrollInYear(student, 2017, 1,2); // 2018/2019 je ponavlja
+                EnrollInYear(student, 2018, 2,1); // 2018/2019 je ponavlja
 
-            switch(i%3) {
-                case 0:
-                    EnrollInYear(student, 2015, 1);
-                    EnrollInYear(student, 2016, 2);
-                    EnrollInYear(student, 2017, 3);
-                    break;
-                case 1:
-                    EnrollInYear(student, 2016, 1);
-                    EnrollInYear(student, 2017, 2);
-                    EnrollInYear(student, 2018, 3);
-                    break;
-                case 2:
-                    EnrollInYear(student, 2017, 1);
-                    EnrollInYear(student, 2018, 2);
 
-                    EnrollmentToken token = new EnrollmentToken();
-                    token.setStudent(student);
-                    token.setStudyYear(studyYearsBean.get(3));
-                    token.setStudyForm(studyFormsBean.get(1));
-                    token.setStudyType(studyTypesBean.get(1));
-                    token.setStatus(Status.OPEN);
-                    token.setProgram(uniProgram);
-                    token.setEnrollmentType(enrollmentTypesBean.get(5));
 
-                    enrollmentTokensBean.add(token);
-                    break;
+
+            } else if (i == 1) {
+                /*
+                 * Janez Švejk VSS
+                 * 1.letnik
+                 */
+                EnrollInYear(student, 2016, 1,1);
+                EnrollmentToken token = new EnrollmentToken();
+                token.setStudent(student);
+                token.setStudyYear(studyYearsBean.get(2));
+                token.setStudyForm(studyFormsBean.get(1));
+                token.setStudyType(studyTypesBean.get(1));
+                token.setStatus(Status.OPEN);
+                token.setProgram(vsProgram);
+                token.setEnrollmentType(enrollmentTypesBean.get(5));
+
+            } else if (i == 2) {
+                /*
+                Ivan Horvat
+                1.letnik
+                2.letnik
+                2.letnik
+                Se lahko vpiše v 3. letnik
+                 */
+                EnrollInYear(student, 2015, 1,1);
+                EnrollInYear(student, 2016, 1,2);
+                // Kot nevpisani študent dela izpite, da se potem lahko vpiše v drugi letnik
+//                EnrollInYear(student, 2017, 2);
+
+
+                EnrollmentToken token = new EnrollmentToken();
+                token.setStudent(student);
+                token.setStudyYear(studyYearsBean.get(2));
+                token.setStudyForm(studyFormsBean.get(1));
+                token.setStudyType(studyTypesBean.get(1));
+                token.setStatus(Status.OPEN);
+                token.setProgram(uniProgram);
+                token.setEnrollmentType(enrollmentTypesBean.get(1));
+
+                enrollmentTokensBean.add(token);
+
             }
+
+
         }
         writer.println("Done");
     }
 
-    private void EnrollInYear(Student student, int year, int studyYear){
+    private void EnrollInYear(Student student, int year, int studyYear, int enrollmentType){
         Curriculum c = curriculumsBean.get(uniProgram, yearsBean.get(year), studyYearsBean.get(studyYear));
 
         EnrollmentToken token = new EnrollmentToken();
@@ -425,6 +457,8 @@ public class DatabaseSeeder extends HttpServlet{
         token.setStudyType(studyTypesBean.get(1));
         token.setStatus(Status.COMPLETED);
         token.setProgram(uniProgram);
+
+
         switch(studyYear){
             case 1:
                 token.setEnrollmentType(enrollmentTypesBean.get(1));
@@ -435,12 +469,18 @@ public class DatabaseSeeder extends HttpServlet{
                 break;
         }
 
+        if (enrollmentType != -1) {
+            token.setEnrollmentType(enrollmentTypesBean.get(enrollmentType));
+        }
+
         enrollmentTokensBean.add(token);
+
 
         Enrollment enrollment = new Enrollment();
         enrollment.setToken(token);
         enrollment.setCurriculum(c);
         enrollment.setConfirmed(true);
+
 
         switch(studyYear){
             case 1:
@@ -461,11 +501,21 @@ public class DatabaseSeeder extends HttpServlet{
                 enrollment.setStudyForm(studyFormsBean.get(1));
                 break;
         }
+        if (enrollmentType != -1) enrollment.setType(enrollmentTypesBean.get(enrollmentType));
+        // Above Here is really changing
 
         enrollmentsBean.add(enrollment);
         switch(studyYear){
             case 1:
-                Enroll(enrollment, c.getObligatoryCourses());
+                if (enrollmentType == 2) {
+                    for (EnrollmentCourse d : enrollment.getCourses()) {
+                        Enroll(enrollment,d.getEnrollment().getCurriculum().getObligatoryCourses());
+                    }
+
+                } else {
+                    Enroll(enrollment, c.getObligatoryCourses());
+                }
+
                 break;
             case 2:
                 Enroll(enrollment, c.getObligatoryCourses());
