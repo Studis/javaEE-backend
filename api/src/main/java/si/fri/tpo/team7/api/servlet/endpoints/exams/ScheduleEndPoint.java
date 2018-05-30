@@ -20,6 +20,7 @@ import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
+import si.fri.tpo.team7.services.beans.exams.GenerateExamScheduleBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
@@ -60,6 +61,9 @@ public class ScheduleEndPoint {
 
     @Inject
     private StudentsBean studentsBean;
+
+    @Inject
+    private GenerateExamScheduleBean generateExamScheduleBean;
 
     @Inject
     @AuthenticatedUser
@@ -158,6 +162,13 @@ public class ScheduleEndPoint {
     @Path("{id}")
     public  Response updateExam(@PathParam("id") int id, Exam exam) {
         return Response.ok(examsBean.update(id, exam)).build();
+    }
+
+    @POST
+    @Path("generate/{studyYear}")
+    public Response generateExamSchedule(@PathParam("studyYear") int studyYear, int program){
+        generateExamScheduleBean.generateExamSchedule(studyYear, program);
+        return Response.ok().build();
     }
 
     /**
