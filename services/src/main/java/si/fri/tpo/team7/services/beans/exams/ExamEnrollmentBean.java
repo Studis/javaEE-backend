@@ -4,17 +4,12 @@ import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.EnrollToExam;
 import si.fri.tpo.team7.services.beans.EntityBean;
-import si.fri.tpo.team7.services.beans.validators.DateValidator;
 import si.fri.tpo.team7.services.beans.validators.ExamEnrollmentValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -33,11 +28,10 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
         if(obj == null){
             return null;
         }
-
-        if (existingEnrollmentsMiddleWare(super.get(),obj)) {
+        obj = existingEnrollmentsMiddleWare(super.get(),obj);
+        if (obj != null) {
             obj.setCreatedAt(new Date());
             obj.setPastImport(false);
-            obj.setTotalExamAttempts(obj.getTotalExamAttempts()+1);
             em.persist(obj);
             em.flush();
             return obj;
@@ -48,101 +42,186 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
     /**
      *
-     * @param examEnrollments - List of all exam enrollments
-     * @param pending
      * @param examEnrollments
-     * @return boolean
+     * @param pending
      * @throws NotFoundException
      */
-    public boolean existingEnrollmentsMiddleWare(List<ExamEnrollment> examEnrollments, ExamEnrollment pending) throws NotFoundException {
-        Integer examAttemptsInCurrentYear = 0;
-        Integer totalExamAttempts = 0;
-        Map<ExamEnrollment,Integer> mapExamEnrollmentAttempts = new HashMap<>();
+
+    public ExamEnrollment existingEnrollmentsMiddleWare(List<ExamEnrollment> examEnrollments, ExamEnrollment pending) throws NotFoundException {
+
+        // DEFINITIONS  (^_^) ******************************************************************************************************************************************************************************
+
+        Map<Integer,Integer> mapCourseIdToAttempts = new HashMap<>();
+        Map<Integer,Integer> mapCourseIdToYearAttempts = new HashMap<>();
+        Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
+
+
+        // CHECKS FOR PENDING  (^_^) ******************************************************************************************************************************************************************************
+
+        if (!ExamEnrollmentValidator.isExamForSameCourse(pending,pending)) { // Validation for frontend if right exam! RED flag
+            throw new NotFoundException("Exam term does not exist for given enrollment course!");
+        }
+
+        if (((pending.getScore() != null) || (pending.getMark() != null)) && pending.getExam().getScheduledAt().after(new Date())) { // Cannot add marks or scores to future exams
+            throw new NotFoundException("Exam has not yet been written, you cannot add marks or scores to future exams!");
+        }
+
+        // PAST EXAM ENROLLMENTS  (^_^) ******************************************************************************************************************************************************************************
+
         for (ExamEnrollment examenrollment: examEnrollments) {
 
-            if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that was disenrolled in time (has set status to deleted) in the correct due date
+            if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that were deleted in time (has set status to deleted) in the correct due date
 
-
-            Integer pendingUserId = pending.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId();
-            Integer currentUserId = examenrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent().getId();
-
-            Integer pendingExecutionId = pending.getExam().getCourseExecution().getId();
-            Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId();
-
-
-            Boolean userIsEnrolledToSameCourse = pendingUserId == currentUserId && pendingExecutionId == examEnrollmentExecutionId;
-
-
-            if (pending.getEnrollmentCourse().getCourseExecution().getId() != pending.getExam().getCourseExecution().getId()) {
-                throw new NotFoundException("Exam term does not exist for given enrollment course!");
-            }
-
-//            if (pendingUserId == currentUserId && pending.getExam().getCourseExecution().getId() == examenrollment.getExam().getCourseExecution().getId()) { // Here is the right course execution - TESTing
-//                throw new NotFoundException("Exam enrollment for exam " + pending.getEnrollment().getCourseExecution().getCourse().getName() + " already exist! for user " + pendingUserId);
-//            } // TESTING
-
-            // If exam has not yet been written you cannot add mark to it
-            if (((pending.getScore() != null) || (pending.getMark() != null)) && pending.getExam().getScheduledAt().after(new Date())) {
-                throw new NotFoundException("Exam has not yet been written, you cannot add marks or scores to future exams!");
-            }
+            Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId(); // Helper fields
 
             if (ExamEnrollmentValidator.isSameUserEnrollment(examenrollment,pending) && ExamEnrollmentValidator.isExamForSameCourse(examenrollment,pending)) { // If it is enrollment for the same user
 
                 // If user is already enrolled in the exam with same course execution and has not received mark yet
                 if (!pending.isPastImport() && !ExamEnrollmentValidator.markKnown(examenrollment)) {
-                    throw new NotFoundException("You can't enroll before you receive final mark!");
+                    throw new NotFoundException("You can't enroll before you receive final mark for last attempts!");
                 }
+
                 // If user is already enrolled in the exam with same course execution and has completed it
                 if (!pending.isPastImport() && ExamEnrollmentValidator.didIPass(examenrollment)) {
-                    throw new NotFoundException("You have already completed this exam!");
+                    throw new NotFoundException("You have already completed exam for " +
+                            ExamEnrollmentValidator.getCourseTitle(examenrollment) + ", you recived " + examenrollment.getMark());
                 }
-                if (!pending.isPastImport() && examenrollment.getExam().getId() == pending.getExam().getId()) {
-                    throw new NotFoundException("Enrollment to this exam already exist!");
+
+                // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days! TODO: check
+                if (!pending.isPastImport()
+                        && ExamEnrollmentValidator.durationBetweenExamEnrollmentsInDays(examenrollment,pending) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
+                    throw new NotFoundException( "Duration between attempts " + ExamEnrollmentValidator.getExamScheduled(examenrollment)
+                            + " and " + ExamEnrollmentValidator.getExamScheduled(pending)
+                            +  " must be at least " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
                 }
-                // Duration between exam attempts must be at least DURATION_BETWEEN_EXAM_ATTEMPTS days!
-                // TODO: check if working
-                if (!pending.isPastImport() && Math.abs(DateValidator.durationBetweenDatesInDays(examenrollment.getExam().getScheduledAt().toInstant(),
-                        pending.getExam().getScheduledAt().toInstant())) <= DURATION_BETWEEN_EXAM_ATTEMPTS) {
-                    throw new NotFoundException( "Duration between attempts must be " + DURATION_BETWEEN_EXAM_ATTEMPTS + " days!");
+
+        /*
+            END BEAUTIFUL CODE
+        */
+
+                // Če zdej ponavljam in najdem redni type na trenutnemu TODO: this ain't workin
+//                if (pending.getEnrollmentCourse().getEnrollment().getType().getId() == 2 && examenrollment.getEnrollmentCourse().getEnrollment().getType().getId() == 1) {
+//                    pending.setReturnedExamAttempts(pending.getReturnedExamAttempts()+1);
+//                }
+
+                if (mapCourseIdToAttempts.get(examenrollment.getExam().getCourseExecution().getId()) != null) {
+                    mapCourseIdToAttempts.put(examenrollment.getExam().getCourseExecution().getId(), 1 + mapCourseIdToAttempts.get(examenrollment.getExam().getCourseExecution().getId()));
+                } else {
+                    mapCourseIdToAttempts.put(examenrollment.getExam().getCourseExecution().getId(), 1);
                 }
+
+                if (!pending.isPastImport() && pending.getExam().getCourseExecution().getYear() !=
+                       examenrollment.getEnrollmentCourse().getEnrollment().getCurriculum().getYear() && pending.getPaid() == null) { // Student is not enrolled
+                    throw new NotFoundException( "You need to pay for the exam, you are no longer enrolled!");
+                }
+
+
+                log.info(examenrollment
+                        .getEnrollmentCourse()
+                        .getEnrollment()
+                        .getCurriculum()
+                        .getYear()
+                        .getId() + " "+ (examenrollment.getExam().getScheduledAt().getYear()+1900));
+
+                if (mapCourseIdToYearAttempts.get(examEnrollmentExecutionId) != null
+                        && examenrollment
+                        .getEnrollmentCourse()
+                        .getEnrollment()
+                        .getCurriculum()
+                        .getYear()
+                        .getId() == examenrollment.getEnrollmentCourse().getCourseExecution().getYear().getId()) {
+                    mapCourseIdToYearAttempts.put(examEnrollmentExecutionId,mapCourseIdToYearAttempts.get(pendingExecutionId)+1);
+                } else {
+                    mapCourseIdToYearAttempts.put(examenrollment.getExam().getCourseExecution().getId(),1);
+
+                }
+
+
+
+
             }
 
-            Integer examenrollmentStudyYear = examenrollment.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
-            Integer pendingStudyYear = pending.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
+//            Integer examenrollmentStudyYear = examenrollment.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
+//            Integer pendingStudyYear = pending.getEnrollmentCourse().getEnrollment().getCurriculum().getStudyYear().getId();
 
             // Total exam attempts in study year is 3
-            if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
-                examAttemptsInCurrentYear++;
-            }
+//            if (userIsEnrolledToSameCourse && examenrollmentStudyYear == pendingStudyYear) {
+//                examAttemptsInCurrentYear++;
+//            }
 
             // Total exam attempts max is 6
-            if (userIsEnrolledToSameCourse) {
-                totalExamAttempts++;
-            }
+//            if (userIsEnrolledToSameCourse) {
+//            }
 
             // If user has already written exam 6 times then he is not allowed to write it again
-            if (totalExamAttempts == 6) {
-                throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
-            }
+//            if (totalExamAttempts == 6) {
+//                throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again");
+//            }
 
             // If user has already written exam 3 times in the current study year then he is not allowed to write it again
-            if (!pending.isPastImport() && examAttemptsInCurrentYear == 3) {
-                throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again this year");
-            }
+//            if (!pending.isPastImport() && examAttemptsInCurrentYear == 3) {
+//                throw new NotFoundException("You have already written exam 3 in current study year and are not allowed to enroll again this year");
+//            }
 
-            if (!pending.isPastImport() && totalExamAttempts >= 3 && !pending.getPaid()) {
-                throw new NotFoundException("You will need to pay for exam due to total attempt " + totalExamAttempts+1);
-            }
+
 
             Integer typeOfStudy = pending.getEnrollmentCourse().getEnrollment().getStudyType().getId();
 
-            if (typeOfStudy == 3 && !pending.getPaid()) {
+            if (typeOfStudy == 3 && pending.getPaid() == null) {
                 throw new NotFoundException("You will need to pay for exam!");
             }
 
         }
+        Iterator it = mapCourseIdToAttempts.entrySet().iterator();
 
-        return true;
+
+
+        while (it.hasNext()) { // V študijskem letu
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+//            if ((Integer)pair.getValue()+1 >= 3) throw new NotFoundException("You have already written exam 3 times in this study year"); // rollback
+            if ((Integer)pair.getKey() == pending.getExam().getCourseExecution().getId()) {
+
+                pending.setTotalExamAttempts(((Integer)pair.getValue())+1);
+                if (pending.getTotalExamAttempts() == 0) {
+                    pending.setTotalExamAttempts(1);
+                }
+            }
+
+
+
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
+        Iterator it2 = mapCourseIdToAttempts.entrySet().iterator();
+
+
+        while (it2.hasNext()) {
+            Map.Entry pair = (Map.Entry)it2.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+//            if ((Integer)pair.getValue() >= 3) throw new NotFoundException("You have already written exam 3 times in this study year"); // rollback
+            if ((Integer)pair.getKey() == pending.getExam().getCourseExecution().getId()) {
+                pending.setAttemptsInCurrentStudyYear(((Integer)pair.getValue())+1);
+            }
+            it2.remove(); // avoids a ConcurrentModificationException
+        }
+
+
+
+        if (pending.getTotalAttempts() > 6) {
+             throw new NotFoundException("You have already written exam 6 times and are not allowed to enroll again!");
+        }
+
+
+        if (pending.getTotalExamAttempts() > 3) { // rollback TODO: !!!!!!!
+            pending.setPaid(true);
+//            throw new NotFoundException("You can't write exam more than 3 times in study year!");
+        }
+
+
+
+
+        return pending;
     }
 
 

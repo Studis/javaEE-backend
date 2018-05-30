@@ -52,6 +52,30 @@ public class ExamSeeder extends Seeder {
         seedExamSchedule(calendar,courseExecutions, 2,true);
         calendar.set(2017,Calendar.AUGUST,20); // Jesensko izpitno obdobje
         seedExamSchedule(calendar,courseExecutions,3, true);
+
+        courseExecutions = courseExecutionsBean.get()
+                .stream()
+                .filter(c -> c.getYear() != null && c.getYear().getId() == 2015)
+                .collect(Collectors.toList());
+
+        calendar.set(2016,Calendar.JANUARY,22); // Zimsko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 1,true);
+        calendar.set(2016,Calendar.JULY,11); // Spomladansko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 2,true);
+        calendar.set(2016,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, true);
+
+        courseExecutions = courseExecutionsBean.get()
+                .stream()
+                .filter(c -> c.getYear() != null && c.getYear().getId() == 2014)
+                .collect(Collectors.toList());
+
+        calendar.set(2015,Calendar.JANUARY,22); // Zimsko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 1,true);
+        calendar.set(2015,Calendar.JULY,11); // Spomladansko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions, 2,true);
+        calendar.set(2015,Calendar.AUGUST,20); // Jesensko izpitno obdobje
+        seedExamSchedule(calendar,courseExecutions,3, true);
     }
 
     public void seedExamSchedule (Calendar calendar, List<CourseExecution> courseExecutions, int examTerm, boolean pastImport) {
