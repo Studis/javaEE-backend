@@ -884,6 +884,31 @@ public class DatabaseSeeder extends HttpServlet {
 
         examEnrollmentBean.add(examEnrollment);
 
+        // 10. test
+        ExamEnrollment examEnrollmente = new ExamEnrollment();
+        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
+        examEnrollment.setExam(examsBean.get(22));
+        examEnrollment.setScore(23);
+        examEnrollment.setMark(5);
+        examEnrollment.setPastImport(true);
+       // examEnrollmentBean.add(examEnrollment);
+
+        examEnrollmente = new ExamEnrollment();
+        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
+        examEnrollment.setExam(examsBean.get(79));
+        examEnrollment.setScore(43);
+        examEnrollment.setMark(5);
+        examEnrollment.setPastImport(true);
+        //examEnrollmentBean.add(examEnrollment);
+
+        examEnrollmente = new ExamEnrollment();
+        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
+        examEnrollment.setExam(examsBean.get(136));
+        examEnrollment.setScore(13);
+        examEnrollment.setMark(5);
+        examEnrollment.setPastImport(true);
+        //examEnrollmentBean.add(examEnrollment);
+
     }
 }
 
