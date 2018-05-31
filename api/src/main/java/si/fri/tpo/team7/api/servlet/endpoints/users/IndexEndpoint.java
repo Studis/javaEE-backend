@@ -9,6 +9,8 @@ import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
+import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 
@@ -33,7 +35,13 @@ public class IndexEndpoint {
     StudentsBean studentsBean;
 
     @Inject
+    EnrollmentCoursesBean enrollmentCoursesBean;
+
+    @Inject
     EnrollmentsBean enrollmentsBean;
+
+    @Inject
+    CourseExecutionsBean courseExecutionsBean;
 
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})
@@ -79,6 +87,7 @@ public class IndexEndpoint {
 
                     if (all) {
                         for (ExamEnrollment ee:examEnrollments) {
+                            ee.setAttemptsInYear(ee.getAttemptsInYear(e.getCurriculum().getYear()));
                             BEEIndex index = new BEEIndex();
                             index.setCourseExecution(ec.getCourseExecution());
                             index.setExamEnrollment(ee);
@@ -88,7 +97,9 @@ public class IndexEndpoint {
                     else{
                         BEEIndex index = new BEEIndex();
                         index.setCourseExecution(ec.getCourseExecution());
-                        index.setExamEnrollment(examEnrollments.get(examEnrollments.size()-1));
+                        ExamEnrollment ee = examEnrollments.get(examEnrollments.size() - 1);
+                        ee.setAttemptsInYear(ee.getAttemptsInYear(e.getCurriculum().getYear()));
+                        index.setExamEnrollment(ee);
                         indices.add(index);
                     }
                 }

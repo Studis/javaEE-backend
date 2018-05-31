@@ -76,6 +76,9 @@ public class ExamEnrollment extends BaseEntity {
                 .count()+1;
     }
 
+    @Transient
+    public int attemptsInYear;
+
     public int getAttemptsInYear(Year year){
         return (int) enrollmentCourse
                 .getExamEnrollments()
