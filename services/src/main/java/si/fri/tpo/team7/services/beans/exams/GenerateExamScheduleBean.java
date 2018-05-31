@@ -74,6 +74,8 @@ public class GenerateExamScheduleBean {
             linkDatesAutum(LocalDate.parse(dates.autumnStart),
                     LocalDate.parse(dates.autumnEnd), ce);
 
+
+            System.out.print("Hi");
             /*linkDates(LocalDate.of(year, Month.JANUARY, 22),
                     LocalDate.of(year, Month.FEBRUARY, 16), ceW);
             linkDates(LocalDate.of(year, Month.JUNE, 11),
@@ -81,7 +83,6 @@ public class GenerateExamScheduleBean {
 
             linkDatesAutum(LocalDate.of(year, Month.AUGUST, 20),
                     LocalDate.of(year, Month.SEPTEMBER, 14), ce);*/
-            int a;
         }
 
     }
@@ -130,16 +131,9 @@ public class GenerateExamScheduleBean {
 
     private void linkDatesAutum(LocalDate start, LocalDate end,  List<CourseExecution> ce) {
         List<Date> winter = getDatesBetweenWithoutWeekend(start,end);
-        int numOfDaysInWinter = getDatesBetween(start,end).size();
+        int numOfDaysInWinter = getDatesBetweenWithoutWeekend(start,end).size();
         int spacing = (int) Math.floor(numOfDaysInWinter/ ce.size());
-        int lastIndex = 0;
         for(int i = 0; i < ce.size(); i++ ){
-            int spacingTemp = spacing;
-            if(spacing > 1) {
-                int randomNum1 = ThreadLocalRandom.current().nextInt(0, 1 + 1);
-                spacingTemp -= randomNum1;
-            } else
-                spacingTemp = 0;
 
             CourseExecution temp = ce.get(i);
 
@@ -155,8 +149,7 @@ public class GenerateExamScheduleBean {
                 e.setLocation("P22");
             e.setExamTerm(1);
             e.setWritten(true);
-            e.setScheduledAt(winter.get(lastIndex+spacing-spacingTemp));
-            lastIndex = lastIndex+spacing-spacingTemp;
+            e.setScheduledAt(winter.get(i*spacing));
             e.setPastImport(true);
             examsBean.add(e);
         }
