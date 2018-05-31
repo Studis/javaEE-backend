@@ -166,6 +166,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
             Integer typeOfStudy = pending.getEnrollmentCourse().getEnrollment().getStudyType().getId();
 
             if (typeOfStudy == 3 && pending.getPaid() == null) {
+                pending.setPaid(true);
                 throw new NotFoundException("You will need to pay for exam!");
             }
 
