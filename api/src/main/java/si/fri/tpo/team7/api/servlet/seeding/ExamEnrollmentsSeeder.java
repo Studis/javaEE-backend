@@ -48,7 +48,7 @@ public class ExamEnrollmentsSeeder extends Seeder {
         this.examSeeder = examSeeder;
         this.enrollmentsBean = enrollmentsBean;
     }
-
+    Random rn = new Random(1234);
     @Override
     protected void SeedContent() {
         List<Student> students = studentsBean.getStudents();
@@ -99,7 +99,6 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                     //break;
                                 }
                             } else if (exam.getScheduledAt().toInstant().isBefore(Instant.now())) { // Past enrollments
-                                Random rn = new Random();
                                 Integer max = 100;
                                 Integer min = 0;
                                 Integer score = rn.nextInt(max - min + 1) + min;
