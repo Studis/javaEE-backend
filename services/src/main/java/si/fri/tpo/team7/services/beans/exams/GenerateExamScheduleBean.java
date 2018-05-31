@@ -55,7 +55,7 @@ public class GenerateExamScheduleBean {
             for (Module m : c.getModules()) {
                 m.getCourses().forEach((item) -> ce.add(item));
             }
-            Collections.shuffle(ce);
+            //Collections.shuffle(ce);
 
 
             List<CourseExecution> ceW = new ArrayList<>();
@@ -81,6 +81,7 @@ public class GenerateExamScheduleBean {
 
             linkDatesAutum(LocalDate.of(year, Month.AUGUST, 20),
                     LocalDate.of(year, Month.SEPTEMBER, 14), ce);*/
+            int a;
         }
 
     }
@@ -131,7 +132,15 @@ public class GenerateExamScheduleBean {
         List<Date> winter = getDatesBetweenWithoutWeekend(start,end);
         int numOfDaysInWinter = getDatesBetween(start,end).size();
         int spacing = (int) Math.floor(numOfDaysInWinter/ ce.size());
+        int lastIndex = 0;
         for(int i = 0; i < ce.size(); i++ ){
+            int spacingTemp = spacing;
+            if(spacing > 1) {
+                int randomNum1 = ThreadLocalRandom.current().nextInt(0, 1 + 1);
+                spacingTemp -= randomNum1;
+            } else
+                spacingTemp = 0;
+
             CourseExecution temp = ce.get(i);
 
             Exam e = new Exam();
@@ -146,7 +155,8 @@ public class GenerateExamScheduleBean {
                 e.setLocation("P22");
             e.setExamTerm(1);
             e.setWritten(true);
-            e.setScheduledAt(winter.get(i*spacing));
+            e.setScheduledAt(winter.get(lastIndex+spacing-spacingTemp));
+            lastIndex = lastIndex+spacing-spacingTemp;
             e.setPastImport(true);
             examsBean.add(e);
         }
