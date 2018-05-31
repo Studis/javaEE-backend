@@ -9,6 +9,7 @@ import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
 import si.fri.tpo.team7.entities.users.Student;
+import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentCoursesBean;
 import si.fri.tpo.team7.services.beans.enrollments.EnrollmentsBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
@@ -38,6 +39,9 @@ public class IndexEndpoint {
 
     @Inject
     EnrollmentsBean enrollmentsBean;
+
+    @Inject
+    CourseExecutionsBean courseExecutionsBean;
 
     @GET
     @Secured({Role.STUDENT,Role.ADMIN, Role.LECTURER, Role.CLERK})

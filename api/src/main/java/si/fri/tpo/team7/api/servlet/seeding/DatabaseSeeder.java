@@ -2,6 +2,7 @@ package si.fri.tpo.team7.api.servlet.seeding;
 
 import si.fri.tpo.team7.entities.enrollments.*;
 import si.fri.tpo.team7.entities.enums.Status;
+import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.users.Clerk;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
@@ -41,7 +42,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class DatabaseSeeder extends HttpServlet{
     private Logger log = Logger.getLogger(DatabaseSeeder.class.getName());
-    Random r = new Random();
+    Random r = new Random(1234);
 
     @Inject private StudentsBean studentsBean;
     @Inject private LecturersBean lecturersBean;
@@ -148,6 +149,9 @@ public class DatabaseSeeder extends HttpServlet{
         ExamSeeder examSeeder = new ExamSeeder(examsBean, courseExecutionsBean);
        examSeeder.Seed(writer);
        new ExamEnrollmentsSeeder(examsBean,examEnrollmentBean,enrollmentCoursesBean,studentsBean, examSeeder, enrollmentsBean).Seed(writer);
+
+
+       Correct();
     }
 
     private void AddPrograms(PrintWriter writer){
@@ -390,7 +394,7 @@ public class DatabaseSeeder extends HttpServlet{
 
     private void AddStudents(PrintWriter writer){
         writer.print("Adding students ... ");
-        Integer reduceSeeder = 50;
+        Integer reduceSeeder = 16;
         for(int i = 0; i < surnames.length/reduceSeeder; i++){
             Student student = new Student();
             student.setName(names[i]);
@@ -609,6 +613,14 @@ public class DatabaseSeeder extends HttpServlet{
     }
 
     private void addSquad(){
+
+    }
+
+    void Correct(){
+        // 1. test
+        Exam exam = examsBean.get(33);
+        exam.setScheduledAt(new Date(1530406689));
+        examsBean.update(exam.getId(), exam);
 
     }
 }
