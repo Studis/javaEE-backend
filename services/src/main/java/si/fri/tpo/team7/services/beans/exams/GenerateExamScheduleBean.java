@@ -74,8 +74,6 @@ public class GenerateExamScheduleBean {
             linkDatesAutum(LocalDate.parse(dates.autumnStart),
                     LocalDate.parse(dates.autumnEnd), ce);
 
-
-            System.out.print("Hi");
             /*linkDates(LocalDate.of(year, Month.JANUARY, 22),
                     LocalDate.of(year, Month.FEBRUARY, 16), ceW);
             linkDates(LocalDate.of(year, Month.JUNE, 11),
