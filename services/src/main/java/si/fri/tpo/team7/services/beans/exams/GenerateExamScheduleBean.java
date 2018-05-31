@@ -1,26 +1,20 @@
 package si.fri.tpo.team7.services.beans.exams;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.MonthDV;
 import si.fri.tpo.team7.entities.curriculum.*;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.curriculum.*;
+import si.fri.tpo.team7.services.beans.pojo.ExamScheduleDates;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.ws.rs.core.Context;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static com.neovisionaries.i18n.LanguageAlpha3Code.min;
-import static java.lang.Math.floor;
 
 @ApplicationScoped
 public class GenerateExamScheduleBean {
@@ -43,45 +37,51 @@ public class GenerateExamScheduleBean {
     /**
      * Schedules exams for a given program for a given study year.
      *
-     * @param studyYear sets study year 1,2,3
      */
-    public void generateExamSchedule(int studyYear, int program) {
-        Program p = programsBean.get(program);
-        int year = Calendar.getInstance().get(Calendar.YEAR);
+    public void generateExamSchedule( int program, ExamScheduleDates dates) {
+        for (int studyYear = 1; studyYear<= 3; studyYear++) {
+            Program p = programsBean.get(program);
 
 
-        Curriculum c = curriculumsBean.get(p,
-                yearsBean.get(year),
-                studyYearsBean.get(studyYear)
-        );
+            Curriculum c = curriculumsBean.get(p,
+                    yearsBean.get(dates.year),
+                    studyYearsBean.get(studyYear)
+            );
 
-        List<CourseExecution> ce = new ArrayList<>();
-        c.getObligatoryCourses().forEach((item) -> ce.add(item));
-        c.getProfessionalOptionalCourses().forEach((item) -> ce.add(item));
-        c.getGeneralOptionalCourses().forEach((item) -> ce.add(item));
-        for (Module m : c.getModules()) {
-            m.getCourses().forEach((item) -> ce.add(item));
+            List<CourseExecution> ce = new ArrayList<>();
+            c.getObligatoryCourses().forEach((item) -> ce.add(item));
+            c.getProfessionalOptionalCourses().forEach((item) -> ce.add(item));
+            c.getGeneralOptionalCourses().forEach((item) -> ce.add(item));
+            for (Module m : c.getModules()) {
+                m.getCourses().forEach((item) -> ce.add(item));
+            }
+            Collections.shuffle(ce);
+
+
+            List<CourseExecution> ceW = new ArrayList<>();
+            List<CourseExecution> ceS = new ArrayList<>();
+            for (CourseExecution temp : ce) {
+                if (temp.isWinter())
+                    ceW.add(temp);
+                else
+                    ceS.add(temp);
+            }
+            linkDates(LocalDate.parse(dates.winterStart),
+                    LocalDate.parse(dates.winterEnd), ceW);
+            linkDates(LocalDate.parse(dates.springStart),
+                    LocalDate.parse(dates.springEnd), ceS);
+
+            linkDatesAutum(LocalDate.parse(dates.autumnStart),
+                    LocalDate.parse(dates.autumnEnd), ce);
+
+            /*linkDates(LocalDate.of(year, Month.JANUARY, 22),
+                    LocalDate.of(year, Month.FEBRUARY, 16), ceW);
+            linkDates(LocalDate.of(year, Month.JUNE, 11),
+                    LocalDate.of(year, Month.JULY, 6), ceS);
+
+            linkDatesAutum(LocalDate.of(year, Month.AUGUST, 20),
+                    LocalDate.of(year, Month.SEPTEMBER, 14), ce);*/
         }
-        Collections.shuffle(ce);
-
-
-
-        List<CourseExecution> ceW = new ArrayList<>();
-        List<CourseExecution> ceS = new ArrayList<>();
-        for (CourseExecution temp : ce) {
-            if (temp.isWinter())
-                ceW.add(temp);
-            else
-                ceS.add(temp);
-        }
-
-        linkDates(LocalDate.of(year, Month.JANUARY, 22),
-                LocalDate.of(year, Month.FEBRUARY, 16), ceW);
-        linkDates(LocalDate.of(year, Month.JUNE, 11),
-                LocalDate.of(year, Month.JULY, 6), ceS);
-
-        linkDatesAutum(LocalDate.of(year, Month.AUGUST, 20),
-                LocalDate.of(year, Month.SEPTEMBER, 14), ce);
 
     }
 

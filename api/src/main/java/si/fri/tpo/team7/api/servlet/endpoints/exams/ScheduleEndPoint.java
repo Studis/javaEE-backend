@@ -2,14 +2,11 @@ package si.fri.tpo.team7.api.servlet.endpoints.exams;
 
 import si.fri.tpo.team7.api.servlet.annotations.AuthenticatedUser;
 import si.fri.tpo.team7.api.servlet.annotations.Secured;
-import si.fri.tpo.team7.entities.curriculum.Course;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
 import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.exams.BEScheduleExam;
-import si.fri.tpo.team7.entities.exams.ExamEnrollment;
-import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.entities.users.User;
 import si.fri.tpo.team7.services.annotations.ScheduleExam;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
@@ -21,12 +18,12 @@ import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.entities.enums.Role;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.exams.GenerateExamScheduleBean;
+import si.fri.tpo.team7.services.beans.pojo.ExamScheduleDates;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -165,9 +162,9 @@ public class ScheduleEndPoint {
     }
 
     @POST
-    @Path("generate/{studyYear}")
-    public Response generateExamSchedule(@PathParam("studyYear") int studyYear, int program){
-        generateExamScheduleBean.generateExamSchedule(studyYear, program);
+    @Path("generate/{program}")
+    public Response generateExamSchedule(@PathParam("program") int program, ExamScheduleDates dates){
+        generateExamScheduleBean.generateExamSchedule( program, dates);
         return Response.ok().build();
     }
 
