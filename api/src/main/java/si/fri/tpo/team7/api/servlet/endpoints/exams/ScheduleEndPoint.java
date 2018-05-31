@@ -27,6 +27,9 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.logging.Logger;
@@ -144,6 +147,24 @@ public class ScheduleEndPoint {
     public Response getScheduled(@PathParam("courseExecution") int id) {
 
         return Response.ok(examsBean.getExamsForCourseExecution(id)).build();
+    }
+
+    //localhost:8080/v1/exams/scheduled/dates/2016-02-15
+    @GET
+    @Path("dates/{date}")
+    public Response getExamByDate(@PathParam("date") String date) {
+        List<Exam> exams =examsBean.get();
+        for (Exam e:exams) {
+            int eD = e.getScheduledAt().getDate();
+            int eM = e.getScheduledAt().getMonth() + 1;
+            int eY = e.getScheduledAt().getYear() + 1900;
+            String[] dateSplit = date.split("-");
+
+            if(eD == Integer.parseInt(dateSplit[2]) && eM == Integer.parseInt(dateSplit[1]) && eY == Integer.parseInt(dateSplit[0]))
+                return Response.ok(e).build();
+
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 

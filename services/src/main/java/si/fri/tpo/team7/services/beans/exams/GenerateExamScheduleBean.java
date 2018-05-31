@@ -119,7 +119,7 @@ public class GenerateExamScheduleBean {
                 e2.setLocation("PB");
             else
                 e2.setLocation("P22");
-            e2.setExamTerm(1);
+            e2.setExamTerm(2);
             e2.setWritten(true);
             e2.setScheduledAt(winter.get(winter.size() - i*spacing - 1));
             e2.setPastImport(true);
@@ -145,7 +145,7 @@ public class GenerateExamScheduleBean {
                 e.setLocation("PB");
             else
                 e.setLocation("P22");
-            e.setExamTerm(1);
+            e.setExamTerm(3);
             e.setWritten(true);
             e.setScheduledAt(winter.get(i*spacing));
             e.setPastImport(true);
