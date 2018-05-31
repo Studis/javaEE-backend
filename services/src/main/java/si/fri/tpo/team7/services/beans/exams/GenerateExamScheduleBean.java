@@ -62,6 +62,8 @@ public class GenerateExamScheduleBean {
         for (Module m : c.getModules()) {
             m.getCourses().forEach((item) -> ce.add(item));
         }
+        Collections.shuffle(ce);
+
 
 
         List<CourseExecution> ceW = new ArrayList<>();
