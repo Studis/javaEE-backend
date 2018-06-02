@@ -102,7 +102,7 @@ public class ExamEnrollmentsSeeder extends Seeder {
                                 Integer max = 100;
                                 Integer min = 0;
                                 Integer score = rn.nextInt(max - min + 1) + min;
-                                if (exam.getId() != 76) { // Aps kononenko 2018-05-21 { }
+                                if (exam.getId() != 311) { // Komunikacijski protokoli 2018-04-04
                                     ee.setScore(score);
                                     ee.setMark(getMarkFromScore(score));
                                 }

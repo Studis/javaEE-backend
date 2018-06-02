@@ -76,6 +76,10 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 
             if (ExamEnrollmentValidator.isDeleted(examenrollment)) continue; // Do not count exam enrollment that were deleted in time (has set status to deleted) in the correct due date
 
+//            if (Instant.now().isAfter(examenrollment.getExam().getScheduledAt().toInstant()) && !pe.isPastImport()) { // Cannot enroll in exam after the application date is over
+//                throw new NotFoundException( "You can no longer enroll to this exam! Lattest application date was " + latestExamApplicationDate);
+//            }
+
             Integer examEnrollmentExecutionId = examenrollment.getExam().getCourseExecution().getId(); // Helper fields
 
             if (ExamEnrollmentValidator.isSameUserEnrollment(examenrollment,pending) && ExamEnrollmentValidator.isExamForSameCourse(examenrollment,pending)) { // If it is enrollment for the same user

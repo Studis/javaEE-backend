@@ -855,59 +855,166 @@ public class DatabaseSeeder extends HttpServlet {
     }
 
     void Correct() {
-        // 1. test
-        Exam exam = examsBean.get(33);
-        exam.setScheduledAt(new Date((long) 1530406689 * (long) 1000));
-        examsBean.update(exam.getId(), exam);
+        //U3
+        Exam e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(119));
+        e.setScheduledAt(new Date(118,5,1));
+        e.setAsking("Viljan Mahniö");
+        e.setLocation("PA");
+        e.setPastImport(true);
+        examsBean.add(e);
 
-        // 2. test
-        CourseExecution courseExecution = courseExecutionsBean.get(83);
-        exam = new Exam();
-        exam.setScheduledAt(new Date((long) 1530061089 * (long) 1000));
-        exam.setAsking("Aleksandar Jurišić");
-        exam.setCourseExecution(courseExecution);
-        exam.setLocation("P1");
-        exam.setExamTerm(2);
-        exam.setWritten(true);
-        examsBean.add(exam);
+        //U6
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(125));
+        e.setScheduledAt(new Date(118,5,11));
+        e.setAsking("Branko Šter");
+        e.setLocation("PB");
+        e.setPastImport(true);
+        examsBean.add(e);
 
-        // 4. test
+
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(125));
+        e.setScheduledAt(new Date(118,4,30));
+        e.setAsking("Branko Šter");
+        e.setLocation("P3");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ExamEnrollment ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(50));
+        ee.setExam(e);
+        ee.setScore(23);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(125));
+        e.setScheduledAt(new Date(118,4,29));
+        e.setAsking("Branko Šter");
+        e.setLocation("P2");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(50));
+        ee.setExam(e);
+        ee.setScore(43);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(125));
+        e.setScheduledAt(new Date(118,4,28));
+        e.setAsking("Branko Šter");
+        e.setLocation("P1");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(50));
+        ee.setExam(e);
+        ee.setScore(13);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+        //U7
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(1));
+        e.setScheduledAt(new Date(118,5,12));
+        e.setAsking("Viljan Mahnič");
+        e.setLocation("PB");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(1));
+        e.setScheduledAt(new Date(118,4,21));
+        e.setAsking("Viljan Mahnič");
+        e.setLocation("P3");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(11));
+        ee.setExam(e);
+        ee.setScore(23);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(1));
+        e.setScheduledAt(new Date(118,4,22));
+        e.setAsking("Viljan Mahnič");
+        e.setLocation("P2");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(11));
+        ee.setExam(e);
+        ee.setScore(43);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+
+
+        e = new Exam();
+        e.setCourseExecution(courseExecutionsBean.get(1));
+        e.setScheduledAt(new Date(118,4,23));
+        e.setAsking("Viljan Mahnič");
+        e.setLocation("P1");
+        e.setPastImport(true);
+        examsBean.add(e);
+
+        ee = new ExamEnrollment();
+        ee.setEnrollmentCourse(enrollmentCoursesBean.get(11));
+        ee.setExam(e);
+        ee.setScore(13);
+        ee.setMark(5);
+        ee.setPastImport(true);
+        examEnrollmentBean.add(ee);
+
+
+
+
+        // 4. test ni 4.
         ExamEnrollment examEnrollment = new ExamEnrollment();
-        exam = examsBean.get(311);
+        Exam exam = examsBean.get(311);
         examEnrollment.setExam(exam);
-        examEnrollment.setScore(75);
-        examEnrollment.setMark(8);
+        if (exam.getId() != 311) {
+            examEnrollment.setScore(75);
+            examEnrollment.setMark(8);
+        }
         examEnrollment.setPastImport(true);
         final Exam tmpExam = exam;
-        final EnrollmentCourse collect = enrollmentCoursesBean.get().stream().filter(e -> e.getCourseExecution().getId() == tmpExam.getCourseExecution().getId()).collect(Collectors.toList()).get(0);// maybee
+        final EnrollmentCourse collect = enrollmentCoursesBean.get().stream().filter(hggyg -> hggyg.getCourseExecution().getId() == tmpExam.getCourseExecution().getId()).collect(Collectors.toList()).get(0);// maybee
         examEnrollment.setEnrollmentCourse(collect);// enrollmentCoursesBean.get(93));
 
         examEnrollmentBean.add(examEnrollment);
 
-        // 10. test
-        ExamEnrollment examEnrollmente = new ExamEnrollment();
-        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
-        examEnrollment.setExam(examsBean.get(22));
-        examEnrollment.setScore(23);
-        examEnrollment.setMark(5);
-        examEnrollment.setPastImport(true);
-       // examEnrollmentBean.add(examEnrollment);
 
-        examEnrollmente = new ExamEnrollment();
-        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
-        examEnrollment.setExam(examsBean.get(79));
-        examEnrollment.setScore(43);
-        examEnrollment.setMark(5);
-        examEnrollment.setPastImport(true);
-        //examEnrollmentBean.add(examEnrollment);
-
-        examEnrollmente = new ExamEnrollment();
-        examEnrollment.setEnrollmentCourse(enrollmentCoursesBean.get(350));
-        examEnrollment.setExam(examsBean.get(136));
-        examEnrollment.setScore(13);
-        examEnrollment.setMark(5);
-        examEnrollment.setPastImport(true);
-        //examEnrollmentBean.add(examEnrollment);
 
     }
 }
