@@ -70,23 +70,23 @@ public class EnrollmentEndPoint {
 
             Integer score = examResults.getScore();
             if (score!= null) {
-                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
-                    throw new NotFoundException("You cannot add results before exam is written!");
-                }
-                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
-                    throw new NotFoundException("You can't change exam score after more than 31 days!");
-                }
+//                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
+//                    throw new NotFoundException("You cannot add results before exam is written!");
+//                }
+//                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
+//                    throw new NotFoundException("You can't change exam score after more than 31 days!");
+//                }
                 if (score < 0 || score > 100) throw new NotFoundException("Score must be between 0 and 100");
                 nov.setScore(score);
             }
             Integer mark = examResults.getMark();
             if (mark != null) {
-                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
-                    throw new NotFoundException("You cannot add mark before exam is written!");
-                }
-                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
-                    throw new NotFoundException("You can't change exam results after more than 31 days!");
-                }
+//                if (DateValidator.isAfter(nov.getExam().getScheduledAt().toInstant(), Instant.now())) {
+//                    throw new NotFoundException("You cannot add mark before exam is written!");
+//                }
+//                if (Math.abs(DateValidator.durationBetweenDatesInDays(Instant.now(),nov.getExam().getScheduledAt().toInstant())) > 31) {
+//                    throw new NotFoundException("You can't change exam results after more than 31 days!");
+//                }
                 if (mark < 1 || mark > 10) throw new NotFoundException("Mark must be between 1 and 10");
                 nov.setMark(mark);
 
@@ -198,15 +198,15 @@ public class EnrollmentEndPoint {
             if (true || doNotShowArchivedEnrollments(examEnrollment)) {
                 CourseExecution c = examEnrollment.getEnrollmentCourse().getCourseExecution();
 
-                if (enrolledToExamForMyCourse == null && c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
-                        || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
-                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
+//                if (enrolledToExamForMyCourse != null && c.getLecturer1().getId() == authenticatedUser.getId() // If i am executing this course
+//                        || (c.getLecturer2() != null && c.getLecturer2().getId() == authenticatedUser.getId())
+//                        || (c.getLecturer3() != null && c.getLecturer3().getId() == authenticatedUser.getId())) {
+//                    myExamEnrollments.add(examEnrollment);
+//                }
+//                else
+                if (c.getId() == enrolledToExamForMyCourse) {
+                    examEnrollment.getEnrollmentCourse().getEnrollment().getToken().setStudent((examEnrollment.getEnrollmentCourse().getEnrollment().getToken().getStudent()));
                     myExamEnrollments.add(examEnrollment);
-                }
-                else if (enrolledToExamForMyCourse != null) {
-                    if (examEnrollment.getEnrollmentCourse().getCourseExecution().getId() == enrolledToExamForMyCourse) {
-                        myExamEnrollments.add(examEnrollment);
-                    }
                 }
             }
         }
