@@ -732,7 +732,10 @@ public class DatabaseSeeder extends HttpServlet {
                     Enroll(enrollment, c.getObligatoryCourses());
                     Enroll(enrollment, c.getGeneralOptionalCourses());
                     Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    for (Module m : c.getModules()) {
+                    int a = r.nextInt(c.getModules().size());
+                    int b = (r.nextInt(c.getModules().size()-1)+a)%c.getModules().size();
+                    for (Module m : c.getModules().stream().filter(m -> m.getId() == a || m.getId() == b).collect(Collectors.toList())) {
+
                         Enroll(enrollment, m.getCourses());
                     }
                     break;
