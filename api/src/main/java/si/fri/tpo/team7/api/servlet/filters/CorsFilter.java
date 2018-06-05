@@ -24,7 +24,7 @@ public class CorsFilter implements ContainerResponseFilter {
             throws IOException {
         responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, HEAD, DELETE");
         if (CorsFilter.class.getResource("CorsFilter.class").toString().substring(0,2).equals("fi")) { // Running from fi(le) (development)
-            responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:8081");
+            responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
         } else { // Running from jar (production)
             responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
         }
