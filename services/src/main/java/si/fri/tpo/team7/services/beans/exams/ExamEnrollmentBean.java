@@ -221,7 +221,7 @@ public class ExamEnrollmentBean extends EntityBean<ExamEnrollment> {
 //            throw new NotFoundException("You can't write exam more than 3 times in study year!");
         }
 
-//        ExamEnrollment previos = examEnrollments.stream() // TODO: This does not work!!!!!
+//        ExamEnrollment previos = examEnrollments.stream() // TODO: This enrodoes not work!!!!!
 //                .min(Comparator.comparing(p -> p.getExam().getScheduledAt().toInstant()
 //                        .isBefore(pending.getExam().getScheduledAt().toInstant())
 //                        && p.getExam().getId() != pending.getExam().getId()
