@@ -76,7 +76,7 @@ public class EnrollmentEndpoint {
     }
 
     @GET
-    @Secured({Role.CLERK})
+    @Secured({Role.CLERK, Role.LECTURER})
     @Path("list/{year}/{studyYear}")
     public Response getList(@PathParam("year") int year, @PathParam("studyYear") int studyYear){
         return Response.ok(enrollmentsBean.get().stream()
