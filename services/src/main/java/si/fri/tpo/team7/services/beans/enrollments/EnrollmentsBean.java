@@ -12,6 +12,7 @@ import si.fri.tpo.team7.services.beans.EntityBean;
 import si.fri.tpo.team7.entities.enrollments.Enrollment;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.curriculum.CurriculumsBean;
+import si.fri.tpo.team7.services.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.services.beans.users.MunicipalitiesBean;
 import si.fri.tpo.team7.services.beans.users.StudentsBean;
 import si.fri.tpo.team7.services.dtos.EnrollmentResponse;
@@ -39,6 +40,9 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
     @Inject
     private MunicipalitiesBean municipalitiesBean;
+
+    @Inject
+    private ResidencesBean residencesBean;
 
     public EnrollmentsBean() {
         super(Enrollment.class);
@@ -172,7 +176,15 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
 
         //PERMANENT RESIDENCE
-        Residence permanentResidence = student.getPermanent();
+        Residence permanentResidence;
+        if(student.getPermanent() != null ){
+           permanentResidence = student.getPermanent();
+        } else {
+            Residence r = new Residence();
+            em.persist(r);
+            permanentResidence = r;
+        }
+
         Residence permanentResidenceRequest = requestStudent.getPermanent();
 
         //COUNTRY
@@ -187,7 +199,14 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
 
 
         //Temporary RESIDENCE
-        Residence temporaryResidence = student.getTemporary();
+        Residence temporaryResidence;
+        if(student.getPermanent() != null ){
+            temporaryResidence = student.getTemporary();
+        } else {
+            Residence r = new Residence();
+            em.persist(r);
+            temporaryResidence = r;
+        }
         Residence temporaryResidenceRequest = requestStudent.getTemporary();
 
         //COUNTRY
