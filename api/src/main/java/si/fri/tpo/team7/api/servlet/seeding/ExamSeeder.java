@@ -1,5 +1,6 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
+import si.fri.tpo.team7.entities.BaseEntity;
 import si.fri.tpo.team7.entities.curriculum.CourseExecution;
 import si.fri.tpo.team7.services.beans.curriculum.CourseExecutionsBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
@@ -7,10 +8,7 @@ import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ExamSeeder extends Seeder {
@@ -29,6 +27,7 @@ public class ExamSeeder extends Seeder {
         List<CourseExecution> courseExecutions = courseExecutionsBean.get()
                 .stream()
                 .filter(c -> c.getYear() != null && c.getYear().getId() == 2017)
+                .sorted(Comparator.comparing(BaseEntity::getId))
                 .collect(Collectors.toList());
 
         Calendar calendar = Calendar.getInstance();
@@ -47,6 +46,7 @@ public class ExamSeeder extends Seeder {
         courseExecutions = courseExecutionsBean.get()
                 .stream()
                 .filter(c -> c.getYear() != null && c.getYear().getId() == 2016)
+                .sorted(Comparator.comparing(BaseEntity::getId))
                 .collect(Collectors.toList());
 
         calendar.set(2017,Calendar.JANUARY,22); // Zimsko izpitno obdobje
@@ -59,6 +59,7 @@ public class ExamSeeder extends Seeder {
         courseExecutions = courseExecutionsBean.get()
                 .stream()
                 .filter(c -> c.getYear() != null && c.getYear().getId() == 2015)
+                .sorted(Comparator.comparing(BaseEntity::getId))
                 .collect(Collectors.toList());
 
         calendar.set(2016,Calendar.JANUARY,22); // Zimsko izpitno obdobje
@@ -71,6 +72,7 @@ public class ExamSeeder extends Seeder {
         courseExecutions = courseExecutionsBean.get()
                 .stream()
                 .filter(c -> c.getYear() != null && c.getYear().getId() == 2014)
+                .sorted(Comparator.comparing(BaseEntity::getId))
                 .collect(Collectors.toList());
 
         calendar.set(2015,Calendar.JANUARY,22); // Zimsko izpitno obdobje
