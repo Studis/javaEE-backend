@@ -790,9 +790,9 @@ public class DatabaseSeeder extends HttpServlet {
                     Enroll(enrollment, c.getObligatoryCourses());
                     Enroll(enrollment, c.getGeneralOptionalCourses());
                     Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    for (Module m : c.getModules()) {qa
+                    for (Module m : c.getModules()) {
                         Enroll(enrollment, m.getCourses());
-                    }lala
+                    }
                     break;
             }
         }
