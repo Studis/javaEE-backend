@@ -91,7 +91,7 @@ public class CoursesSeeder extends Seeder {
         c = new Course(); c.setName("Digitalno načrtovanje"); c.setId(63260); c.setEcts(6); coursesBean.add(c);
 
         //algoritmi in sistemski programi
-        //c = new Course(); c.setName("Analiza algoritmov in hevristično reševanje problemov"); c.setId(63270); c.setEcts(6); coursesBean.add(c);
+        c = new Course(); c.setName("Računska zahtevnost in hevristično programiranje"); c.setId(63263); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Sistemska programska oprema"); c.setId(63264); c.setEcts(6); coursesBean.add(c);
         c = new Course(); c.setName("Prevajalniki"); c.setId(63265); c.setEcts(6); coursesBean.add(c);
 

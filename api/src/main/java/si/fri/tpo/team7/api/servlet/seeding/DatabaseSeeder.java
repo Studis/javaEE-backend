@@ -564,6 +564,12 @@ public class DatabaseSeeder extends HttpServlet {
         mc.setCourse(coursesBean.get(63264));
         mc.setWinter(true);
         courseExecutionsBean.add(mc);
+        mc = new ModuleCourse();
+        mc.setLecturer1(MarkoRobnik);
+        mc.setModule(m);
+        mc.setCourse(coursesBean.get(63263));
+        mc.setWinter(true);
+        courseExecutionsBean.add(mc);
         //todomc = new ModuleCourse(); mc.setLecturer1(); mc.setModule(m); mc.setCourse(coursesBean.get(63271)); mc.setWinter(false); courseExecutionsBean.add(mc);
 
         writer.println("Done");
@@ -655,16 +661,16 @@ public class DatabaseSeeder extends HttpServlet {
             } else {
                 switch (i % 3) {
                     case 0:
-                        EnrollInYear(student, 2015, 1, 1);
-                        EnrollInYear(student, 2016, 2, 5);
-                        EnrollInYear(student, 2017, 3, 5);
-                        break;
-                    case 1:
                         EnrollInYear(student, 2016, 1, 1);
                         EnrollInYear(student, 2017, 2, 5);
+                        EnrollInYear(student, 2018, 3, 5);
+                        break;
+                    case 1:
+                        EnrollInYear(student, 2017, 1, 1);
+                        EnrollInYear(student, 2018, 2, 5);
                         break;
                     case 2:
-                        EnrollInYear(student, 2017, 1, 1);
+                        EnrollInYear(student, 2018, 1, 1);
 
 
 //                        EnrollmentToken token = new EnrollmentToken();
