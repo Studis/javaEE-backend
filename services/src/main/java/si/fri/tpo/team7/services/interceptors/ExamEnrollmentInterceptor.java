@@ -43,7 +43,7 @@ public class ExamEnrollmentInterceptor {
 
 
         String nameOfMethod = context.getMethod().getName();
-        if (nameOfMethod == "add") {
+        if (nameOfMethod.equals("add")) {
             ExamEnrollment examEnrollment = (ExamEnrollment) context.getParameters()[0];
 
             Instant latestExamApplicationDate =  DateValidator.getLatestEnrollDismentDate(examEnrollment.getExam().getScheduledAt().toInstant());
@@ -53,7 +53,7 @@ public class ExamEnrollmentInterceptor {
             }
 
 
-        } else if(nameOfMethod == "cancelEnrollment") {
+        } else if(nameOfMethod.equals("cancelEnrollment")) {
             ExamEnrollment examEnrollment = (ExamEnrollment) context.getParameters()[1];
             User user = (User) context.getParameters()[2];
 

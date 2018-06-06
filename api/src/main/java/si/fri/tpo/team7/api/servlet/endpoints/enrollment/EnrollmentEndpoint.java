@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/enrollments")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -72,6 +73,16 @@ public class EnrollmentEndpoint {
         enrollment.setConfirmed(true);
         enrollmentsBean.update(enrollmentId, enrollment);
         return Response.ok( ).build();
+    }
+
+    @POST
+    @Secured({Role.CLERK})
+    @Path("list/{year}/{studyYear}")
+    public Response getList(@PathParam("year") int year, @PathParam("studyYear") int studyYear){
+        return Response.ok(enrollmentsBean.get().stream()
+                .filter(e -> e.getCurriculum().getYear().getId() == year)
+                .filter(e -> e.getCurriculum().getStudyYear().getId() == studyYear)
+                .collect(Collectors.toList())).build();
     }
 }
 
