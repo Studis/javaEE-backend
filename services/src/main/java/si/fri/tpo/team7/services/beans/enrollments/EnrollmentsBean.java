@@ -181,8 +181,9 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
            permanentResidence = student.getPermanent();
         } else {
             Residence r = new Residence();
-            em.persist(r);
+            residencesBean.add(r);
             permanentResidence = r;
+            student.setPermanent(r);
         }
 
         Residence permanentResidenceRequest = requestStudent.getPermanent();
@@ -190,34 +191,39 @@ public class EnrollmentsBean extends EntityBean<Enrollment> {
         //COUNTRY
         permanentResidence.setCountry(permanentResidenceRequest.getCountry());
         //MUNICIPALITY
-        permanentResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(permanentResidenceRequest.getMunicipality().getName()));
+        if(permanentResidenceRequest.getCountry().equals("SI")) {
+            permanentResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(permanentResidenceRequest.getMunicipality().getName()));
+        }
         //POSTAL NUMBER
         permanentResidence.setPostalNumber(permanentResidenceRequest.getPostalNumber());
         //ADDRESS
         permanentResidence.setPlaceOfResidence(permanentResidenceRequest.getPlaceOfResidence());
-        em.merge(permanentResidence);
+        em.persist(permanentResidence);
 
 
         //Temporary RESIDENCE
         Residence temporaryResidence;
-        if(student.getPermanent() != null ){
+        if(student.getTemporary() != null ){
             temporaryResidence = student.getTemporary();
         } else {
             Residence r = new Residence();
-            em.persist(r);
+            residencesBean.add(r);
             temporaryResidence = r;
+            student.setTemporary(r);
         }
         Residence temporaryResidenceRequest = requestStudent.getTemporary();
 
         //COUNTRY
         temporaryResidence.setCountry(temporaryResidenceRequest.getCountry());
         //MUNICIPALITY
-        temporaryResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(temporaryResidenceRequest.getMunicipality().getName()));
+        if(temporaryResidenceRequest.getCountry().equals("SI")){
+            temporaryResidence.setMunicipality(municipalitiesBean.getMunicipalityByName(temporaryResidenceRequest.getMunicipality().getName()));
+        }
         //POSTAL NUMBER
         temporaryResidence.setPostalNumber(temporaryResidenceRequest.getPostalNumber());
         //ADDRESS
         temporaryResidence.setPlaceOfResidence(temporaryResidenceRequest.getPlaceOfResidence());
-        em.merge(temporaryResidence);
+        em.persist(temporaryResidence);
 
         for (EnrollmentToken t : student.getEnrollmentTokens()) {
             if (t.getStatus() != null && t.getStatus().equals(Status.OPEN))
