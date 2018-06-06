@@ -134,7 +134,7 @@ public class StudentsBean {
         return s;
     }
 
-    public String replaceSumniki(String s) {
+    public static String replaceSumniki(String s) {
         return s.replace("č", "c").replace("ž", "z").replace("š", "s");
     }
 

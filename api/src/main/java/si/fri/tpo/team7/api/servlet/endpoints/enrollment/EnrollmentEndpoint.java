@@ -75,7 +75,7 @@ public class EnrollmentEndpoint {
         return Response.ok( ).build();
     }
 
-    @POST
+    @GET
     @Secured({Role.CLERK})
     @Path("list/{year}/{studyYear}")
     public Response getList(@PathParam("year") int year, @PathParam("studyYear") int studyYear){

@@ -256,10 +256,13 @@ public class DatabaseSeeder extends HttpServlet {
 
     private Lecturer AddLecturer(String name, String surname, int code) {
         Lecturer l = new Lecturer();
+
+
         l.setName(name);
         l.setSurname(surname);
         l.setCode(code);
-        l.setUsername(name.toLowerCase() + "." + surname.replace(' ', '.').toLowerCase());
+
+        l.setUsername(StudentsBean.replaceSumniki(name.toLowerCase()) + "." + StudentsBean.replaceSumniki(surname.replace(' ', '.').toLowerCase()));
         lecturersBean.addLecturer(l);
         return l;
     }
@@ -659,22 +662,21 @@ public class DatabaseSeeder extends HttpServlet {
                     case 1:
                         EnrollInYear(student, 2016, 1, 1);
                         EnrollInYear(student, 2017, 2, 5);
-                        EnrollInYear(student, 2018, 3, 5);
                         break;
                     case 2:
                         EnrollInYear(student, 2017, 1, 1);
-                        EnrollInYear(student, 2018, 2, 5);
 
-                        EnrollmentToken token = new EnrollmentToken();
-                        token.setStudent(student);
-                        token.setStudyYear(studyYearsBean.get(3));
-                        token.setStudyForm(studyFormsBean.get(1));
-                        token.setStudyType(studyTypesBean.get(1));
-                        token.setStatus(Status.OPEN);
-                        token.setProgram(uniProgram);
-                        token.setEnrollmentType(enrollmentTypesBean.get(5));
 
-                        enrollmentTokensBean.add(token);
+//                        EnrollmentToken token = new EnrollmentToken();
+//                        token.setStudent(student);
+//                        token.setStudyYear(studyYearsBean.get(3));
+//                        token.setStudyForm(studyFormsBean.get(1));
+//                        token.setStudyType(studyTypesBean.get(1));
+//                        token.setStatus(Status.OPEN);
+//                        token.setProgram(uniProgram);
+//                        token.setEnrollmentType(enrollmentTypesBean.get(5));
+//
+//                        enrollmentTokensBean.add(token);
                         break;
 
                 }
