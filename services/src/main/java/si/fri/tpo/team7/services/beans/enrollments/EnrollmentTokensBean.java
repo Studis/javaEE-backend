@@ -70,7 +70,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
     }
 
     @Transactional
-    public EnrollmentToken addNewToken(int studentId) {
+    public EnrollmentToken addNewToken(int studentId, boolean freeChoice) {
         EnrollmentToken resultToken = new EnrollmentToken();
         resultToken.setStatus(Status.OPEN);
         resultToken.setCreatedAt(new Date());
@@ -108,7 +108,7 @@ public class EnrollmentTokensBean extends EntityBean<EnrollmentToken> {
         resultToken.setStudyType(lastToken.getStudyType());
 
         //FREE CHOICE
-        resultToken.setFreeChoice(true);
+        resultToken.setFreeChoice(freeChoice);
 
         em.persist(resultToken);
         em.flush();

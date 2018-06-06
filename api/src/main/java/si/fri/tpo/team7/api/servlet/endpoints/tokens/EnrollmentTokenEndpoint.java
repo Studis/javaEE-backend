@@ -27,9 +27,9 @@ public class EnrollmentTokenEndpoint {
     }
 
     @POST
-    @Path("{id}")
-    public Response addNewToken(@PathParam("id") int studentId) {
-        EnrollmentToken token = enrollmentTokensBean.addNewToken(studentId);
+    @Path("{id}/{freeChoice}")
+    public Response addNewToken(@PathParam("id") int studentId,@PathParam("freeChoice") boolean freeChoice) {
+        EnrollmentToken token = enrollmentTokensBean.addNewToken(studentId, freeChoice);
         return Response.ok(token).build();
     }
 
