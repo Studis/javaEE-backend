@@ -139,8 +139,8 @@ public class StudentsBean {
     }
 
     private String generateUsername(Student s) {
-        String firstLetter = replaceSumniki(s.getName().substring(0,1).toLowerCase());
-        String secondLetter = replaceSumniki(s.getSurname().substring(0,1).toLowerCase());
+        String firstLetter = replaceSumniki(s.getName().replaceAll("\uFEFF", "").substring(0,1).toLowerCase());
+        String secondLetter = replaceSumniki(s.getSurname().replaceAll("\uFEFF", "").substring(0,1).toLowerCase());
         String id = Integer.toString(s.getId());
 
         int count = id.length();
