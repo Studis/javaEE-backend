@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 public class Residence extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name="municipality", nullable=false)
+    @JoinColumn(name="municipality")
     private Municipality municipality;
 
     private String country;

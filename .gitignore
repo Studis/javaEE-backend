@@ -166,3 +166,4 @@ lib/
 api/src/main/resources/config.yaml
 
 api/src/main/resources/
+/api/src/main/resources/config.yaml
