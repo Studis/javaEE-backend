@@ -43,8 +43,9 @@ public class StudentEndpoint {
 
     @POST
     public  Response addStudent(Student student){
-        Student s = studentsBean.addStudentNew(student);
-        return Response.status(Response.Status.CREATED).entity(s).build();
+        // Student s = studentsBean.addStudentNew(student);
+        // return Response.status(Response.Status.CREATED).entity(s).build();
+        return Response.ok("Not used").build();
     }
 
     @PUT
