@@ -666,11 +666,11 @@ public class DatabaseSeeder extends HttpServlet {
                         EnrollInYear(student, 2018, 3, 5);
                         break;
                     case 1:
-                        EnrollInYear(student, 2017, 1, 1);
-                        EnrollInYear(student, 2018, 2, 5);
+                        EnrollInYear(student, 2016, 1, 1);
+                        EnrollInYear(student, 2017, 2, 5);
                         break;
                     case 2:
-                        EnrollInYear(student, 2018, 1, 1);
+                        EnrollInYear(student, 2017, 1, 1);
 
 
 //                        EnrollmentToken token = new EnrollmentToken();
