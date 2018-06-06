@@ -1,28 +1,28 @@
 package si.fri.tpo.team7.api.servlet.seeding;
 
-import si.fri.tpo.team7.entities.enrollments.*;
+import si.fri.tpo.team7.entities.curriculum.*;
+import si.fri.tpo.team7.entities.enrollments.Enrollment;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentCourse;
+import si.fri.tpo.team7.entities.enrollments.EnrollmentToken;
 import si.fri.tpo.team7.entities.enums.Status;
 import si.fri.tpo.team7.entities.exams.Exam;
 import si.fri.tpo.team7.entities.exams.ExamEnrollment;
+import si.fri.tpo.team7.entities.location.Residence;
+import si.fri.tpo.team7.entities.users.Administrator;
 import si.fri.tpo.team7.entities.users.Clerk;
+import si.fri.tpo.team7.entities.users.Lecturer;
+import si.fri.tpo.team7.entities.users.Student;
 import si.fri.tpo.team7.services.beans.curriculum.*;
 import si.fri.tpo.team7.services.beans.enrollments.*;
 import si.fri.tpo.team7.services.beans.exams.ExamEnrollmentBean;
 import si.fri.tpo.team7.services.beans.exams.ExamsBean;
 import si.fri.tpo.team7.services.beans.pojo.ResidencesBean;
 import si.fri.tpo.team7.services.beans.users.*;
-import si.fri.tpo.team7.entities.curriculum.*;
-import si.fri.tpo.team7.entities.users.Administrator;
-import si.fri.tpo.team7.entities.users.Lecturer;
-import si.fri.tpo.team7.entities.location.Residence;
-import si.fri.tpo.team7.entities.users.Student;
-import si.fri.tpo.team7.services.beans.validators.DateValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -43,7 +40,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class DatabaseSeeder extends HttpServlet {
     private Logger log = Logger.getLogger(DatabaseSeeder.class.getName());
-    Random r = new Random(1234);
+    private Random r = new Random(1234);
 
     @Inject
     private StudentsBean studentsBean;
@@ -88,7 +85,7 @@ public class DatabaseSeeder extends HttpServlet {
     @Inject
     private ClerksBean clerksBean;
 
-    Program uniProgram, vsProgram;
+    private Program uniProgram, vsProgram;
     private Lecturer ViljanMahnic, IgorKononenko, BorutRobic, BostjanSlivnik, BrankoSter, UrosLotric, GasperFijavz,
             TomazHovelja, DanijelSkocaj, PolonaOblak, ZoranBosnic, DejanLavbic, NezkaMramor, MatijaMarolt,
             MarkoRobnik, FrancSolina, NikolajZimic, MarkoBajec, PatricioBulic, PolonaLavbic, AleksandarJurisic,
@@ -98,10 +95,10 @@ public class DatabaseSeeder extends HttpServlet {
 
     private Clerk DanicaKotnik;
 
-    String[] names = new String[]{"Franc", "Janez", "Ivan", "Anton", "Marko", "Andrej", "Jožef", "Jože", "Marjan", "Peter", "Luka", "Matej", "Milan", "Tomaž", "Branko", "Aleš", "Bojan", "Robert", "Rok", "Boštjan", "Stanislav", "Matjaž", "Gregor", "Miha", "Martin", "David", "Igor", "Boris", "Dejan", "Dušan", "Jan", "Alojz", "Žiga", "Nejc", "Jure", "Uroš", "Blaž", "Mitja", "Simon", "Žan", "Matic", "Klemen", "Darko", "Drago", "Jernej", "Primož", "Aleksander", "Gašper", "Miran", "Anže", "Štefan", "Roman", "Tadej", "Denis", "Aljaž", "Jaka", "Jakob", "Vladimir", "Srečko", "Nik", "Damjan", "Slavko", "Borut", "Janko", "Matija", "Mirko", "Miroslav", "Tilen", "Zoran", "Alen", "Danijel", "Domen", "Stanko", "Filip", "Mihael", "Goran", "Vid", "Alojzij", "Sašo", "Matevž", "Iztok", "Marijan", "Jurij", "Leon", "Urban", "Vinko", "Andraž", "Tim", "Mark", "Viktor", "Rudolf", "Zvonko", "Zdravko", "Benjamin", "Dragan", "Samo", "Danilo", "Pavel", "Erik", "Rajko", "Gorazd", "Maks", "Edvard", "Zlatko", "Bogdan", "Sandi", "Kristjan", "Gal", "Lovro", "Sebastjan", "Emil", "Franci", "Vojko", "Ludvik", "Josip", "Patrik", "Silvo", "Maj", "Timotej", "Anej", "Ciril", "Željko", "Damir", "Aljoša", "Damijan", "Dominik", "Albin", "Daniel", "Božidar", "Miloš", "Lan", "Frančišek", "Niko", "Nikola", "Silvester", "Leopold", "Viljem", "Stojan", "Tine", "Tomislav", "Saša", "Mario", "Davorin", "Aleks", "Aleksandar", "Karel", "Valentin", "Grega", "Vincenc", "Kristijan", "Mladen", "Vlado", "Franjo", "Davor", "Zdenko", "Marcel", "Ladislav", "Bogomir", "Sebastijan", "Jasmin", "Rene", "Ivo", "Elvis", "Bor", "Oskar", "Enej", "Karl", "Jani", "Nenad", "Stjepan", "Edin", "Rado", "Maksimiljan", "Ernest", "Valter", "Ervin", "Tian", "Izidor", "Nikolaj", "Nino", "Petar", "Sergej", "Avgust", "Metod", "Senad", "Teo", "Val", "Renato", "Radovan", "Ignac", "Mirsad", "Vito", "Bruno", "Adolf", "Slobodan", "Samir", "Bernard", "Alex", "Rudi", "Joško",
+    private String[] names = new String[]{"Franc", "Janez", "Ivan", "Anton", "Marko", "Andrej", "Jožef", "Jože", "Marjan", "Peter", "Luka", "Matej", "Milan", "Tomaž", "Branko", "Aleš", "Bojan", "Robert", "Rok", "Boštjan", "Stanislav", "Matjaž", "Gregor", "Miha", "Martin", "David", "Igor", "Boris", "Dejan", "Dušan", "Jan", "Alojz", "Žiga", "Nejc", "Jure", "Uroš", "Blaž", "Mitja", "Simon", "Žan", "Matic", "Klemen", "Darko", "Drago", "Jernej", "Primož", "Aleksander", "Gašper", "Miran", "Anže", "Štefan", "Roman", "Tadej", "Denis", "Aljaž", "Jaka", "Jakob", "Vladimir", "Srečko", "Nik", "Damjan", "Slavko", "Borut", "Janko", "Matija", "Mirko", "Miroslav", "Tilen", "Zoran", "Alen", "Danijel", "Domen", "Stanko", "Filip", "Mihael", "Goran", "Vid", "Alojzij", "Sašo", "Matevž", "Iztok", "Marijan", "Jurij", "Leon", "Urban", "Vinko", "Andraž", "Tim", "Mark", "Viktor", "Rudolf", "Zvonko", "Zdravko", "Benjamin", "Dragan", "Samo", "Danilo", "Pavel", "Erik", "Rajko", "Gorazd", "Maks", "Edvard", "Zlatko", "Bogdan", "Sandi", "Kristjan", "Gal", "Lovro", "Sebastjan", "Emil", "Franci", "Vojko", "Ludvik", "Josip", "Patrik", "Silvo", "Maj", "Timotej", "Anej", "Ciril", "Željko", "Damir", "Aljoša", "Damijan", "Dominik", "Albin", "Daniel", "Božidar", "Miloš", "Lan", "Frančišek", "Niko", "Nikola", "Silvester", "Leopold", "Viljem", "Stojan", "Tine", "Tomislav", "Saša", "Mario", "Davorin", "Aleks", "Aleksandar", "Karel", "Valentin", "Grega", "Vincenc", "Kristijan", "Mladen", "Vlado", "Franjo", "Davor", "Zdenko", "Marcel", "Ladislav", "Bogomir", "Sebastijan", "Jasmin", "Rene", "Ivo", "Elvis", "Bor", "Oskar", "Enej", "Karl", "Jani", "Nenad", "Stjepan", "Edin", "Rado", "Maksimiljan", "Ernest", "Valter", "Ervin", "Tian", "Izidor", "Nikolaj", "Nino", "Petar", "Sergej", "Avgust", "Metod", "Senad", "Teo", "Val", "Renato", "Radovan", "Ignac", "Mirsad", "Vito", "Bruno", "Adolf", "Slobodan", "Samir", "Bernard", "Alex", "Rudi", "Joško",
             "Marija", "Ana", "Maja", "Irena", "Mojca", "Mateja", "Nina", "Nataša", "Barbara", "Andreja", "Jožica", "Petra", "Jožefa", "Katja", "Anja", "Eva", "Sonja", "Tatjana", "Katarina", "Milena", "Tanja", "Sara", "Alenka", "Tina", "Ivana", "Vesna", "Martina", "Majda", "Frančiška", "Urška", "Nika", "Špela", "Terezija", "Tjaša", "Helena", "Anica", "Dragica", "Nada", "Kristina", "Darja", "Simona", "Danica", "Olga", "Marjeta", "Zdenka", "Suzana", "Angela", "Antonija", "Lidija", "Vida", "Neža", "Marta", "Ivanka", "Lara", "Sabina", "Janja", "Ema", "Veronika", "Silva", "Ljudmila", "Darinka", "Karmen", "Alojzija", "Maša", "Aleksandra", "Anita", "Stanislava", "Brigita", "Štefanija", "Metka", "Jana", "Monika", "Zala", "Cvetka", "Kaja", "Klara", "Lana", "Lucija", "Elizabeta", "Natalija", "Lea", "Nevenka", "Jasmina", "Slavica", "Marjana", "Renata", "Branka", "Tamara", "Saša", "Pavla", "Klavdija", "Vera", "Bernarda", "Manca", "Danijela", "Bojana", "Erika", "Julija", "Jasna", "Romana", "Hana", "Teja", "Rozalija", "Mira", "Polona", "Valentina", "Jelka", "Laura", "Mirjana", "Sandra", "Ajda", "Tadeja", "Valerija", "Sanja", "Maruša", "Nuša", "Ines", "Živa", "Patricija", "Mihaela", "Breda", "Ida", "Ksenija", "Karolina", "Gabrijela", "Neja", "Pia", "Vanja", "Albina", "Viktorija", "Julijana", "Vlasta", "Marjetka", "Magdalena", "Melita", "Marina", "Zoja", "Matilda", "Alja", "Ljubica", "Gordana", "Amalija", "Taja", "Marinka", "Zofija", "Nadja", "Cecilija", "Marica", "Polonca", "Ela", "Karin", "Urša", "Emilija", "Tea", "Nastja", "Mia", "Brina", "Damjana", "Tinkara", "Larisa", "Milka", "Doroteja", "Justina", "Jerneja", "Gaja", "Milica", "Marijana", "Vita", "Nives", "Jelena", "Lina", "Štefka", "Tia", "Rebeka", "Žana", "Dušanka", "Slavka", "Iva", "Andrejka", "Stanka", "Marjanca", "Lilijana", "Mirjam", "Irma", "Ana", "Zlatka", "Miroslava", "Iris", "Zvonka", "Jolanda", "Daša", "Ula", "Ivica", "Blanka", "Anamarija", "Erna", "Liljana", "Meta", "Alma", "Zora"};
 
-    String[] surnames = new String[]{"Župančič", "Švejk", "Horvat", "Kovačič", "Čuš", "Krajnc", "Zupančič", "Dobravec", "Zupančič", "Kovač", "Kovčar", "Kos", "Vidmar", "Golob", "Turk", "Kralj", "Božič", "Korošec", "Bizjak", "Zupan", "Hribar", "Kotnik", "Kavčič", "Rozman", "Kastelic", "Oblak", "Petek", "Žagar", "Hočevar", "Kolar", "Košir", "Koren", "Klemenčič", "Zajc", "Knez", "Medved", "Zupanc", "Petrič", "Pirc", "Hrovat", "Pavlič", "Kuhar", "Lah", "Uršič", "Tomažič", "Zorko", "Sever", "Erjavec", "Babič", "Jereb", "Jerman", "Majcen", "Pušnik", "Kranjc", "Breznik", "Rupnik", "Lesjak", "Perko", "Dolenc", "Pečnik", "Močnik", "Furlan", "Pavlin", "Vidic", "Logar", "Kovačević", "Jenko", "Ribič", "Tomšič", "Žnidaršič", "Janežič", "Marolt", "Maček", "Jelen", "Pintar", "Blatnik", "Černe", "Petrović", "Gregorič", "Mihelič", "Dolinar", "Kokalj", "Lešnik", "Zadravec", "Fras", "Bezjak", "Cerar", "Hren", "Leban", "Čeh", "Jug", "Rus", "Vidovič", "Kocjančič", "Kobal", "Bogataj", "Primožič", "Kolenc", "Lavrič", "Kolarič", "Lazar", "Kodrič", "Nemec", "Mrak", "Kosi", "Hodžić", "Debeljak", "Ivančič", "Žižek", "Tavčar", "Žibert", "Jovanović", "Miklavčič", "Krivec", "Jarc", "Vovk", "Marković", "Vodopivec", "Zver", "Hribernik", "Likar", "Kramberger", "Toplak", "Gorenc", "Skok", "Jazbec", "Leskovar", "Stopar", "Eržen", "Meglič", "Železnik", "Sitar", "Simonič", "Šinkovec", "Blažič", "Petrovič", "Demšar", "Ilić", "Ramšak", "Javornik", "Jamnik", "Popović", "Kočevar", "Nikolić", "Hozjan", "Filipič", "Bregar", "Gorjup", "Čuk", "Volk", "Pintarič", "Bukovec", "Podgoršek", "Sušnik", "Kokol", "Koželj", "Rutar", "Rajh", "Kramar", "Godec", "Gajšek", "Resnik", "Mohorič", "Mavrič", "Rožman", "Šmid", "Pogačnik", "Gomboc", "Bergant", "Hafner", "Lebar", "Kumer", "Rožič", "Povše", "Zemljič", "Savić", "Bajc", "Mlinar", "Ambrožič", "Bevc", "Zakrajšek", "Cvetko", "Gashi", "Kristan", "Tratnik", "Kalan", "Markovič", "Pogačar", "Pavlović", "Zorman", "Mlinarič", "Jerič", "Kaučič", "Zalokar", "Babić", "Humar", "Trček", "Založnik", "Begić", "Štrukelj", "Gorišek", "Škof", "Šuštar", "Čižmar"};
+    private String[] surnames = new String[]{"Župančič", "Švejk", "Horvat", "Kovačič", "Čuš", "Krajnc", "Zupančič", "Dobravec", "Zupančič", "Kovač", "Kovčar", "Kos", "Vidmar", "Golob", "Turk", "Kralj", "Božič", "Korošec", "Bizjak", "Zupan", "Hribar", "Kotnik", "Kavčič", "Rozman", "Kastelic", "Oblak", "Petek", "Žagar", "Hočevar", "Kolar", "Košir", "Koren", "Klemenčič", "Zajc", "Knez", "Medved", "Zupanc", "Petrič", "Pirc", "Hrovat", "Pavlič", "Kuhar", "Lah", "Uršič", "Tomažič", "Zorko", "Sever", "Erjavec", "Babič", "Jereb", "Jerman", "Majcen", "Pušnik", "Kranjc", "Breznik", "Rupnik", "Lesjak", "Perko", "Dolenc", "Pečnik", "Močnik", "Furlan", "Pavlin", "Vidic", "Logar", "Kovačević", "Jenko", "Ribič", "Tomšič", "Žnidaršič", "Janežič", "Marolt", "Maček", "Jelen", "Pintar", "Blatnik", "Černe", "Petrović", "Gregorič", "Mihelič", "Dolinar", "Kokalj", "Lešnik", "Zadravec", "Fras", "Bezjak", "Cerar", "Hren", "Leban", "Čeh", "Jug", "Rus", "Vidovič", "Kocjančič", "Kobal", "Bogataj", "Primožič", "Kolenc", "Lavrič", "Kolarič", "Lazar", "Kodrič", "Nemec", "Mrak", "Kosi", "Hodžić", "Debeljak", "Ivančič", "Žižek", "Tavčar", "Žibert", "Jovanović", "Miklavčič", "Krivec", "Jarc", "Vovk", "Marković", "Vodopivec", "Zver", "Hribernik", "Likar", "Kramberger", "Toplak", "Gorenc", "Skok", "Jazbec", "Leskovar", "Stopar", "Eržen", "Meglič", "Železnik", "Sitar", "Simonič", "Šinkovec", "Blažič", "Petrovič", "Demšar", "Ilić", "Ramšak", "Javornik", "Jamnik", "Popović", "Kočevar", "Nikolić", "Hozjan", "Filipič", "Bregar", "Gorjup", "Čuk", "Volk", "Pintarič", "Bukovec", "Podgoršek", "Sušnik", "Kokol", "Koželj", "Rutar", "Rajh", "Kramar", "Godec", "Gajšek", "Resnik", "Mohorič", "Mavrič", "Rožman", "Šmid", "Pogačnik", "Gomboc", "Bergant", "Hafner", "Lebar", "Kumer", "Rožič", "Povše", "Zemljič", "Savić", "Bajc", "Mlinar", "Ambrožič", "Bevc", "Zakrajšek", "Cvetko", "Gashi", "Kristan", "Tratnik", "Kalan", "Markovič", "Pogačar", "Pavlović", "Zorman", "Mlinarič", "Jerič", "Kaučič", "Zalokar", "Babić", "Humar", "Trček", "Založnik", "Begić", "Štrukelj", "Gorišek", "Škof", "Šuštar", "Čižmar"};
 
 
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -173,7 +170,7 @@ public class DatabaseSeeder extends HttpServlet {
         new ExamEnrollmentsSeeder(examsBean, examEnrollmentBean, enrollmentCoursesBean, studentsBean, examSeeder, enrollmentsBean).Seed(writer);
 
 
-        Correct();
+        //Correct();
     }
 
     private void AddPrograms(PrintWriter writer) {
@@ -580,7 +577,7 @@ public class DatabaseSeeder extends HttpServlet {
 
     private void AddStudents(PrintWriter writer) {
         writer.print("Adding students ... ");
-        Integer reduceSeeder = 16;
+        Integer reduceSeeder = 10;
         for (int i = 0; i < surnames.length / reduceSeeder; i++) {
             Student student = new Student();
             student.setName(names[i]);
@@ -725,24 +722,23 @@ public class DatabaseSeeder extends HttpServlet {
                     break;
                 case 2:
                     Enroll(enrollment, c.getObligatoryCourses());
-                    Enroll(enrollment, c.getGeneralOptionalCourses());
-                    Enroll(enrollment, c.getProfessionalOptionalCourses());
+                    Enroll(enrollment, c.getGeneralOptionalCourses().get(r.nextInt(c.getGeneralOptionalCourses().size())));
+                    Enroll(enrollment, c.getProfessionalOptionalCourses().stream()
+                            .filter(cc -> cc.getCourse().getId() == 63219).findFirst().get());
                     break;
                 case 3:
                     Enroll(enrollment, c.getObligatoryCourses());
-                    Enroll(enrollment, c.getGeneralOptionalCourses());
-                    Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    int a = r.nextInt(c.getModules().size());
-                    int b = (r.nextInt(c.getModules().size()-1)+a)%c.getModules().size();
-                    for (Module m : c.getModules().stream().filter(m -> m.getId() == a || m.getId() == b).collect(Collectors.toList())) {
-
+                    Enroll(enrollment, c.getGeneralOptionalCourses().get(r.nextInt(c.getGeneralOptionalCourses().size())));
+                    Enroll(enrollment, c.getProfessionalOptionalCourses().get(r.nextInt(c.getProfessionalOptionalCourses().size())));
+                    int mo = c.getModules().stream().filter(m -> m.getName().equals("Algoritmi in sistemski programi")).findFirst().get().getId();
+                    int index = (r.nextInt(c.getModules().size() - 1) + mo) % c.getModules().size();
+                    for (Module m : c.getModules().stream().filter(m -> m.getId() == index || m.getId() == mo).collect(Collectors.toList())) {
                         Enroll(enrollment, m.getCourses());
                     }
                     break;
             }
         }
     }
-
 
     private void izredniStudij(Student student, int year, int studyYear, int enrollmentType) {
         Curriculum c = curriculumsBean.get(uniProgram, yearsBean.get(year), studyYearsBean.get(studyYear));
@@ -790,12 +786,18 @@ public class DatabaseSeeder extends HttpServlet {
                     Enroll(enrollment, c.getObligatoryCourses());
                     Enroll(enrollment, c.getGeneralOptionalCourses());
                     Enroll(enrollment, c.getProfessionalOptionalCourses());
-                    for (Module m : c.getModules()) {qa
+                    for (Module m : c.getModules()) {
                         Enroll(enrollment, m.getCourses());
-                    }lala
+                    }
                     break;
             }
         }
+    }
+
+    private void Enroll(Enrollment enrollment, CourseExecution courseExecution){
+        ArrayList<CourseExecution> courseExecutions = new ArrayList<>();
+        courseExecutions.add(courseExecution);
+        Enroll(enrollment, courseExecutions);
     }
 
     private void Enroll(Enrollment enrollment, List<? extends CourseExecution> courses) {
